@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="ige-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" rx="128" fill="#0B0F19" />
+  <rect x="96" y="96" width="320" height="320" rx="48" fill="none" stroke="url(#ige-grad)" stroke-width="24" filter="url(#glow)" />
+
+  <path d="M 176 96 V 56 M 256 96 V 56 M 336 96 V 56" stroke="#10B981" stroke-width="20" stroke-linecap="round" />
+  <path d="M 176 416 V 456 M 256 416 V 456 M 336 416 V 456" stroke="#8B5CF6" stroke-width="20" stroke-linecap="round" />
+  <path d="M 96 176 H 56 M 96 256 H 56 M 96 336 H 56" stroke="#10B981" stroke-width="20" stroke-linecap="round" />
+  <path d="M 416 176 H 456 M 416 256 H 456 M 416 336 H 456" stroke="#8B5CF6" stroke-width="20" stroke-linecap="round" />
+
+  <rect x="192" y="192" width="128" height="128" rx="24" fill="url(#ige-grad)" />
+  <path d="M 264 216 L 224 264 H 256 L 248 296 L 288 248 H 256 Z" fill="#0B0F19" />
+</svg>

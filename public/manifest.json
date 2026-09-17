@@ -1,0 +1,28 @@
+{
+  "name": "IGE - Innovation en Génie Électrique",
+  "short_name": "IGE-EPAC",
+  "description": "Association des étudiants en Génie Électrique de l'EPAC. Innovation, projets techniques, événements et formation au Bénin.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#7c3aed",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo-ige-white.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["education", "technology"],
+  "lang": "fr",
+  "dir": "ltr",
+  "scope": "/",
+  "screenshots": []
+}

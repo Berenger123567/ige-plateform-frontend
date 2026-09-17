@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  color: #1A1A1A;
+  background: #F8FAFC;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Dégradé texte bronze → violet → vert (couleurs officielles IGE) */
+.text-gradient-ige {
+  background: linear-gradient(135deg, #c17835 0%, #7c3aee 60%, #17ce00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Dégradé vert → violet */
+.text-gradient-green-violet {
+  background: linear-gradient(135deg, #17ce00 0%, #7c3aee 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
