@@ -2,16 +2,27 @@ import { MetadataRoute } from 'next';
 
 const BASE_URL = 'https://ige-epac.bj';
 
+const FETCH_TIMEOUT = 3000;
+
+async function fetchJson(url: string) {
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT) });
+    return await res.json();
+  } catch {
+    return [];
+  }
+}
+
 async function fetchData() {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
     
     const [articles, projets, evenements, clubs, partners] = await Promise.all([
-      fetch(`${apiUrl}/articles`).then(res => res.json()).catch(() => []),
-      fetch(`${apiUrl}/projets`).then(res => res.json()).catch(() => []),
-      fetch(`${apiUrl}/evenements`).then(res => res.json()).catch(() => []),
-      fetch(`${apiUrl}/clubs`).then(res => res.json()).catch(() => []),
-      fetch(`${apiUrl}/partners`).then(res => res.json()).catch(() => []),
+      fetchJson(`${apiUrl}/articles`),
+      fetchJson(`${apiUrl}/projets`),
+      fetchJson(`${apiUrl}/evenements`),
+      fetchJson(`${apiUrl}/clubs`),
+      fetchJson(`${apiUrl}/partners`),
     ]);
 
     return { articles, projets, evenements, clubs, partners };
