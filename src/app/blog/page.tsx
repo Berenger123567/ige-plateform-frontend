@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Star, Newspaper, User, Eye, Inbox } from 'lucide-react';
+import { Star, Newspaper, User, Eye, Inbox } from '@/components/IconImage';
 import { api } from '@/lib/api';
 
 type Article = {
@@ -19,12 +19,17 @@ type Article = {
   featured: boolean;
 };
 
+const CATEGORY_LABELS: Record<string, string> = {
+  Actualite: 'Actualité',
+  Evenement: 'Evénement',
+  Reussite: 'Réussite',
+};
+
 export default function BlogPage() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [featuredArticle, setFeaturedArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>('Tous');
-
   useEffect(() => {
     fetchArticles();
   }, []);
@@ -67,7 +72,7 @@ export default function BlogPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-ige-green border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-16 h-16 border-4 border-ige-teal border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -78,9 +83,9 @@ export default function BlogPage() {
       <div className="bg-white border-b border-slate-200 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center space-y-4">
-            <h1 className="text-4xl sm:text-5xl font-display font-extrabold text-slate-900 tracking-tight">Blog & Actualités</h1>
+            <h1 className="text-4xl sm:text-5xl font-display font-extrabold text-ige-teal tracking-tight">Blog et actualités</h1>
             <p className="text-lg text-slate-600">
-              Suivez les dernières nouvelles et réussites de l'IGE
+              Suivez les dernières nouvelles et réussites de l’IGE.
             </p>
           </div>
         </div>
@@ -91,7 +96,7 @@ export default function BlogPage() {
         {featuredArticle && (
           <div className="mb-12">
             <div className="flex items-center gap-2 mb-4">
-              <Star className="w-6 h-6 text-ige-green" />
+              <Star className="w-6 h-6 text-ige-teal" />
               <h2 className="text-2xl font-display font-bold text-slate-900">À la une</h2>
             </div>
             <Link href={`/blog/${featuredArticle.slug}`}>
@@ -112,14 +117,14 @@ export default function BlogPage() {
                   )}
                   <div className="md:w-1/2 p-8">
                     <div className="flex items-center gap-2 mb-3">
-                      <span className="px-3 py-1 bg-ige-greenSoft text-ige-greenDark border border-ige-greenSoft text-sm font-semibold rounded-full">
-                        {featuredArticle.category}
+                      <span className="px-3 py-1 bg-ige-tealSoft text-ige-tealDark border border-ige-tealSoft text-sm font-semibold rounded-full">
+                        {CATEGORY_LABELS[featuredArticle.category] || featuredArticle.category}
                       </span>
                       <span className="text-sm text-gray-500">
                         {formatDate(featuredArticle.publishedAt)}
                       </span>
                     </div>
-                    <h3 className="text-3xl font-bold text-gray-900 mb-4 group-hover:text-ige-green transition-colors">
+                    <h3 className="text-3xl font-bold text-gray-900 mb-4 group-hover:text-ige-teal transition-colors">
                       {featuredArticle.title}
                     </h3>
                     <p className="text-gray-600 mb-6 text-lg">{featuredArticle.excerpt}</p>
@@ -128,11 +133,8 @@ export default function BlogPage() {
                         <span className="flex items-center gap-1.5"><User className="w-4 h-4" /> {featuredArticle.author}</span>
                         <span className="flex items-center gap-1.5"><Eye className="w-4 h-4" /> {featuredArticle.views} vues</span>
                       </div>
-                      <span className="text-ige-green font-semibold group-hover:gap-2 inline-flex items-center gap-1 transition-all">
+                      <span className="text-ige-teal font-semibold group-hover:gap-2 inline-flex items-center gap-1 transition-all">
                         Lire l'article
-                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                        </svg>
                       </span>
                     </div>
                   </div>
@@ -150,11 +152,11 @@ export default function BlogPage() {
               onClick={() => setFilter(cat)}
               className={`px-6 py-2 rounded-full font-medium transition-all duration-200 ${
                 filter === cat
-                  ? 'bg-ige-green text-white shadow-lg scale-105'
-                  : 'bg-white text-gray-700 hover:bg-ige-greenSoft shadow'
+                  ? 'bg-ige-teal text-white shadow-lg scale-105'
+                  : 'bg-white text-gray-700 hover:bg-ige-tealSoft shadow'
               }`}
             >
-              {cat}
+              {CATEGORY_LABELS[cat] || cat}
             </button>
           ))}
         </div>
@@ -213,13 +215,13 @@ function ArticleCard({ article, index }: { article: Article; index: number }) {
 
         <div className="p-6">
           <div className="flex items-center gap-2 mb-3">
-            <span className="px-2 py-1 bg-ige-greenSoft text-ige-greenDark border border-ige-greenSoft text-xs font-semibold rounded-full">
-              {article.category}
+            <span className="px-2 py-1 bg-ige-tealSoft text-ige-tealDark border border-ige-tealSoft text-xs font-semibold rounded-full">
+              {CATEGORY_LABELS[article.category] || article.category}
             </span>
             <span className="text-xs text-gray-500">{formatDate(article.publishedAt)}</span>
           </div>
 
-          <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-ige-green transition-colors line-clamp-2">
+          <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-ige-teal transition-colors line-clamp-2">
             {article.title}
           </h3>
 

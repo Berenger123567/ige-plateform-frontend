@@ -28,7 +28,7 @@ export default function ArticleSchema({
     },
     publisher: {
       '@type': 'Organization',
-      name: 'IGE - Innovation en Génie Électrique',
+      name: 'IGE - Innovation en Génie Electrique',
       logo: {
         '@type': 'ImageObject',
         url: 'https://ige-epac.bj/logo-ige-white.png',

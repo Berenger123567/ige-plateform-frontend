@@ -1,50 +1,54 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { FileText, Download, Search, ChevronRight, BookOpen, Calendar, Filter } from 'lucide-react';
+import { FileText, Download, Search, BookOpen, Calendar, Filter } from '@/components/IconImage';
 
 const DEFAULT_EPREUVES = [
   {
     annee: '2024',
     edition: 'JE-GE 2024',
     epreuves: [
-      { id: '1', titre: 'Épreuve de Circuits Électriques', categorie: 'Théorique', fichierUrl: '#', pages: 8 },
-      { id: '2', titre: 'Épreuve d\'Électronique Analogique', categorie: 'Théorique', fichierUrl: '#', pages: 6 },
-      { id: '3', titre: 'Épreuve de Systèmes Automatisés', categorie: 'Pratique', fichierUrl: '#', pages: 4 },
-      { id: '4', titre: 'Épreuve d\'Informatique Industrielle', categorie: 'Pratique', fichierUrl: '#', pages: 5 },
+      { id: '1', titre: 'Epreuve de circuits électriques', categorie: 'Theorique', fichierUrl: '#', pages: 8 },
+      { id: '2', titre: 'Epreuve d\'électronique analogique', categorie: 'Theorique', fichierUrl: '#', pages: 6 },
+      { id: '3', titre: 'Epreuve de systèmes automatisés', categorie: 'Pratique', fichierUrl: '#', pages: 4 },
+      { id: '4', titre: 'Epreuve d\'informatique industrielle', categorie: 'Pratique', fichierUrl: '#', pages: 5 },
     ],
   },
   {
     annee: '2023',
     edition: 'JE-GE 2023',
     epreuves: [
-      { id: '5', titre: 'Épreuve de Machines Électriques', categorie: 'Théorique', fichierUrl: '#', pages: 7 },
-      { id: '6', titre: 'Épreuve d\'Électronique Numérique', categorie: 'Théorique', fichierUrl: '#', pages: 6 },
-      { id: '7', titre: 'Épreuve de Robotique', categorie: 'Pratique', fichierUrl: '#', pages: 5 },
-      { id: '8', titre: 'Épreuve d\'IoT & Capteurs', categorie: 'Pratique', fichierUrl: '#', pages: 4 },
+      { id: '5', titre: 'Epreuve de machines électriques', categorie: 'Theorique', fichierUrl: '#', pages: 7 },
+      { id: '6', titre: 'Epreuve d\'électronique numérique', categorie: 'Theorique', fichierUrl: '#', pages: 6 },
+      { id: '7', titre: 'Epreuve de robotique', categorie: 'Pratique', fichierUrl: '#', pages: 5 },
+      { id: '8', titre: 'Epreuve d\'IoT et capteurs', categorie: 'Pratique', fichierUrl: '#', pages: 4 },
     ],
   },
   {
     annee: '2022',
     edition: 'JE-GE 2022',
     epreuves: [
-      { id: '9', titre: 'Épreuve de Conversion d\'Énergie', categorie: 'Théorique', fichierUrl: '#', pages: 9 },
-      { id: '10', titre: 'Épreuve de Réseaux Électriques', categorie: 'Théorique', fichierUrl: '#', pages: 6 },
-      { id: '11', titre: 'Épreuve de Programmation Embarquée', categorie: 'Pratique', fichierUrl: '#', pages: 5 },
+      { id: '9', titre: 'Epreuve de conversion d\'énergie', categorie: 'Theorique', fichierUrl: '#', pages: 9 },
+      { id: '10', titre: 'Epreuve de réseaux électriques', categorie: 'Theorique', fichierUrl: '#', pages: 6 },
+      { id: '11', titre: 'Epreuve de programmation embarquée', categorie: 'Pratique', fichierUrl: '#', pages: 5 },
     ],
   },
   {
     annee: '2021',
     edition: 'JE-GE 2021',
     epreuves: [
-      { id: '12', titre: 'Épreuve d\'Électrotechnique Générale', categorie: 'Théorique', fichierUrl: '#', pages: 10 },
-      { id: '13', titre: 'Épreuve de Capteurs & Instrumentation', categorie: 'Pratique', fichierUrl: '#', pages: 6 },
-      { id: '14', titre: 'Épreuve de Traitement du Signal', categorie: 'Théorique', fichierUrl: '#', pages: 7 },
+      { id: '12', titre: 'Epreuve d\'électrotechnique générale', categorie: 'Theorique', fichierUrl: '#', pages: 10 },
+      { id: '13', titre: 'Epreuve de capteurs et instrumentation', categorie: 'Pratique', fichierUrl: '#', pages: 6 },
+      { id: '14', titre: 'Epreuve de traitement du signal', categorie: 'Theorique', fichierUrl: '#', pages: 7 },
     ],
   },
 ];
 
-const CATEGORIES = ['Toutes', 'Théorique', 'Pratique'];
+const CATEGORIES = [
+  { value: 'Toutes', label: 'Toutes' },
+  { value: 'Theorique', label: 'Théorique' },
+  { value: 'Pratique', label: 'Pratique' },
+];
 
 export default function EpreuvesPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -98,21 +102,16 @@ export default function EpreuvesPage() {
       {/* Hero */}
       <section className="bg-white border-b border-slate-200 py-14 px-4">
         <div className="max-w-5xl mx-auto">
-          <div className="flex items-center gap-2 text-sm text-slate-500 mb-4">
-            <span>Accueil</span>
-            <ChevronRight className="w-4 h-4" />
-            <span className="text-slate-800 font-medium">Anciennes Épreuves</span>
-          </div>
           <div className="flex items-start gap-4">
-            <div className="w-14 h-14 rounded-xl bg-ige-violetSoft border border-ige-violetSoft flex items-center justify-center shrink-0">
-              <BookOpen className="w-7 h-7 text-ige-violet" />
+            <div className="w-14 h-14 rounded-xl bg-ige-navySoft border border-ige-navySoft flex items-center justify-center shrink-0">
+              <BookOpen className="w-7 h-7 text-ige-navy" />
             </div>
             <div>
-              <h1 className="text-3xl font-display font-bold text-slate-900">
-                Anciennes Épreuves JE-GE
+              <h1 className="text-3xl font-display font-bold text-ige-teal">
+                Anciennes épreuves JE-GE
               </h1>
               <p className="mt-2 text-slate-500 max-w-2xl">
-                Retrouvez toutes les épreuves des éditions passées de la Journée de l'Étudiant en Génie Électrique (JE-GE). 
+                Retrouvez toutes les épreuves des éditions passées de la Journée de l’Etudiant en Génie Electrique (JE-GE).
                 Ces documents sont mis à disposition pour aider les futurs participants à se préparer.
               </p>
             </div>
@@ -123,12 +122,12 @@ export default function EpreuvesPage() {
       <div className="max-w-5xl mx-auto px-4 py-10">
         <div className="flex flex-col lg:flex-row gap-8">
 
-          {/* Sidebar — Années */}
+          {/* Sidebar - Annees */}
           <aside className="lg:w-56 shrink-0">
             <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
               <div className="px-4 py-3 border-b border-slate-100 bg-slate-50">
                 <p className="text-xs font-bold uppercase tracking-widest text-slate-500 flex items-center gap-2">
-                  <Calendar className="w-3.5 h-3.5" /> Éditions
+                  <Calendar className="w-3.5 h-3.5" /> Editions
                 </p>
               </div>
               <ul>
@@ -138,8 +137,8 @@ export default function EpreuvesPage() {
                       onClick={() => setActiveAnnee(annee)}
                       className={`w-full flex items-center justify-between px-4 py-3 text-sm font-medium transition-all border-b border-slate-100 last:border-0 ${
                         activeAnnee === annee
-                          ? 'bg-ige-violetSoft text-ige-violet border-l-4 border-l-ige-violet'
-                          : 'text-slate-700 hover:bg-slate-50 hover:text-ige-violet border-l-4 border-l-transparent'
+                          ? 'bg-ige-navySoft text-ige-navy border-l-4 border-l-ige-navy'
+                          : 'text-slate-700 hover:bg-slate-50 hover:text-ige-navy border-l-4 border-l-transparent'
                       }`}
                     >
                       <span>JE-GE {annee}</span>
@@ -165,7 +164,7 @@ export default function EpreuvesPage() {
                   placeholder="Rechercher une épreuve..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2.5 text-sm border border-slate-200 rounded-lg bg-white focus:outline-none focus:border-ige-violet focus:ring-1 focus:ring-ige-violet/30"
+                  className="w-full pl-9 pr-4 py-2.5 text-sm border border-slate-200 rounded-lg bg-white focus:outline-none focus:border-ige-navy focus:ring-1 focus:ring-ige-navy/30"
                 />
               </div>
               <div className="flex items-center gap-2">
@@ -173,27 +172,27 @@ export default function EpreuvesPage() {
                 <div className="flex gap-2">
                   {CATEGORIES.map((cat) => (
                     <button
-                      key={cat}
-                      onClick={() => setSelectedCategorie(cat)}
+                      key={cat.value}
+                      onClick={() => setSelectedCategorie(cat.value)}
                       className={`px-3 py-2 text-xs font-semibold rounded-lg transition-all ${
-                        selectedCategorie === cat
-                          ? 'bg-ige-violet text-white'
-                          : 'bg-white border border-slate-200 text-slate-600 hover:border-ige-violet hover:text-ige-violet'
+                        selectedCategorie === cat.value
+                          ? 'bg-ige-navy text-white'
+                          : 'bg-white border border-slate-200 text-slate-600 hover:border-ige-navy hover:text-ige-navy'
                       }`}
                     >
-                      {cat}
+                      {cat.label}
                     </button>
                   ))}
                 </div>
               </div>
             </div>
 
-            {/* Titre de l'édition */}
+            {/* Titre de l'edition */}
             <div className="flex items-center gap-3">
               <h2 className="text-lg font-display font-bold text-slate-800">
-                Édition {activeAnnee}
+                Edition {activeAnnee}
               </h2>
-              <span className="text-xs font-semibold bg-ige-violetSoft text-ige-violet px-2.5 py-1 rounded-full">
+              <span className="text-xs font-semibold bg-ige-navySoft text-ige-navy px-2.5 py-1 rounded-full">
                 {filteredEpreuves.length} épreuve{filteredEpreuves.length > 1 ? 's' : ''}
               </span>
             </div>
@@ -209,25 +208,25 @@ export default function EpreuvesPage() {
                 {filteredEpreuves.map((ep: any, i: number) => (
                   <div
                     key={ep.id || i}
-                    className="bg-white rounded-xl border border-slate-200 p-4 flex items-center justify-between gap-4 hover:border-ige-violet hover:shadow-sm transition-all group"
+                    className="bg-white rounded-xl border border-slate-200 p-4 flex items-center justify-between gap-4 hover:border-ige-navy hover:shadow-sm transition-all group"
                   >
                     <div className="flex items-center gap-4 min-w-0">
                       <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
                         ep.categorie === 'Pratique'
-                          ? 'bg-ige-greenSoft border border-ige-greenSoft'
-                          : 'bg-ige-violetSoft border border-ige-violetSoft'
+                          ? 'bg-ige-tealSoft border border-ige-tealSoft'
+                          : 'bg-ige-navySoft border border-ige-navySoft'
                       }`}>
-                        <FileText className={`w-5 h-5 ${ep.categorie === 'Pratique' ? 'text-ige-green' : 'text-ige-violet'}`} />
+                        <FileText className={`w-5 h-5 ${ep.categorie === 'Pratique' ? 'text-ige-teal' : 'text-ige-navy'}`} />
                       </div>
                       <div className="min-w-0">
                         <p className="text-sm font-semibold text-slate-800 truncate">{ep.titre}</p>
                         <div className="flex items-center gap-2 mt-1">
                           <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                             ep.categorie === 'Pratique'
-                              ? 'bg-ige-greenSoft text-ige-greenDark'
-                              : 'bg-ige-violetSoft text-ige-violetDark'
+                              ? 'bg-ige-tealSoft text-ige-tealDark'
+                              : 'bg-ige-navySoft text-ige-navyDark'
                           }`}>
-                            {ep.categorie}
+                            {ep.categorie === 'Theorique' ? 'Théorique' : ep.categorie}
                           </span>
                           <span className="text-xs text-slate-400">{ep.pages || 0} pages</span>
                         </div>
@@ -238,7 +237,7 @@ export default function EpreuvesPage() {
                         href={ep.fichierUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="shrink-0 flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold bg-slate-50 border border-slate-200 text-slate-600 group-hover:bg-ige-violet group-hover:border-ige-violet group-hover:text-white transition-all"
+                        className="shrink-0 flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold bg-slate-50 border border-slate-200 text-slate-600 group-hover:bg-ige-navy group-hover:border-ige-navy group-hover:text-white transition-all"
                       >
                         <Download className="w-3.5 h-3.5" />
                         Télécharger
@@ -258,12 +257,12 @@ export default function EpreuvesPage() {
             )}
 
             {/* Note */}
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
-              <BookOpen className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+            <div className="bg-ige-teal border border-ige-tealDark rounded-xl p-4 flex items-start gap-3 text-white">
+              <BookOpen className="w-5 h-5 text-white shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-semibold text-amber-800">Utilisation pédagogique</p>
-                <p className="text-xs text-amber-700 mt-1">
-                  Ces épreuves sont à utiliser exclusivement à des fins de révision et de préparation à la JE-GE. 
+                <p className="text-sm font-semibold text-white">Utilisation pédagogique</p>
+                <p className="text-xs text-white/90 mt-1">
+                  Ces épreuves sont à utiliser exclusivement à des fins de révision et de préparation à la JE-GE.
                   Toute reproduction à des fins commerciales est interdite.
                 </p>
               </div>

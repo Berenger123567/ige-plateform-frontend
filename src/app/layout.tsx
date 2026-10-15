@@ -3,10 +3,10 @@ import './globals.css';
 import ConditionalLayout from '@/components/layout/ConditionalLayout';
 
 export const metadata: Metadata = {
-  title: 'IGE - Innovation en Génie Électrique | EPAC, Bénin',
-  description: 'Association des étudiants en Génie Électrique de l\'EPAC. Innovation, projets techniques, événements et formation au Bénin.',
+  title: 'IGE - Innovation en Génie Electrique | EPAC, Bénin',
+  description: 'Association des étudiants en génie électrique de l’EPAC. Innovation, projets techniques, événements et formation au Bénin.',
   keywords: ['génie électrique', 'innovation', 'EPAC', 'Bénin', 'étudiants', 'projets', 'technologie', 'électronique', 'automatique', 'énergie'],
-  authors: [{ name: 'IGE - Innovation en Génie Électrique' }],
+  authors: [{ name: 'IGE - Innovation en Génie Electrique' }],
   creator: 'IGE-EPAC',
   publisher: 'IGE-EPAC',
   metadataBase: new URL('https://ige-epac.bj'),
@@ -17,22 +17,22 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'fr_FR',
     url: 'https://ige-epac.bj',
-    title: 'IGE - Innovation en Génie Électrique | EPAC, Bénin',
-    description: 'Association des étudiants en Génie Électrique de l\'EPAC. Innovation, projets techniques, événements et formation au Bénin.',
-    siteName: 'IGE - Innovation en Génie Électrique',
+    title: 'IGE - Innovation en Génie Electrique | EPAC, Bénin',
+    description: 'Association des étudiants en génie électrique de l’EPAC. Innovation, projets techniques, événements et formation au Bénin.',
+    siteName: 'IGE - Innovation en Génie Electrique',
     images: [
       {
         url: '/logo-ige-white.png',
         width: 1200,
         height: 630,
-        alt: 'IGE - Innovation en Génie Électrique',
+        alt: 'IGE - Innovation en Génie Electrique',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'IGE - Innovation en Génie Électrique | EPAC, Bénin',
-    description: 'Association des étudiants en Génie Électrique de l\'EPAC. Innovation, projets techniques, événements et formation au Bénin.',
+    title: 'IGE - Innovation en Génie Electrique | EPAC, Bénin',
+    description: 'Association des étudiants en génie électrique de l’EPAC. Innovation, projets techniques, événements et formation au Bénin.',
     creator: '@IGE_EPAC',
     images: ['/logo-ige-white.png'],
   },
@@ -62,7 +62,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" className="scroll-smooth">
-      <body className="bg-slate-50 text-slate-900 min-h-screen flex flex-col selection:bg-ige-green selection:text-white antialiased">
+      <body className="bg-slate-50 text-slate-900 min-h-screen flex flex-col selection:bg-ige-teal selection:text-white antialiased">
         <ConditionalLayout>{children}</ConditionalLayout>
       </body>
     </html>

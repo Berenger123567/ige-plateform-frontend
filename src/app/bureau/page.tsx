@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
-import { Users, Mail, Linkedin, ChevronRight, Shield, Star, Award, Briefcase, HeartHandshake, Megaphone, Wrench, Calendar } from 'lucide-react';
+import { Users, Mail, Linkedin, Shield, Star, Award, Briefcase, HeartHandshake, Megaphone, Wrench, Calendar } from '@/components/IconImage';
 
 type BureauMember = {
   id: string;
@@ -28,16 +28,16 @@ type Mandat = {
 
 const colorMap: Record<string, { bg: string; border: string; icon: string; badge: string }> = {
   violet: {
-    bg: 'bg-ige-violetSoft',
-    border: 'border-ige-violetSoft',
-    icon: 'text-ige-green',
-    badge: 'bg-ige-violetSoft text-ige-violetDark',
+    bg: 'bg-ige-navySoft',
+    border: 'border-ige-navySoft',
+    icon: 'text-ige-teal',
+    badge: 'bg-ige-navySoft text-ige-navyDark',
   },
   green: {
-    bg: 'bg-ige-greenSoft',
-    border: 'border-ige-greenSoft',
-    icon: 'text-ige-greenDark',
-    badge: 'bg-ige-greenSoft text-ige-greenDark',
+    bg: 'bg-ige-tealSoft',
+    border: 'border-ige-tealSoft',
+    icon: 'text-ige-tealDark',
+    badge: 'bg-ige-tealSoft text-ige-tealDark',
   },
   bronze: {
     bg: 'bg-amber-50',
@@ -48,9 +48,9 @@ const colorMap: Record<string, { bg: string; border: string; icon: string; badge
 };
 
 const getIconForPoste = (poste: string) => {
-  if (poste.includes('Président')) return Shield;
-  if (poste.includes('Secrétaire')) return Briefcase;
-  if (poste.includes('Trésorier')) return Award;
+  if (poste.includes('President')) return Shield;
+  if (poste.includes('Secretaire')) return Briefcase;
+  if (poste.includes('Tresorier')) return Award;
   if (poste.includes('Communication')) return Megaphone;
   if (poste.includes('Technique')) return Wrench;
   if (poste.includes('Relations')) return HeartHandshake;
@@ -85,7 +85,7 @@ export default function BureauPage() {
       
       setBureauMembers(bureauRes.data);
     } catch (err) {
-      console.error('Erreur chargement données:', err);
+      console.error('Erreur lors du chargement des données :', err);
     } finally {
       setLoading(false);
     }
@@ -118,7 +118,7 @@ export default function BureauPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-ige-green border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-16 h-16 border-4 border-ige-teal border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -129,16 +129,16 @@ export default function BureauPage() {
       <section className="bg-white border-b border-slate-200 text-slate-900 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-4">
-            <h1 className="text-4xl sm:text-5xl font-display font-extrabold tracking-tight">Le Bureau de l'IGE</h1>
+            <h1 className="text-4xl sm:text-5xl font-display font-extrabold text-ige-teal tracking-tight">Le bureau de l’IGE</h1>
             <p className="text-lg text-slate-600">
-              L'équipe qui dirige l'Innovation en Génie Électrique avec passion et engagement
+              L’équipe qui dirige l’Innovation en Génie Electrique avec passion et engagement.
             </p>
           </div>
         </div>
       </section>
 
       <div className="container mx-auto px-4 py-12">
-        {/* Sélection du mandat */}
+        {/* Selection du mandat */}
         {mandats.length > 0 && (
           <div className="mb-8">
             <div className="flex flex-wrap gap-3 justify-center">
@@ -148,20 +148,20 @@ export default function BureauPage() {
                   onClick={() => handleMandatChange(mandat.id)}
                   className={`px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
                     selectedMandat === mandat.id
-                      ? 'bg-ige-green text-white shadow-lg scale-105'
-                      : 'bg-white text-gray-700 hover:bg-ige-greenSoft shadow'
+                      ? 'bg-ige-teal text-white shadow-lg scale-105'
+                      : 'bg-white text-gray-700 hover:bg-ige-tealSoft shadow'
                   }`}
                 >
                   <Calendar className="w-4 h-4 inline -mt-1 mr-1.5" />{mandat.annee}
                   {mandat.isActive && (
-                    <span className="ml-2 text-xs bg-ige-green text-white px-2 py-0.5 rounded-full">Actuel</span>
+                    <span className="ml-2 text-xs bg-ige-teal text-white px-2 py-0.5 rounded-full">Actuel</span>
                   )}
                 </button>
               ))}
             </div>
 
             {currentMandat && currentMandat.description && (
-              <div className="mt-6 max-w-2xl mx-auto bg-slate-50 border-l-4 border-ige-green p-4 rounded-r-lg">
+              <div className="mt-6 max-w-2xl mx-auto bg-slate-50 border-l-4 border-ige-teal p-4 rounded-r-lg">
                 <p className="text-gray-700">{currentMandat.description}</p>
               </div>
             )}
@@ -213,7 +213,7 @@ export default function BureauPage() {
                       {membre.email && (
                         <a
                           href={`mailto:${membre.email}`}
-                          className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-ige-greenSoft text-ige-green rounded-lg hover:bg-ige-greenSoft transition"
+                          className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-ige-tealSoft text-ige-teal rounded-lg hover:bg-ige-tealSoft transition"
                           title={membre.email}
                         >
                           <Mail className="w-4 h-4" />
@@ -244,29 +244,29 @@ export default function BureauPage() {
               </div>
             </div>
             <p className="text-xl text-gray-600 mb-2">Aucun membre du bureau pour ce mandat</p>
-            <p className="text-gray-500">Sélectionnez un autre mandat pour voir ses membres</p>
+            <p className="text-gray-500">Selectionnez un autre mandat pour voir ses membres</p>
           </div>
         )}
 
         {/* Call to action */}
-        <div className="mt-16 bg-ige-green rounded-2xl shadow-2xl overflow-hidden">
+        <div className="mt-16 bg-ige-teal rounded-2xl shadow-2xl overflow-hidden">
           <div className="p-8 md:p-12 text-center text-white">
             <Users className="w-12 h-12 mx-auto mb-4" />
             <h2 className="text-3xl font-bold mb-4">Rejoindre l'IGE</h2>
-            <p className="text-lg text-ige-greenSoft mb-6 max-w-2xl mx-auto">
-              Vous êtes étudiant en Génie Électrique à l'EPAC ? Rejoignez notre association et participez 
-              activement à l'innovation technologique au Bénin.
+            <p className="text-lg text-ige-tealSoft mb-6 max-w-2xl mx-auto">
+              Vous êtes étudiant en Génie Electrique à l’EPAC ? Rejoignez notre association et participez
+              activement à l’innovation technologique au Bénin.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <a
                 href="/je-ge"
-                className="px-8 py-3 bg-white text-ige-green font-semibold rounded-lg hover:bg-ige-greenSoft transition-all shadow-lg hover:shadow-xl"
+                className="px-8 py-3 bg-white text-ige-teal font-semibold rounded-lg hover:bg-ige-tealSoft transition-all shadow-lg hover:shadow-xl"
               >
                 S'inscrire à la JE-GE
               </a>
               <a
                 href="/contact"
-                className="px-8 py-3 bg-ige-greenDark text-white font-semibold rounded-lg hover:bg-ige-greenDark transition-all border-2 border-white/20"
+                className="px-8 py-3 bg-ige-tealDark text-white font-semibold rounded-lg hover:bg-ige-tealDark transition-all border-2 border-white/20"
               >
                 Nous contacter
               </a>

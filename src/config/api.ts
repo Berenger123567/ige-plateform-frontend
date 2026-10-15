@@ -1,12 +1,12 @@
 /**
- * Configuration centralisée de l'API
+ * Configuration centralisee de l'API
  * Utilise la variable d'environnement NEXT_PUBLIC_API_URL
  */
 
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 /**
- * Helper pour construire une URL complète de l'API
+ * Helper pour construire une URL complete de l'API
  */
 export function getApiUrl(endpoint: string): string {
   // S'assurer que l'endpoint commence par un slash
@@ -15,7 +15,7 @@ export function getApiUrl(endpoint: string): string {
 }
 
 /**
- * Configuration des requêtes fetch par défaut
+ * Configuration des requetes fetch par defaut
  */
 export const defaultFetchOptions: RequestInit = {
   headers: {

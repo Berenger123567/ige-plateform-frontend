@@ -17,9 +17,9 @@ type SEOProps = {
 };
 
 const DEFAULT_SEO = {
-  siteName: 'IGE - Innovation en Génie Électrique',
-  title: 'IGE - Innovation en Génie Électrique | EPAC, Bénin',
-  description: 'Association des étudiants en Génie Électrique de l\'EPAC. Innovation, projets techniques, événements et formation au Bénin.',
+  siteName: 'IGE - Innovation en Génie Electrique',
+  title: 'IGE - Innovation en Génie Electrique | EPAC, Bénin',
+  description: 'Association des étudiants en génie électrique de l’EPAC. Innovation, projets techniques, événements et formation au Bénin.',
   image: '/logo-ige-white.png',
   url: 'https://ige-epac.bj',
   twitterHandle: '@IGE_EPAC',
@@ -41,7 +41,7 @@ export default function SEO({
     url: url || DEFAULT_SEO.url,
   };
 
-  // Schema.org par défaut pour l'organisation
+  // Schema.org par défaut pour l’organisation
   const defaultSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -106,7 +106,7 @@ export default function SEO({
 
       {/* Balises supplémentaires */}
       <meta name="keywords" content="génie électrique, innovation, EPAC, Bénin, étudiants, projets, technologie, électronique, automatique, énergie" />
-      <meta name="author" content="IGE - Innovation en Génie Électrique" />
+      <meta name="author" content="IGE - Innovation en Génie Electrique" />
       <meta name="robots" content="index, follow" />
       <link rel="canonical" href={seo.url} />
 
@@ -119,7 +119,7 @@ export default function SEO({
   );
 }
 
-// Hook pour générer facilement les métadonnées
+// Hook pour generer facilement les metadonnees
 export function generateMetadata({
   title,
   description,

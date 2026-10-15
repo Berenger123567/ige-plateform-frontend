@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { AlertTriangle, X, Loader2 } from 'lucide-react';
+import { AlertTriangle, X, Loader2 } from '@/components/IconImage';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -46,7 +46,7 @@ export default function ConfirmModal({
             </div>
             <div>
               <h3 className="text-base font-bold text-slate-900 leading-tight">{title}</h3>
-              <p className="text-[11px] text-slate-400">Action requérant votre confirmation</p>
+              <p className="text-[11px] text-slate-400">Action requerant votre confirmation</p>
             </div>
           </div>
           <button

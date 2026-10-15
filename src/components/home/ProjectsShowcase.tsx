@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Cpu, ArrowRight, ExternalLink } from 'lucide-react';
+import { Cpu, ExternalLink } from '@/components/IconImage';
 import { getProjects } from '@/lib/api';
 
 export default function ProjectsShowcase() {
@@ -21,8 +21,8 @@ export default function ProjectsShowcase() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div className="space-y-3">
-            <h2 className="text-3xl sm:text-5xl font-display font-extrabold text-slate-900 tracking-tight">
-              Projets Phares des Étudiants
+            <h2 className="text-3xl sm:text-5xl font-display font-extrabold text-ige-teal tracking-tight">
+              Projets phares des étudiants
             </h2>
             <p className="text-slate-600 text-base max-w-xl">
               Solutions matérielles et logicielles développées au sein des clubs, hackathons et formations.
@@ -30,10 +30,9 @@ export default function ProjectsShowcase() {
           </div>
           <Link
             href="/projets"
-            className="inline-flex items-center space-x-2 px-5 py-3 rounded-xl bg-white border border-slate-300 hover:border-ige-green text-slate-900 text-xs uppercase font-bold tracking-wider transition-all shadow-sm"
+            className="inline-flex items-center space-x-2 px-5 py-3 rounded-xl bg-white border border-slate-300 hover:border-ige-teal text-slate-900 text-xs font-bold transition-all shadow-sm"
           >
             <span>Voir tout le catalogue</span>
-            <ArrowRight className="w-4 h-4 text-ige-green" />
           </Link>
         </div>
 
@@ -59,7 +58,7 @@ export default function ProjectsShowcase() {
                 )}
                 <div className="absolute top-4 left-4">
                   <span className="px-3 py-1 rounded-md text-[11px] font-bold bg-white/90 backdrop-blur-md text-slate-900 border border-slate-200 shadow-sm">
-                    {proj.status || 'Exposé'}
+                    {proj.status || 'Expose'}
                   </span>
                 </div>
               </div>
@@ -67,7 +66,7 @@ export default function ProjectsShowcase() {
               {/* Content */}
               <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                 <div>
-                  <h3 className="text-xl font-display font-bold text-slate-900 mb-2 group-hover:text-ige-green transition-colors">
+                  <h3 className="text-xl font-display font-bold text-slate-900 mb-2 group-hover:text-ige-teal transition-colors">
                     {proj.title}
                   </h3>
                   <p className="text-xs text-slate-600 leading-relaxed line-clamp-3">
@@ -94,10 +93,10 @@ export default function ProjectsShowcase() {
               <div className="px-6 pb-6 pt-2">
                 <Link
                   href={`/projets/${proj.id}`}
-                  className="w-full py-2.5 rounded-lg bg-slate-50 border border-slate-200 hover:border-ige-green text-xs font-semibold text-slate-800 hover:text-ige-green flex items-center justify-center space-x-2 transition-all"
+                  className="w-full py-2.5 rounded-lg bg-slate-50 border border-slate-200 hover:border-ige-teal text-xs font-semibold text-slate-800 hover:text-ige-teal flex items-center justify-center space-x-2 transition-all"
                 >
                   <span>Consulter la fiche projet</span>
-                  <ExternalLink className="w-3.5 h-3.5 text-ige-green" />
+                  <ExternalLink className="w-3.5 h-3.5 text-ige-teal" />
                 </Link>
               </div>
 

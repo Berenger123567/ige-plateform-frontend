@@ -70,7 +70,7 @@ export default function ProjetsAdmin() {
     setDeleting(true);
     try {
       await api.delete(`/projets/${deleteId}`);
-      showToast('Projet supprimé', 'success');
+      showToast('Projet supprime', 'success');
       fetchData();
     } catch (err) {
       showToast('Erreur lors de la suppression', 'error');
@@ -94,20 +94,20 @@ export default function ProjetsAdmin() {
   return (
     <div className="p-6 bg-slate-50 min-h-screen text-slate-900">
       {toast && (
-        <div className={`fixed top-4 right-4 p-4 rounded-md shadow-lg text-white z-50 ${toast.type === 'success' ? 'bg-ige-green' : 'bg-red-500'}`}>
+        <div className={`fixed top-4 right-4 p-4 rounded-md shadow-lg text-white z-50 ${toast.type === 'success' ? 'bg-ige-teal' : 'bg-red-500'}`}>
           {toast.message}
         </div>
       )}
       
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-ige-violetDark">Gestion des Projets</h1>
-        <button onClick={() => openModal()} className="bg-ige-violet text-white px-4 py-2 rounded-md hover:bg-ige-violetDark transition">
-          + Nouveau Projet
+        <h1 className="text-2xl font-bold text-ige-navyDark">Gestion des projets</h1>
+        <button onClick={() => openModal()} className="bg-ige-navy text-white px-4 py-2 rounded-md hover:bg-ige-navyDark transition">
+          + Nouveau projet
         </button>
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-10"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-ige-violet"></div></div>
+        <div className="flex justify-center py-10"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-ige-navy"></div></div>
       ) : (
         <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-x-auto">
           <table className="w-full text-left border-collapse min-w-[600px]">
@@ -141,12 +141,12 @@ export default function ProjetsAdmin() {
                     )}
                   </td>
                   <td className="p-4 font-medium">{p.title}</td>
-                  <td className="p-4"><span className="px-2 py-1 bg-ige-green/20 text-ige-greenDark rounded-full text-xs">{p.status}</span></td>
+                  <td className="p-4"><span className="px-2 py-1 bg-ige-teal/20 text-ige-tealDark rounded-full text-xs">{p.status}</span></td>
                   <td className="p-4">{p.type}</td>
                   <td className="p-4">{clubs.find(c => c._id === p.clubId)?.name || p.clubId}</td>
                   <td className="p-4">{p.featured ? 'Oui' : 'Non'}</td>
                   <td className="p-4 text-right">
-                    <button onClick={() => openModal(p)} className="text-ige-violet hover:text-ige-violetDark mr-3">Éditer</button>
+                    <button onClick={() => openModal(p)} className="text-ige-navy hover:text-ige-navyDark mr-3">Editer</button>
                     <button onClick={() => confirmDelete(p._id || p.id)} className="text-red-500 hover:text-red-700">Supprimer</button>
                   </td>
                 </tr>
@@ -159,52 +159,52 @@ export default function ProjetsAdmin() {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-40 p-4">
           <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6">
-            <h2 className="text-xl font-bold mb-4 text-ige-violetDark">{editingId ? 'Modifier' : 'Nouveau'} Projet</h2>
+            <h2 className="text-xl font-bold mb-4 text-ige-navyDark">{editingId ? 'Modifier' : 'Nouveau'} projet</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">Titre</label>
-                  <input type="text" required value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-violet focus:ring-1 focus:ring-ige-violet outline-none" />
+                  <input type="text" required value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy focus:ring-1 focus:ring-ige-navy outline-none" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">Année</label>
-                  <input type="number" required value={formData.year} onChange={e => setFormData({...formData, year: parseInt(e.target.value)})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-violet focus:ring-1 focus:ring-ige-violet outline-none" />
+                  <input type="number" required value={formData.year} onChange={e => setFormData({...formData, year: parseInt(e.target.value)})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy focus:ring-1 focus:ring-ige-navy outline-none" />
                 </div>
               </div>
               
               <div>
                 <label className="block text-sm font-medium mb-1">Résumé</label>
-                <textarea required value={formData.summary} onChange={e => setFormData({...formData, summary: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-violet focus:ring-1 focus:ring-ige-violet outline-none" rows={2}></textarea>
+                <textarea required value={formData.summary} onChange={e => setFormData({...formData, summary: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy focus:ring-1 focus:ring-ige-navy outline-none" rows={2}></textarea>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">Problème</label>
-                  <textarea value={formData.problem} onChange={e => setFormData({...formData, problem: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-violet focus:ring-1 focus:ring-ige-violet outline-none" rows={3}></textarea>
+                  <textarea value={formData.problem} onChange={e => setFormData({...formData, problem: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy focus:ring-1 focus:ring-ige-navy outline-none" rows={3}></textarea>
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">Solution</label>
-                  <textarea value={formData.solution} onChange={e => setFormData({...formData, solution: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-violet focus:ring-1 focus:ring-ige-violet outline-none" rows={3}></textarea>
+                  <textarea value={formData.solution} onChange={e => setFormData({...formData, solution: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy focus:ring-1 focus:ring-ige-navy outline-none" rows={3}></textarea>
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium mb-1">Technologies (séparées par des virgules)</label>
-                <input type="text" value={formData.technologies} onChange={e => setFormData({...formData, technologies: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-violet focus:ring-1 focus:ring-ige-violet outline-none" />
+                <input type="text" value={formData.technologies} onChange={e => setFormData({...formData, technologies: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy focus:ring-1 focus:ring-ige-navy outline-none" />
               </div>
 
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">Statut</label>
-                  <select value={formData.status} onChange={e => setFormData({...formData, status: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-violet focus:ring-1 focus:ring-ige-violet outline-none">
+                  <select value={formData.status} onChange={e => setFormData({...formData, status: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy focus:ring-1 focus:ring-ige-navy outline-none">
                     <option value="En cours">En cours</option>
-                    <option value="Terminé">Terminé</option>
-                    <option value="Exposé">Exposé</option>
+                    <option value="Termine">Terminé</option>
+                    <option value="Expose">Exposé</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">Type</label>
-                  <select value={formData.type} onChange={e => setFormData({...formData, type: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-violet focus:ring-1 focus:ring-ige-violet outline-none">
+                  <select value={formData.type} onChange={e => setFormData({...formData, type: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy focus:ring-1 focus:ring-ige-navy outline-none">
                     <option value="Hackathon">Hackathon</option>
                     <option value="Formation">Formation</option>
                     <option value="Projet Club">Projet Club</option>
@@ -213,7 +213,7 @@ export default function ProjetsAdmin() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">Club</label>
-                  <select value={formData.clubId} onChange={e => setFormData({...formData, clubId: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-violet focus:ring-1 focus:ring-ige-violet outline-none">
+                  <select value={formData.clubId} onChange={e => setFormData({...formData, clubId: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy focus:ring-1 focus:ring-ige-navy outline-none">
                     <option value="">Aucun</option>
                     {clubs.map(c => <option key={c._id || c.id} value={c._id || c.id}>{c.name}</option>)}
                   </select>
@@ -222,7 +222,7 @@ export default function ProjetsAdmin() {
 
               <div>
                 <label className="flex items-center space-x-2">
-                  <input type="checkbox" checked={formData.featured} onChange={e => setFormData({...formData, featured: e.target.checked})} className="rounded text-ige-violet focus:ring-ige-violet" />
+                  <input type="checkbox" checked={formData.featured} onChange={e => setFormData({...formData, featured: e.target.checked})} className="rounded text-ige-navy focus:ring-ige-navy" />
                   <span className="text-sm font-medium">Mettre à la une</span>
                 </label>
               </div>
@@ -234,7 +234,7 @@ export default function ProjetsAdmin() {
 
               <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200">
                 <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Annuler</button>
-                <button type="submit" className="px-4 py-2 bg-ige-violet text-white rounded-md hover:bg-ige-violetDark transition">Enregistrer</button>
+                <button type="submit" className="px-4 py-2 bg-ige-navy text-white rounded-md hover:bg-ige-navyDark transition">Enregistrer</button>
               </div>
             </form>
           </div>
@@ -245,7 +245,7 @@ export default function ProjetsAdmin() {
       <ConfirmModal
         isOpen={Boolean(deleteId)}
         title="Supprimer ce projet ?"
-        message="Êtes-vous sûr de vouloir supprimer définitivement ce projet ? Cette action retirera le projet de la vitrine."
+        message="Etes-vous sûr de vouloir supprimer définitivement ce projet ? Cette action le retirera de la vitrine."
         confirmText="Oui, supprimer"
         cancelText="Annuler"
         loading={deleting}

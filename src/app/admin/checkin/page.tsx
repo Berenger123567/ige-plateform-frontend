@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { CheckCircle2, XCircle, QrCode, Camera, Loader2, RotateCcw } from 'lucide-react';
+import { CheckCircle2, XCircle, QrCode, Camera, Loader2, RotateCcw } from '@/components/IconImage';
 import { API_BASE_URL } from '@/config/api';
 import { getToken } from '@/utils/auth';
 
@@ -32,7 +32,7 @@ export default function AdminCheckinPage() {
       );
     } catch (err) {
       setScanning(false);
-      setResult({ success: false, message: "Impossible d'accéder à la caméra." });
+      setResult({ success: false, message: "Impossible d'acceder à la camera." });
     }
   };
 
@@ -67,7 +67,7 @@ export default function AdminCheckinPage() {
       } else if (res.status === 409) {
         setResult({ success: false, message: 'Déjà enregistré !', participant: data.participant });
       } else {
-        setResult({ success: false, message: data.error || 'Participant non trouvé.' });
+        setResult({ success: false, message: data.error || 'Participant introuvable.' });
       }
     } catch (e) {
       setResult({ success: false, message: 'Erreur de connexion au serveur.' });
@@ -83,8 +83,8 @@ export default function AdminCheckinPage() {
   return (
     <div className="max-w-lg mx-auto space-y-6">
       <div>
-        <h1 className="text-xl font-display font-bold text-slate-900">Scan QR Code — Check-in</h1>
-        <p className="text-sm text-slate-500">Pointez la caméra sur le QR code d'un participant pour enregistrer sa présence.</p>
+        <h1 className="text-xl font-display font-bold text-slate-900">Scan QR Code - Check-in</h1>
+        <p className="text-sm text-slate-500">Pointez la caméra sur le QR code d’un participant pour enregistrer sa présence.</p>
       </div>
 
       {/* Scanner area */}
@@ -100,21 +100,21 @@ export default function AdminCheckinPage() {
           {loading && (
             <div className="absolute inset-0 bg-slate-900/80 flex flex-col items-center justify-center gap-3">
               <Loader2 className="w-10 h-10 text-white animate-spin" />
-              <p className="text-white text-sm">Vérification...</p>
+              <p className="text-white text-sm">Vérification…</p>
             </div>
           )}
         </div>
 
         {/* Result */}
         {result && (
-          <div className={`p-5 ${result.success ? 'bg-ige-greenSoft border-t border-ige-greenSoft' : 'bg-red-50 border-t border-red-200'}`}>
+          <div className={`p-5 ${result.success ? 'bg-ige-tealSoft border-t border-ige-tealSoft' : 'bg-red-50 border-t border-red-200'}`}>
             <div className="flex items-start gap-3">
               {result.success
-                ? <CheckCircle2 className="w-6 h-6 text-ige-greenDark shrink-0 mt-0.5" />
+                ? <CheckCircle2 className="w-6 h-6 text-ige-tealDark shrink-0 mt-0.5" />
                 : <XCircle className="w-6 h-6 text-red-500 shrink-0 mt-0.5" />
               }
               <div className="flex-1">
-                <p className={`font-bold text-sm ${result.success ? 'text-ige-greenDark' : 'text-red-800'}`}>{result.message}</p>
+                <p className={`font-bold text-sm ${result.success ? 'text-ige-tealDark' : 'text-red-800'}`}>{result.message}</p>
                 {result.participant && (
                   <div className="mt-2 space-y-1">
                     <p className="text-sm text-slate-700 font-semibold">{result.participant.firstName} {result.participant.lastName}</p>
@@ -132,21 +132,21 @@ export default function AdminCheckinPage() {
           {!scanning ? (
             <button
               onClick={startScanner}
-              className="flex-1 flex items-center justify-center gap-2 py-3 bg-ige-violet text-white font-bold text-sm rounded-xl hover:bg-ige-violetDark transition-all"
+              className="flex-1 flex items-center justify-center gap-2 py-3 bg-ige-navy text-white font-bold text-sm rounded-xl hover:bg-ige-navyDark transition-all"
             >
-              <Camera className="w-4 h-4" /> Démarrer la caméra
+              <Camera className="w-4 h-4" /> Demarrer la camera
             </button>
           ) : (
             <button
               onClick={stopScanner}
               className="flex-1 flex items-center justify-center gap-2 py-3 bg-red-500 text-white font-bold text-sm rounded-xl hover:bg-red-600 transition-all"
             >
-              <XCircle className="w-4 h-4" /> Arrêter
+              <XCircle className="w-4 h-4" /> Arreter
             </button>
           )}
           {result && (
             <button onClick={reset} className="px-4 py-3 bg-white border border-slate-200 text-slate-600 font-semibold text-sm rounded-xl hover:bg-slate-50 transition-all flex items-center gap-2">
-              <RotateCcw className="w-4 h-4" /> Réinitialiser
+              <RotateCcw className="w-4 h-4" /> Reinitialiser
             </button>
           )}
         </div>
@@ -162,8 +162,8 @@ export default function AdminCheckinPage() {
           if (token) await processToken(token);
           (e.target as HTMLFormElement).reset();
         }} className="flex gap-2">
-          <input name="token" type="text" placeholder="Token UUID du participant..." className="flex-1 px-3 py-2.5 text-sm border border-slate-200 rounded-lg focus:outline-none focus:border-ige-violet" />
-          <button type="submit" className="px-4 py-2.5 bg-ige-green text-white text-sm font-bold rounded-lg hover:bg-ige-greenDark transition-all">
+          <input name="token" type="text" placeholder="Token UUID du participant..." className="flex-1 px-3 py-2.5 text-sm border border-slate-200 rounded-lg focus:outline-none focus:border-ige-navy" />
+          <button type="submit" className="px-4 py-2.5 bg-ige-teal text-white text-sm font-bold rounded-lg hover:bg-ige-tealDark transition-all">
             Vérifier
           </button>
         </form>

@@ -11,7 +11,7 @@ type Article = {
   publishedAt?: string;
 };
 
-// Métadonnées dynamiques pour SEO
+// Métadonnées dynamiques pour le SEO
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/articles/slug/${params.slug}`);
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
         url: `https://ige-epac.bj/blog/${article.slug}`,
         title: article.title,
         description: article.excerpt,
-        siteName: 'IGE - Innovation en Génie Électrique',
+        siteName: 'IGE - Innovation en Génie Electrique',
         publishedTime: article.publishedAt,
         authors: [article.author],
         images: article.coverImage
@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   } catch (error) {
     return {
       title: 'Article | IGE-EPAC',
-      description: "Article de blog de l'IGE",
+      description: 'Article de blog de l’IGE',
     };
   }
 }

@@ -54,13 +54,13 @@ export default function MessagesAdmin() {
   return (
     <div className="space-y-6 text-slate-900">
       {toast && (
-        <div className={`fixed top-4 right-4 p-4 rounded-md shadow-lg text-white z-50 ${toast.type === 'success' ? 'bg-ige-green' : 'bg-red-500'}`}>
+        <div className={`fixed top-4 right-4 p-4 rounded-md shadow-lg text-white z-50 ${toast.type === 'success' ? 'bg-ige-teal' : 'bg-red-500'}`}>
           {toast.message}
         </div>
       )}
       
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-        <h1 className="text-2xl font-bold text-ige-violetDark">Messages Contact</h1>
+        <h1 className="text-2xl font-bold text-ige-navyDark">Messages Contact</h1>
         <div className="flex space-x-4 bg-white p-3 rounded-lg shadow-sm border border-slate-200">
           <div className="text-center px-4 border-r border-slate-200">
             <span className="block text-sm text-slate-500">Total</span>
@@ -68,13 +68,13 @@ export default function MessagesAdmin() {
           </div>
           <div className="text-center px-4">
             <span className="block text-sm text-slate-500">Non lus</span>
-            <span className="text-xl font-bold text-ige-violet">{unreadCount}</span>
+            <span className="text-xl font-bold text-ige-navy">{unreadCount}</span>
           </div>
         </div>
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-10"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-ige-violet"></div></div>
+        <div className="flex justify-center py-10"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-ige-navy"></div></div>
       ) : (
         <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
           {messages.length === 0 ? (
@@ -85,7 +85,7 @@ export default function MessagesAdmin() {
                 <thead>
                   <tr className="bg-slate-100 border-b border-slate-200">
                     <th className="p-4">Date</th>
-                    <th className="p-4">Expéditeur</th>
+                    <th className="p-4">Expediteur</th>
                     <th className="p-4">Sujet</th>
                     <th className="p-4">Message</th>
                     <th className="p-4">Statut</th>
@@ -94,7 +94,7 @@ export default function MessagesAdmin() {
                 </thead>
                 <tbody>
                   {messages.map((m) => (
-                    <tr key={m._id || m.id} className={`border-b border-slate-200 hover:bg-slate-50 ${!m.isRead ? 'bg-ige-violet/5' : ''}`}>
+                    <tr key={m._id || m.id} className={`border-b border-slate-200 hover:bg-slate-50 ${!m.isRead ? 'bg-ige-navy/5' : ''}`}>
                       <td className="p-4 text-sm text-slate-600 whitespace-nowrap">
                         {m.createdAt ? new Date(m.createdAt).toLocaleDateString() : ''}
                       </td>
@@ -107,13 +107,13 @@ export default function MessagesAdmin() {
                         {m.message?.length > 80 ? m.message.substring(0, 80) + '...' : m.message}
                       </td>
                       <td className="p-4">
-                        <span className={`px-2 py-1 rounded-full text-xs ${m.isRead ? 'bg-slate-100 text-slate-500' : 'bg-ige-violet text-white'}`}>
+                        <span className={`px-2 py-1 rounded-full text-xs ${m.isRead ? 'bg-slate-100 text-slate-500' : 'bg-ige-navy text-white'}`}>
                           {m.isRead ? 'Lu' : 'Nouveau'}
                         </span>
                       </td>
                       <td className="p-4 text-right whitespace-nowrap">
                         {!m.isRead && (
-                          <button onClick={() => markAsRead(m._id || m.id)} className="text-ige-green hover:text-ige-greenDark mr-3 text-sm font-medium">
+                          <button onClick={() => markAsRead(m._id || m.id)} className="text-ige-teal hover:text-ige-tealDark mr-3 text-sm font-medium">
                             Marquer lu
                           </button>
                         )}

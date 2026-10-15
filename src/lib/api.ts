@@ -10,7 +10,7 @@ export const api = axios.create({
   },
 });
 
-// Intercepteur pour ajouter automatiquement le token JWT à chaque requête
+// Intercepteur pour ajouter automatiquement le token JWT à chaque requete
 api.interceptors.request.use(
   (config) => {
     const token = getToken();
@@ -24,12 +24,12 @@ api.interceptors.request.use(
   }
 );
 
-// Intercepteur pour gérer les erreurs d'authentification
+// Intercepteur pour gerer les erreurs d'authentification
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401 || error.response?.status === 403) {
-      // Token invalide ou expiré - rediriger vers la page de login
+      // Token invalide ou expire - rediriger vers la page de login
       if (typeof window !== 'undefined' && window.location.pathname !== '/admin/login') {
         window.location.href = '/admin/login';
       }

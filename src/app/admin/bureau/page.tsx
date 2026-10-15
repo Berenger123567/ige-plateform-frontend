@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Plus, Edit, Trash2, Calendar, User, Mail, Linkedin } from 'lucide-react';
+import { Plus, Edit, Trash2, Calendar, User, Mail, Linkedin } from '@/components/IconImage';
 import { api } from '@/lib/api';
 import FileUpload from '@/components/admin/FileUpload';
 import ConfirmModal from '@/components/admin/ConfirmModal';
@@ -29,12 +29,12 @@ type Mandat = {
 };
 
 const POSTES = [
-  'Président',
-  'Vice-Président',
-  'Secrétaire Général',
-  'Secrétaire Adjoint',
-  'Trésorier',
-  'Trésorier Adjoint',
+  'President',
+  'Vice-President',
+  'Secretaire General',
+  'Secretaire Adjoint',
+  'Tresorier',
+  'Tresorier Adjoint',
   'Commissaire aux Comptes',
   'Responsable Communication',
   'Responsable Technique',
@@ -78,7 +78,7 @@ export default function BureauAdmin() {
       setMembres(membresRes.data);
       setMandats(mandatsRes.data);
     } catch (err) {
-      console.error('Erreur chargement données:', err);
+      console.error('Erreur lors du chargement des données :', err);
     } finally {
       setLoading(false);
     }
@@ -171,7 +171,7 @@ export default function BureauAdmin() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-12 h-12 border-4 border-ige-green border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-4 border-ige-teal border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -183,11 +183,11 @@ export default function BureauAdmin() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Bureau IGE</h1>
-          <p className="text-gray-600 mt-1">Gérez les membres du bureau de l'IGE</p>
+          <p className="text-gray-600 mt-1">Gerez les membres du bureau de l'IGE</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-ige-green text-white rounded-lg hover:bg-ige-greenDark transition"
+          className="flex items-center gap-2 px-4 py-2 bg-ige-teal text-white rounded-lg hover:bg-ige-tealDark transition"
         >
           <Plus className="w-4 h-4" /> Nouveau Membre
         </button>
@@ -201,7 +201,7 @@ export default function BureauAdmin() {
           return (
             <div key={mandatNom}>
               <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-ige-violet" /> {mandatNom}
+                <Calendar className="w-5 h-5 text-ige-navy" /> {mandatNom}
                 <span className="text-sm font-normal text-gray-500">
                   ({membresList.length} membre{membresList.length > 1 ? 's' : ''})
                 </span>
@@ -212,7 +212,7 @@ export default function BureauAdmin() {
                     key={membre.id}
                     className="bg-white rounded-lg shadow hover:shadow-lg transition-all overflow-hidden"
                   >
-                    <div className="aspect-square bg-ige-violetSoft flex items-center justify-center overflow-hidden relative">
+                    <div className="aspect-square bg-ige-navySoft flex items-center justify-center overflow-hidden relative">
                       {membre.photoUrl ? (
                         <Image
                           src={membre.photoUrl}
@@ -222,21 +222,21 @@ export default function BureauAdmin() {
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
                       ) : (
-                        <User className="w-24 h-24 text-ige-violet" />
+                        <User className="w-24 h-24 text-ige-navy" />
                       )}
                     </div>
                     <div className="p-4">
                       <h3 className="font-bold text-lg text-gray-900">
                         {membre.firstName} {membre.lastName}
                       </h3>
-                      <p className="text-ige-violetDark font-medium text-sm mb-2">{membre.poste}</p>
+                      <p className="text-ige-navyDark font-medium text-sm mb-2">{membre.poste}</p>
                       {membre.description && (
                         <p className="text-gray-600 text-sm line-clamp-2 mb-3">{membre.description}</p>
                       )}
                       <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
                         {membre.email && <Mail className="w-3 h-3" />}
                         {membre.linkedin && <Linkedin className="w-3 h-3" />}
-                        <span className={`ml-auto px-2 py-0.5 rounded-full ${membre.isActive ? 'bg-ige-greenSoft text-ige-greenDark' : 'bg-gray-100 text-gray-800'}`}>
+                        <span className={`ml-auto px-2 py-0.5 rounded-full ${membre.isActive ? 'bg-ige-tealSoft text-ige-tealDark' : 'bg-gray-100 text-gray-800'}`}>
                           {membre.isActive ? 'Actif' : 'Inactif'}
                         </span>
                       </div>
@@ -270,13 +270,13 @@ export default function BureauAdmin() {
         </div>
       )}
 
-      {/* Modal d'édition/création */}
+      {/* Modal d’édition et de création */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl my-8">
             <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between rounded-t-lg">
               <h2 className="text-xl font-bold">
-                {editingMembre ? 'Modifier le Membre' : 'Nouveau Membre'}
+                {editingMembre ? 'Modifier le membre' : 'Nouveau membre'}
               </h2>
               <button onClick={closeModal} className="text-gray-500 hover:text-gray-700 text-2xl">
                 ×
@@ -291,7 +291,7 @@ export default function BureauAdmin() {
                     required
                     value={formData.firstName}
                     onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -301,7 +301,7 @@ export default function BureauAdmin() {
                     required
                     value={formData.lastName}
                     onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                   />
                 </div>
               </div>
@@ -312,7 +312,7 @@ export default function BureauAdmin() {
                   required
                   value={formData.poste}
                   onChange={(e) => setFormData({ ...formData, poste: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                 >
                   {POSTES.map((p) => (
                     <option key={p} value={p}>
@@ -327,7 +327,7 @@ export default function BureauAdmin() {
                 <select
                   value={formData.mandatId}
                   onChange={(e) => setFormData({ ...formData, mandatId: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                 >
                   <option value="">Sans mandat</option>
                   {mandats.map((mandat) => (
@@ -344,7 +344,7 @@ export default function BureauAdmin() {
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                   placeholder="Courte biographie ou rôle..."
                 />
               </div>
@@ -356,7 +356,7 @@ export default function BureauAdmin() {
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -365,7 +365,7 @@ export default function BureauAdmin() {
                     type="url"
                     value={formData.linkedin}
                     onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                     placeholder="https://linkedin.com/in/..."
                   />
                 </div>
@@ -386,7 +386,7 @@ export default function BureauAdmin() {
                     type="number"
                     value={formData.ordre}
                     onChange={(e) => setFormData({ ...formData, ordre: parseInt(e.target.value) || 99 })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                   />
                 </div>
                 <div className="flex items-end">
@@ -395,7 +395,7 @@ export default function BureauAdmin() {
                       type="checkbox"
                       checked={formData.isActive}
                       onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                      className="w-4 h-4 text-ige-green border-gray-300 rounded focus:ring-ige-greenSoft0"
+                      className="w-4 h-4 text-ige-teal border-gray-300 rounded focus:ring-ige-tealSoft0"
                     />
                     <span className="text-sm text-gray-700">Membre actif</span>
                   </label>
@@ -412,7 +412,7 @@ export default function BureauAdmin() {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-ige-green text-white rounded-lg hover:bg-ige-greenDark transition"
+                  className="flex-1 px-4 py-2 bg-ige-teal text-white rounded-lg hover:bg-ige-tealDark transition"
                 >
                   {editingMembre ? 'Enregistrer' : 'Créer'}
                 </button>

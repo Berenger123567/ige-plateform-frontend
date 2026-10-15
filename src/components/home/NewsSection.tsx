@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Newspaper, Eye } from 'lucide-react';
+import { Newspaper, Eye } from '@/components/IconImage';
 import { api } from '@/lib/api';
 
 export default function NewsSection() {
@@ -22,19 +22,18 @@ export default function NewsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div className="space-y-3">
-            <h2 className="text-3xl sm:text-5xl font-display font-extrabold text-slate-900 tracking-tight">
-              Actualités & Réalisations
+            <h2 className="text-3xl sm:text-5xl font-display font-extrabold text-ige-teal tracking-tight">
+              Actualités et réalisations
             </h2>
             <p className="text-slate-600 text-base max-w-xl">
-              Comptes rendus d'événements, succès en hackathons, projets et vie de l'association.
+              Comptes rendus d’événements, succès en hackathons, projets et vie de l’association.
             </p>
           </div>
           <Link
             href="/blog"
-            className="inline-flex items-center space-x-2 px-5 py-3 rounded-xl bg-white border border-slate-300 hover:border-ige-green text-slate-900 text-xs uppercase font-bold tracking-wider transition-all shadow-sm"
+            className="inline-flex items-center space-x-2 px-5 py-3 rounded-xl bg-white border border-slate-300 hover:border-ige-teal text-slate-900 text-xs font-bold transition-all shadow-sm"
           >
             <span>Toutes les actualités</span>
-            <ArrowRight className="w-4 h-4 text-ige-green" />
           </Link>
         </div>
 
@@ -43,12 +42,12 @@ export default function NewsSection() {
             <Link
               key={a.id}
               href={`/blog/${a.slug}`}
-              className="group rounded-2xl bg-white border border-slate-200 p-7 flex flex-col hover:border-ige-greenSoft0/40 shadow-sm hover:shadow-md transition-all"
+              className="group rounded-2xl bg-white border border-slate-200 p-7 flex flex-col hover:border-ige-tealSoft0/40 shadow-sm hover:shadow-md transition-all"
             >
-              <span className="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded bg-ige-violetSoft text-ige-violetDark border border-ige-violetSoft self-start">
+              <span className="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded bg-ige-navySoft text-ige-navyDark border border-ige-navySoft self-start">
                 {a.category}
               </span>
-              <h3 className="mt-4 text-xl font-display font-bold text-slate-900 group-hover:text-ige-green transition-colors leading-snug">
+              <h3 className="mt-4 text-xl font-display font-bold text-slate-900 group-hover:text-ige-teal transition-colors leading-snug">
                 {a.title}
               </h3>
               <p className="mt-3 text-xs text-slate-600 leading-relaxed line-clamp-3 flex-1">{a.excerpt}</p>

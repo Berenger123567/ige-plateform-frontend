@@ -5,10 +5,12 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { 
-  ArrowLeft, Calendar, Tag, Award, CheckCircle2, 
+  Calendar, Tag, Award, CheckCircle2,
   Share2, Lightbulb, Target, Cpu, Clock, Star, Search
-} from 'lucide-react';
+} from '@/components/IconImage';
 import { getProjectById } from '@/lib/api';
+
+const STATUS_LABELS: Record<string, string> = { Termine: 'Terminé', Expose: 'Exposé' };
 
 export default function ProjectDetailPage() {
   const params = useParams();
@@ -29,7 +31,7 @@ export default function ProjectDetailPage() {
       const data = await getProjectById(id);
       setProject(data);
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Projet non trouvé');
+      setError(err.response?.data?.error || 'Projet introuvable');
     } finally {
       setLoading(false);
     }
@@ -46,16 +48,16 @@ export default function ProjectDetailPage() {
         console.log('Partage annulé');
       }
     } else {
-      // Fallback: copier le lien
+      // Solution de repli : copier le lien
       navigator.clipboard.writeText(url);
-      alert('Lien copié dans le presse-papier !');
+      alert('Lien copié dans le presse-papiers !');
     }
   };
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="w-10 h-10 border-4 border-ige-violet border-t-transparent rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-ige-navy border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -71,9 +73,9 @@ export default function ProjectDetailPage() {
           <p className="text-slate-600">{error}</p>
           <Link
             href="/projets"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-ige-violet text-white rounded-lg hover:bg-ige-violetDark transition-all"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-ige-navy text-white rounded-lg hover:bg-ige-navyDark transition-all"
           >
-            <ArrowLeft className="w-4 h-4" /> Retour aux projets
+            Retour aux projets
           </Link>
         </div>
       </div>
@@ -90,13 +92,13 @@ export default function ProjectDetailPage() {
         <div className="flex items-center justify-between">
           <Link
             href="/projets"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-ige-violet transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-ige-navy transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" /> Tous les projets
+            Tous les projets
           </Link>
           <button
             onClick={handleShare}
-            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg hover:border-ige-violet hover:text-ige-violet transition-all"
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg hover:border-ige-navy hover:text-ige-navy transition-all"
           >
             <Share2 className="w-4 h-4" /> Partager
           </button>
@@ -113,7 +115,7 @@ export default function ProjectDetailPage() {
               priority
             />
             {project.featured && (
-              <div className="absolute top-4 right-4 inline-flex items-center gap-1.5 px-3 py-1.5 bg-ige-greenSoft0 text-white text-xs font-bold rounded-full shadow-lg">
+              <div className="absolute top-4 right-4 inline-flex items-center gap-1.5 px-3 py-1.5 bg-ige-tealSoft0 text-white text-xs font-bold rounded-full shadow-lg">
                 <Star className="w-3.5 h-3.5" /> Projet phare
               </div>
             )}
@@ -130,7 +132,7 @@ export default function ProjectDetailPage() {
             {project.club && (
               <Link
                 href={`/clubs/${project.club.slug}`}
-                className="inline-flex items-center gap-2 px-3 py-1.5 bg-ige-violetSoft text-ige-violet text-sm font-semibold rounded-lg border border-ige-violetSoft hover:bg-ige-violetSoft transition-all"
+                className="inline-flex items-center gap-2 px-3 py-1.5 bg-ige-navySoft text-ige-navy text-sm font-semibold rounded-lg border border-ige-navySoft hover:bg-ige-navySoft transition-all"
               >
                 <Award className="w-4 h-4" /> {project.club.name}
               </Link>
@@ -140,8 +142,8 @@ export default function ProjectDetailPage() {
               <Calendar className="w-4 h-4" /> {project.year}
             </span>
 
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-ige-greenSoft text-ige-greenDark text-sm font-semibold rounded-lg border border-ige-greenSoft">
-              <CheckCircle2 className="w-4 h-4" /> {project.status}
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-ige-tealSoft text-ige-tealDark text-sm font-semibold rounded-lg border border-ige-tealSoft">
+              <CheckCircle2 className="w-4 h-4" /> {STATUS_LABELS[project.status] || project.status}
             </span>
 
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 text-amber-700 text-sm font-medium rounded-lg border border-amber-200">
@@ -174,8 +176,8 @@ export default function ProjectDetailPage() {
           {project.solution && (
             <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-sm">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-ige-greenSoft flex items-center justify-center">
-                  <Target className="w-5 h-5 text-ige-green" />
+                <div className="w-10 h-10 rounded-lg bg-ige-tealSoft flex items-center justify-center">
+                  <Target className="w-5 h-5 text-ige-teal" />
                 </div>
                 <h2 className="text-xl font-display font-bold text-slate-900">Solution apportée</h2>
               </div>
@@ -187,8 +189,8 @@ export default function ProjectDetailPage() {
           {technologies.length > 0 && (
             <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-sm">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-ige-violetSoft flex items-center justify-center">
-                  <Cpu className="w-5 h-5 text-ige-violet" />
+                <div className="w-10 h-10 rounded-lg bg-ige-navySoft flex items-center justify-center">
+                  <Cpu className="w-5 h-5 text-ige-navy" />
                 </div>
                 <h2 className="text-xl font-display font-bold text-slate-900">Technologies utilisées</h2>
               </div>
@@ -206,10 +208,10 @@ export default function ProjectDetailPage() {
           )}
         </div>
 
-        {/* Footer avec date de création */}
+        {/* Footer avec date de creation */}
         <div className="flex items-center justify-center gap-2 text-sm text-slate-500 pt-4 border-t border-slate-200">
           <Clock className="w-4 h-4" />
-          <span>Projet créé le {new Date(project.createdAt).toLocaleDateString('fr-FR', { 
+          <span>Projet créé le {new Date(project.createdAt).toLocaleDateString('fr-FR', {
             year: 'numeric', 
             month: 'long', 
             day: 'numeric' 

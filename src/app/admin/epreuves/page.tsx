@@ -14,7 +14,7 @@ export default function EpreuvesAdmin() {
   const [deleting, setDeleting] = useState(false);
   const defaultForm = {
     titre: '', annee: new Date().getFullYear().toString(), edition: '', 
-    categorie: 'Théorique', pages: 1, fichierUrl: ''
+    categorie: 'Theorique', pages: 1, fichierUrl: ''
   };
   const [formData, setFormData] = useState<any>(defaultForm);
 
@@ -47,7 +47,7 @@ export default function EpreuvesAdmin() {
       } else {
         await api.post('/epreuves', formData);
       }
-      showToast(`Épreuve ${editingId ? 'modifiée' : 'ajoutée'} avec succès`, 'success');
+      showToast(`Epreuve ${editingId ? 'modifiée' : 'ajoutée'} avec succès`, 'success');
       setIsModalOpen(false);
       fetchData();
     } catch (err) {
@@ -64,7 +64,7 @@ export default function EpreuvesAdmin() {
     setDeleting(true);
     try {
       await api.delete(`/epreuves/${deleteId}`);
-      showToast('Épreuve supprimée', 'success');
+      showToast('Epreuve supprimée', 'success');
       fetchData();
     } catch (err) {
       showToast('Erreur lors de la suppression', 'error');
@@ -88,20 +88,20 @@ export default function EpreuvesAdmin() {
   return (
     <div className="p-6 bg-slate-50 min-h-screen text-slate-900">
       {toast && (
-        <div className={`fixed top-4 right-4 p-4 rounded-md shadow-lg text-white z-50 ${toast.type === 'success' ? 'bg-ige-green' : 'bg-red-500'}`}>
+        <div className={`fixed top-4 right-4 p-4 rounded-md shadow-lg text-white z-50 ${toast.type === 'success' ? 'bg-ige-teal' : 'bg-red-500'}`}>
           {toast.message}
         </div>
       )}
       
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-ige-violetDark">Gestion des Épreuves JE-GE</h1>
-        <button onClick={() => openModal()} className="bg-ige-violet text-white px-4 py-2 rounded-md hover:bg-ige-violetDark transition">
-          + Nouvelle Épreuve
+        <h1 className="text-2xl font-bold text-ige-navyDark">Gestion des épreuves JE-GE</h1>
+        <button onClick={() => openModal()} className="bg-ige-navy text-white px-4 py-2 rounded-md hover:bg-ige-navyDark transition">
+          + Nouvelle épreuve
         </button>
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-10"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-ige-violet"></div></div>
+        <div className="flex justify-center py-10"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-ige-navy"></div></div>
       ) : (
         <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-x-auto">
           <table className="w-full text-left border-collapse min-w-[600px]">
@@ -121,14 +121,14 @@ export default function EpreuvesAdmin() {
                   <td className="p-4 font-medium">{ep.titre}</td>
                   <td className="p-4">{ep.annee}</td>
                   <td className="p-4">
-                    <span className={`px-2 py-1 rounded-full text-xs ${ep.categorie === 'Théorique' ? 'bg-ige-bronze/20 text-ige-bronze' : 'bg-ige-violet/20 text-ige-violetDark'}`}>
-                      {ep.categorie}
+                    <span className={`px-2 py-1 rounded-full text-xs ${ep.categorie === 'Theorique' ? 'bg-ige-teal/20 text-ige-teal' : 'bg-ige-navy/20 text-ige-navyDark'}`}>
+                      {ep.categorie === 'Theorique' ? 'Théorique' : ep.categorie}
                     </span>
                   </td>
                   <td className="p-4">{ep.pages}</td>
                   <td className="p-4">
                     {ep.fichierUrl ? (
-                      <a href={ep.fichierUrl} target="_blank" rel="noopener noreferrer" className="text-ige-violet hover:underline text-sm">
+                      <a href={ep.fichierUrl} target="_blank" rel="noopener noreferrer" className="text-ige-navy hover:underline text-sm">
                         Voir le fichier
                       </a>
                     ) : (
@@ -136,7 +136,7 @@ export default function EpreuvesAdmin() {
                     )}
                   </td>
                   <td className="p-4 text-right">
-                    <button onClick={() => openModal(ep)} className="text-ige-violet hover:text-ige-violetDark mr-3">Éditer</button>
+                    <button onClick={() => openModal(ep)} className="text-ige-navy hover:text-ige-navyDark mr-3">Editer</button>
                     <button onClick={() => confirmDelete(ep._id || ep.id)} className="text-red-500 hover:text-red-700">Supprimer</button>
                   </td>
                 </tr>
@@ -149,46 +149,46 @@ export default function EpreuvesAdmin() {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-40 p-4">
           <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl p-6">
-            <h2 className="text-xl font-bold mb-4 text-ige-violetDark">{editingId ? 'Modifier' : 'Nouvelle'} Épreuve</h2>
+            <h2 className="text-xl font-bold mb-4 text-ige-navyDark">{editingId ? 'Modifier' : 'Nouvelle'} épreuve</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Titre de l'épreuve</label>
-                <input type="text" required value={formData.titre} onChange={e => setFormData({...formData, titre: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-violet outline-none" placeholder="Ex: Mathématiques, Électronique..." />
+                <label className="block text-sm font-medium mb-1">Titre de l’épreuve</label>
+                <input type="text" required value={formData.titre} onChange={e => setFormData({...formData, titre: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" placeholder="Ex. : mathématiques, électronique…" />
               </div>
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">Année</label>
-                  <input type="text" required value={formData.annee} onChange={e => setFormData({...formData, annee: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-violet outline-none" />
+                  <input type="text" required value={formData.annee} onChange={e => setFormData({...formData, annee: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Édition</label>
-                  <input type="text" required value={formData.edition} onChange={e => setFormData({...formData, edition: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-violet outline-none" placeholder="Ex: JE-GE 2024" />
+                  <label className="block text-sm font-medium mb-1">Edition</label>
+                  <input type="text" required value={formData.edition} onChange={e => setFormData({...formData, edition: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" placeholder="Ex: JE-GE 2024" />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">Catégorie</label>
-                  <select value={formData.categorie} onChange={e => setFormData({...formData, categorie: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-violet outline-none">
-                    <option value="Théorique">Théorique</option>
+                  <select value={formData.categorie} onChange={e => setFormData({...formData, categorie: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none">
+                    <option value="Theorique">Théorique</option>
                     <option value="Pratique">Pratique</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">Nombre de pages</label>
-                  <input type="number" min="1" required value={formData.pages} onChange={e => setFormData({...formData, pages: parseInt(e.target.value)})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-violet outline-none" />
+                  <input type="number" min="1" required value={formData.pages} onChange={e => setFormData({...formData, pages: parseInt(e.target.value)})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Fichier de l'épreuve (PDF/Image)</label>
+                <label className="block text-sm font-medium mb-1">Fichier de l’épreuve (PDF/image)</label>
                 <FileUpload accept="application/pdf,image/*" value={formData.fichierUrl} onChange={(url: string) => setFormData({...formData, fichierUrl: url})} />
               </div>
 
               <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200">
                 <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-md transition">Annuler</button>
-                <button type="submit" className="px-4 py-2 bg-ige-violet text-white rounded-md hover:bg-ige-violetDark transition">Enregistrer</button>
+                <button type="submit" className="px-4 py-2 bg-ige-navy text-white rounded-md hover:bg-ige-navyDark transition">Enregistrer</button>
               </div>
             </form>
           </div>
@@ -200,8 +200,8 @@ export default function EpreuvesAdmin() {
         onCancel={() => setDeleteId(null)}
         onConfirm={executeDelete}
         loading={deleting}
-        title="Supprimer l'épreuve"
-        message="Êtes-vous sûr de vouloir supprimer cette épreuve ? Cette action est irréversible."
+        title="Supprimer l'epreuve"
+        message="Etes-vous sûr de vouloir supprimer cette épreuve ? Cette action est irréversible."
       />
     </div>
   );

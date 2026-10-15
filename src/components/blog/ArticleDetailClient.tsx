@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Newspaper, PenLine, Eye, Inbox, Share2, ArrowLeft } from 'lucide-react';
+import { Newspaper, PenLine, Eye, Inbox, Share2 } from '@/components/IconImage';
 import { api } from '@/lib/api';
 
 type Article = {
@@ -72,19 +72,19 @@ export default function ArticleDetailClient() {
       try {
         await navigator.share(shareData);
       } catch (err) {
-        console.log('Partage annulé');
+        console.log('Partage annule');
       }
     } else {
       // Fallback: copier le lien
       navigator.clipboard.writeText(window.location.href);
-      alert('Lien copié dans le presse-papier !');
+      alert('Lien copie dans le presse-papier !');
     }
   };
 
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-ige-green border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-16 h-16 border-4 border-ige-teal border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -98,8 +98,8 @@ export default function ArticleDetailClient() {
               <Inbox className="w-8 h-8 text-slate-400" />
             </div>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Article non trouvé</h2>
-          <Link href="/blog" className="text-ige-green hover:underline">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Article non trouve</h2>
+          <Link href="/blog" className="text-ige-teal hover:underline">
             Retour au blog
           </Link>
         </div>
@@ -149,7 +149,7 @@ export default function ArticleDetailClient() {
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           {/* Excerpt */}
-          <div className="bg-ige-greenSoft/60 border-l-4 border-ige-green p-6 rounded-r-lg mb-8">
+          <div className="bg-ige-tealSoft/60 border-l-4 border-ige-teal p-6 rounded-r-lg mb-8">
             <p className="text-lg text-gray-700 italic">{article.excerpt}</p>
           </div>
 
@@ -170,7 +170,7 @@ export default function ArticleDetailClient() {
                   {tags.map((tag, idx) => (
                     <span
                       key={idx}
-                      className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full hover:bg-ige-greenSoft hover:text-ige-greenDark transition-colors cursor-pointer"
+                      className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full hover:bg-ige-tealSoft hover:text-ige-tealDark transition-colors cursor-pointer"
                     >
                       #{tag}
                     </span>
@@ -183,7 +183,7 @@ export default function ArticleDetailClient() {
             <div className="mt-8 pt-8 border-t flex items-center justify-between">
               <button
                 onClick={handleShare}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-ige-green text-white rounded-lg hover:bg-ige-greenDark transition-colors shadow-lg hover:shadow-xl"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-ige-teal text-white rounded-lg hover:bg-ige-tealDark transition-colors shadow-lg hover:shadow-xl"
               >
                 <Share2 className="w-5 h-5" />
                 Partager
@@ -191,9 +191,8 @@ export default function ArticleDetailClient() {
 
               <Link
                 href="/blog"
-                className="inline-flex items-center gap-2 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:border-ige-green hover:text-ige-green transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:border-ige-teal hover:text-ige-teal transition-colors"
               >
-                <ArrowLeft className="w-5 h-5" />
                 Retour au blog
               </Link>
             </div>
@@ -221,7 +220,7 @@ export default function ArticleDetailClient() {
                         </div>
                       )}
                       <div className="p-4">
-                        <h3 className="font-bold text-gray-900 group-hover:text-ige-green transition-colors line-clamp-2 mb-2">
+                        <h3 className="font-bold text-gray-900 group-hover:text-ige-teal transition-colors line-clamp-2 mb-2">
                           {related.title}
                         </h3>
                         <p className="text-sm text-gray-600 line-clamp-2">{related.excerpt}</p>

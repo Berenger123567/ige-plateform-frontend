@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,22 +7,75 @@
 body {
   color: #1A1A1A;
   background: #F8FAFC;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   overflow-x: hidden;
 }
 
-/* Dégradé texte bronze → violet → vert (couleurs officielles IGE) */
+@layer components {
+  .ige-icon-image {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    background-color: currentColor;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+  }
+}
+
 .text-gradient-ige {
-  background: linear-gradient(135deg, #c17835 0%, #7c3aee 60%, #17ce00 100%);
+  background: linear-gradient(135deg, #0D3358 0%, #1A9BA1 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Dégradé vert → violet */
 .text-gradient-green-violet {
-  background: linear-gradient(135deg, #17ce00 0%, #7c3aee 100%);
+  background: linear-gradient(135deg, #0D3358 0%, #1A9BA1 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+@keyframes ige-gauge-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ige-spectrum-pulse {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scaleY(0.45);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1.25);
+  }
+}
+
+.ige-gauge-orbit {
+  border: 1px solid transparent;
+  border-top-color: #006BFF;
+  border-right-color: rgb(0 107 255 / 42%);
+  animation: ige-gauge-orbit 24s linear infinite;
+}
+
+.ige-spectrum-bar {
+  background-color: #006BFF;
+  box-shadow: 0 0 8px rgb(0 107 255 / 55%);
+  transform-origin: center;
+  animation: ige-spectrum-pulse 1.3s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ige-gauge-orbit,
+  .ige-spectrum-bar {
+    animation: none;
+  }
 }

@@ -115,7 +115,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: projet.featured ? 0.8 : 0.6,
   }));
 
-  // Pages dynamiques - Événements
+  // Pages dynamiques - Evenements
   const evenementPages = evenements.map((event: any) => ({
     url: `${BASE_URL}/evenements/${event.id}`,
     lastModified: new Date(event.updatedAt || event.createdAt),

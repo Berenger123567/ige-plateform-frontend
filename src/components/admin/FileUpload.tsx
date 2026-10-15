@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from 'react';
 import Image from 'next/image';
-import { Upload, X, FileText, ImageIcon, Loader2 } from 'lucide-react';
+import { Upload, X, FileText, ImageIcon, Loader2 } from '@/components/IconImage';
 import { API_BASE_URL } from '@/config/api';
 
 interface FileUploadProps {
@@ -27,7 +27,7 @@ export default function FileUpload({ value, onChange, accept = 'image/*', label 
       const formData = new FormData();
       formData.append('file', file);
       const res = await fetch(`${API_BASE_URL}/upload`, { method: 'POST', body: formData });
-      if (!res.ok) throw new Error('Upload échoué');
+      if (!res.ok) throw new Error('Upload echoue');
       const data = await res.json();
       onChange(data.url);
     } catch (e: any) {
@@ -61,10 +61,10 @@ export default function FileUpload({ value, onChange, accept = 'image/*', label 
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-3 p-3 rounded-lg border border-ige-green/30 bg-ige-greenSoft">
-              <FileText className="w-5 h-5 text-ige-greenDark" />
-              <a href={value} target="_blank" rel="noreferrer" className="text-xs text-ige-greenDark font-semibold hover:underline truncate flex-1">
-                Fichier chargé — Cliquer pour voir
+            <div className="flex items-center gap-3 p-3 rounded-lg border border-ige-teal/30 bg-ige-tealSoft">
+              <FileText className="w-5 h-5 text-ige-tealDark" />
+              <a href={value} target="_blank" rel="noreferrer" className="text-xs text-ige-tealDark font-semibold hover:underline truncate flex-1">
+                Fichier charge - Cliquer pour voir
               </a>
               <button onClick={() => onChange('')} className="w-5 h-5 rounded-full bg-red-100 text-red-500 flex items-center justify-center hover:bg-red-200">
                 <X className="w-3 h-3" />
@@ -84,18 +84,18 @@ export default function FileUpload({ value, onChange, accept = 'image/*', label 
             const file = e.dataTransfer.files[0];
             if (file) handleFile(file);
           }}
-          className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center cursor-pointer hover:border-ige-violet hover:bg-ige-violetSoft/30 transition-all"
+          className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center cursor-pointer hover:border-ige-navy hover:bg-ige-navySoft/30 transition-all"
         >
           {uploading ? (
             <div className="flex flex-col items-center gap-2">
-              <Loader2 className="w-8 h-8 text-ige-violet animate-spin" />
+              <Loader2 className="w-8 h-8 text-ige-navy animate-spin" />
               <p className="text-xs text-slate-500">Upload en cours...</p>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-2">
               {isImage ? <ImageIcon className="w-8 h-8 text-slate-400" /> : <FileText className="w-8 h-8 text-slate-400" />}
-              <p className="text-xs font-semibold text-slate-600">Cliquer ou glisser-déposer</p>
-              <p className="text-xs text-slate-400">{isImage ? 'PNG, JPG, WebP, SVG — max 10 Mo' : 'PDF — max 10 Mo'}</p>
+              <p className="text-xs font-semibold text-slate-600">Cliquer ou glisser-deposer</p>
+              <p className="text-xs text-slate-400">{isImage ? 'PNG, JPG, WebP, SVG - max 10 Mo' : 'PDF - max 10 Mo'}</p>
             </div>
           )}
         </div>
@@ -125,7 +125,7 @@ export default function FileUpload({ value, onChange, accept = 'image/*', label 
         placeholder="https://..."
         value={value || ''}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-ige-violet"
+        className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-ige-navy"
       />
     </div>
   );

@@ -4,11 +4,15 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { 
-  ArrowLeft, Calendar, MapPin, Clock, Users, ExternalLink,
+  Calendar, MapPin, Clock, Users, ExternalLink,
   Share2, Download, Tag, Building2, DollarSign, Star
-} from 'lucide-react';
+} from '@/components/IconImage';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const CATEGORY_LABELS: Record<string, string> = {
+  'Genie Electrique': 'Génie électrique',
+  Energie: 'Energie',
+};
 
 export default function EventDetailPage() {
   const params = useParams();
@@ -32,7 +36,7 @@ export default function EventDetailPage() {
       if (foundEvent) {
         setEvent(foundEvent);
       } else {
-        setError('Événement non trouvé');
+        setError('Evénement introuvable');
       }
     } catch (err) {
       setError('Erreur lors du chargement');
@@ -53,7 +57,7 @@ export default function EventDetailPage() {
       }
     } else {
       navigator.clipboard.writeText(url);
-      alert('Lien copié dans le presse-papier !');
+      alert('Lien copié dans le presse-papiers !');
     }
   };
 
@@ -83,7 +87,7 @@ END:VCALENDAR`;
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="w-10 h-10 border-4 border-ige-violet border-t-transparent rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-ige-navy border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -95,13 +99,13 @@ END:VCALENDAR`;
           <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto">
             <Calendar className="w-8 h-8 text-red-600" />
           </div>
-          <h1 className="text-2xl font-display font-bold text-slate-900">Événement introuvable</h1>
+          <h1 className="text-2xl font-display font-bold text-slate-900">Evénement introuvable</h1>
           <p className="text-slate-600">{error}</p>
           <Link
             href="/evenements"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-ige-violet text-white rounded-lg hover:bg-ige-violetDark transition-all"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-ige-navy text-white rounded-lg hover:bg-ige-navyDark transition-all"
           >
-            <ArrowLeft className="w-4 h-4" /> Retour aux événements
+            Retour aux événements
           </Link>
         </div>
       </div>
@@ -109,10 +113,10 @@ END:VCALENDAR`;
   }
 
   const categoryColors: Record<string, string> = {
-    'Génie Électrique': 'bg-ige-greenSoft text-ige-greenDark border-ige-greenSoft',
-    'IA & Robotique': 'bg-ige-violetSoft text-ige-violetDark border-ige-violetSoft',
+    'Genie Electrique': 'bg-ige-tealSoft text-ige-tealDark border-ige-tealSoft',
+    'IA & Robotique': 'bg-ige-navySoft text-ige-navyDark border-ige-navySoft',
     'IoT': 'bg-blue-100 text-blue-700 border-blue-200',
-    'Énergie': 'bg-yellow-100 text-yellow-700 border-yellow-200',
+    'Energie': 'bg-yellow-100 text-yellow-700 border-yellow-200',
     'Entrepreneuriat': 'bg-orange-100 text-orange-700 border-orange-200',
   };
 
@@ -126,13 +130,13 @@ END:VCALENDAR`;
         <div className="flex items-center justify-between">
           <Link
             href="/evenements"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-ige-violet transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-ige-navy transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" /> Tous les événements
+            Tous les événements
           </Link>
           <button
             onClick={handleShare}
-            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg hover:border-ige-violet hover:text-ige-violet transition-all"
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg hover:border-ige-navy hover:text-ige-navy transition-all"
           >
             <Share2 className="w-4 h-4" /> Partager
           </button>
@@ -140,15 +144,15 @@ END:VCALENDAR`;
 
         {/* Badge featured si applicable */}
         {event.featured && (
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-ige-greenSoft0 to-ige-green text-white text-sm font-bold rounded-xl shadow-lg">
-            <Star className="w-4 h-4" /> Événement mis en avant
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-ige-tealSoft0 to-ige-teal text-white text-sm font-bold rounded-xl shadow-lg">
+            <Star className="w-4 h-4" /> Evénement mis en avant
           </div>
         )}
 
         {/* Titre et catégorie */}
         <div className="space-y-4">
           <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-semibold border ${categoryColor}`}>
-            <Tag className="w-4 h-4" /> {event.category}
+            <Tag className="w-4 h-4" /> {CATEGORY_LABELS[event.category] || event.category}
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-display font-extrabold text-slate-900 tracking-tight leading-tight">
@@ -159,11 +163,11 @@ END:VCALENDAR`;
         {/* Carte info principale */}
         <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-md space-y-6">
           
-          {/* Informations clés */}
+          {/* Informations cles */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-lg bg-ige-greenSoft flex items-center justify-center shrink-0">
-                <Calendar className="w-5 h-5 text-ige-green" />
+              <div className="w-10 h-10 rounded-lg bg-ige-tealSoft flex items-center justify-center shrink-0">
+                <Calendar className="w-5 h-5 text-ige-teal" />
               </div>
               <div>
                 <p className="text-xs text-slate-500 font-semibold uppercase">Date</p>
@@ -184,8 +188,8 @@ END:VCALENDAR`;
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-lg bg-ige-violetSoft flex items-center justify-center shrink-0">
-                <Building2 className="w-5 h-5 text-ige-violet" />
+              <div className="w-10 h-10 rounded-lg bg-ige-navySoft flex items-center justify-center shrink-0">
+                <Building2 className="w-5 h-5 text-ige-navy" />
               </div>
               <div>
                 <p className="text-xs text-slate-500 font-semibold uppercase">Organisateur</p>
@@ -211,15 +215,15 @@ END:VCALENDAR`;
                 href={event.registrationUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-ige-green text-white font-bold text-sm rounded-xl hover:bg-ige-greenDark transition-all shadow-md"
+                className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-ige-teal text-white font-bold text-sm rounded-xl hover:bg-ige-tealDark transition-all shadow-md"
               >
-                <ExternalLink className="w-4 h-4" /> S'inscrire à l'événement
+                <ExternalLink className="w-4 h-4" /> S'inscrire à l'evenement
               </a>
             )}
             
             <button
               onClick={generateICS}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-slate-700 font-semibold text-sm rounded-xl border border-slate-200 hover:border-ige-violet hover:text-ige-violet transition-all"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-slate-700 font-semibold text-sm rounded-xl border border-slate-200 hover:border-ige-navy hover:text-ige-navy transition-all"
             >
               <Download className="w-4 h-4" /> Ajouter au calendrier
             </button>
@@ -229,7 +233,7 @@ END:VCALENDAR`;
         {/* Description */}
         <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
           <h2 className="text-xl font-display font-bold text-slate-900 mb-4 flex items-center gap-2">
-            <Users className="w-5 h-5 text-ige-violet" /> À propos de l'événement
+            <Users className="w-5 h-5 text-ige-navy" /> À propos de l'evenement
           </h2>
           <p className="text-slate-700 leading-relaxed whitespace-pre-line">{event.description}</p>
         </div>
@@ -237,7 +241,7 @@ END:VCALENDAR`;
         {/* Footer */}
         <div className="flex items-center justify-center gap-2 text-sm text-slate-500 pt-4 border-t border-slate-200">
           <Clock className="w-4 h-4" />
-          <span>Événement ajouté le {new Date(event.createdAt).toLocaleDateString('fr-FR', { 
+          <span>Evenement ajoute le {new Date(event.createdAt).toLocaleDateString('fr-FR', {
             year: 'numeric', 
             month: 'long', 
             day: 'numeric' 

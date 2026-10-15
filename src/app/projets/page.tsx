@@ -3,7 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { getProjects } from '@/lib/api';
-import { Cpu, Search, Filter, ArrowRight, Star } from 'lucide-react';
+import { Cpu, Search, Filter, Star } from '@/components/IconImage';
+
+const STATUS_LABELS: Record<string, string> = { Termine: 'Terminé', Expose: 'Exposé' };
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<any[]>([]);
@@ -26,11 +28,11 @@ export default function ProjectsPage() {
         
         {/* Header */}
         <div className="space-y-4">
-          <h1 className="text-4xl sm:text-6xl font-display font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-4xl sm:text-6xl font-display font-extrabold text-ige-teal tracking-tight">
             Catalogue des Projets IGE
           </h1>
           <p className="text-slate-700 text-lg max-w-2xl">
-            Explorez les prototypes, hackathons et réalisations matérielles & logicielles des 3 clubs IGE.
+            Explorez les prototypes, hackathons et réalisations matérielles et logicielles des trois clubs IGE.
           </p>
         </div>
 
@@ -42,10 +44,10 @@ export default function ProjectsPage() {
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Rechercher par mot-clé (ex: ESP32, ROS, SCADA)..."
+              placeholder="Rechercher par mot-clé (ex. : ESP32, ROS, SCADA)…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-ige-green"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-ige-teal"
             />
           </div>
 
@@ -55,10 +57,10 @@ export default function ProjectsPage() {
             <select
               value={selectedClub}
               onChange={(e) => setSelectedClub(e.target.value)}
-              className="bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-3.5 py-3 focus:outline-none focus:border-ige-green"
+              className="bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-3.5 py-3 focus:outline-none focus:border-ige-teal"
             >
               <option value="all">Tous les clubs</option>
-              <option value="electronique-iot">Électronique & IoT</option>
+              <option value="electronique-iot">Electronique et IoT</option>
               <option value="robotique">Robotique</option>
               <option value="informatique-industrielle">Informatique Industrielle</option>
             </select>
@@ -69,11 +71,11 @@ export default function ProjectsPage() {
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              className="bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-3.5 py-3 focus:outline-none focus:border-ige-green"
+              className="bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-3.5 py-3 focus:outline-none focus:border-ige-teal"
             >
               <option value="all">Tous les statuts</option>
-              <option value="Exposé">Exposé / En démo</option>
-              <option value="Terminé">Terminé</option>
+              <option value="Expose">Exposé / En démo</option>
+              <option value="Termine">Terminé</option>
               <option value="En cours">En cours</option>
             </select>
           </div>
@@ -95,7 +97,7 @@ export default function ProjectsPage() {
               <Link
                 key={proj.id}
                 href={`/projets/${proj.id}`}
-                className="rounded-2xl bg-white border border-slate-200 overflow-hidden flex flex-col justify-between hover:border-ige-greenSoft0/40 shadow-sm hover:shadow-md transition-all group"
+                className="rounded-2xl bg-white border border-slate-200 overflow-hidden flex flex-col justify-between hover:border-ige-tealSoft0/40 shadow-sm hover:shadow-md transition-all group"
               >
                 <div className="h-48 relative overflow-hidden bg-slate-100">
                   {proj.imageUrl ? (
@@ -111,12 +113,12 @@ export default function ProjectsPage() {
                   )}
                   <div className="absolute top-4 left-4">
                     <span className="px-3 py-1 rounded-md text-[11px] font-bold bg-white/90 text-slate-900 border border-slate-200 shadow-sm">
-                      {proj.status}
+                      {STATUS_LABELS[proj.status] || proj.status}
                     </span>
                   </div>
                   {proj.featured && (
                     <div className="absolute top-4 right-4">
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-bold bg-ige-greenSoft0 text-white shadow-sm">
+                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-bold bg-ige-tealSoft0 text-white shadow-sm">
                         <Star className="w-3 h-3" /> Phare
                       </span>
                     </div>
@@ -125,7 +127,7 @@ export default function ProjectsPage() {
 
                 <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="text-xl font-display font-bold text-slate-900 mb-2 group-hover:text-ige-green transition-colors">
+                    <h3 className="text-xl font-display font-bold text-slate-900 mb-2 group-hover:text-ige-teal transition-colors">
                       {proj.title}
                     </h3>
                     <p className="text-xs text-slate-600 leading-relaxed line-clamp-3">
@@ -152,8 +154,8 @@ export default function ProjectsPage() {
 
                     <div className="flex items-center justify-between pt-2 border-t border-slate-100">
                       <span className="text-xs text-slate-500">{proj.year}</span>
-                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-ige-green group-hover:gap-2 transition-all">
-                        Voir le projet <ArrowRight className="w-3 h-3" />
+                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-ige-teal group-hover:gap-2 transition-all">
+                        Voir le projet
                       </span>
                     </div>
                   </div>

@@ -56,27 +56,27 @@ export default function NewsletterAdmin() {
     document.body.removeChild(link);
   };
 
-  const activeCount = subscribers.filter(s => s.status !== 'Inactif' && s.status !== 'Désabonné').length;
+  const activeCount = subscribers.filter(s => s.status !== 'Inactif' && s.status !== 'Desabonne').length;
 
   return (
     <div className="space-y-6 text-slate-900">
       {toast && (
-        <div className={`fixed top-4 right-4 p-4 rounded-md shadow-lg text-white z-50 ${toast.type === 'success' ? 'bg-ige-green' : 'bg-red-500'}`}>
+        <div className={`fixed top-4 right-4 p-4 rounded-md shadow-lg text-white z-50 ${toast.type === 'success' ? 'bg-ige-teal' : 'bg-red-500'}`}>
           {toast.message}
         </div>
       )}
       
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-        <h1 className="text-2xl font-bold text-ige-violetDark">Abonnés Newsletter</h1>
+        <h1 className="text-2xl font-bold text-ige-navyDark">Abonnes Newsletter</h1>
         
         <div className="flex items-center gap-4">
           <div className="bg-white px-6 py-2 rounded-lg shadow-sm border border-slate-200 text-center">
-            <span className="block text-sm text-slate-500">Abonnés Actifs</span>
-            <span className="text-xl font-bold text-ige-violet">{activeCount}</span>
+            <span className="block text-sm text-slate-500">Abonnes Actifs</span>
+            <span className="text-xl font-bold text-ige-navy">{activeCount}</span>
           </div>
           <button 
             onClick={exportCSV} 
-            className="bg-ige-green hover:bg-ige-greenDark text-white px-4 py-2 rounded-md transition shadow-sm font-medium"
+            className="bg-ige-teal hover:bg-ige-tealDark text-white px-4 py-2 rounded-md transition shadow-sm font-medium"
           >
             Exporter CSV
           </button>
@@ -84,11 +84,11 @@ export default function NewsletterAdmin() {
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-10"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-ige-violet"></div></div>
+        <div className="flex justify-center py-10"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-ige-navy"></div></div>
       ) : (
         <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
           {subscribers.length === 0 ? (
-            <div className="p-8 text-center text-slate-500">Aucun abonné pour le moment.</div>
+            <div className="p-8 text-center text-slate-500">Aucun abonne pour le moment.</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse min-w-[550px]">
@@ -104,10 +104,10 @@ export default function NewsletterAdmin() {
                 <tbody>
                   {subscribers.map((s) => (
                     <tr key={s._id || s.id} className="border-b border-slate-200 hover:bg-slate-50">
-                      <td className="p-4 font-medium text-ige-violetDark">{s.email}</td>
+                      <td className="p-4 font-medium text-ige-navyDark">{s.email}</td>
                       <td className="p-4 text-slate-600">{s.source || 'Site Web'}</td>
                       <td className="p-4">
-                        <span className={`px-2 py-1 rounded-full text-xs ${s.status === 'Inactif' || s.status === 'Désabonné' ? 'bg-slate-200 text-slate-600' : 'bg-ige-green/20 text-ige-greenDark'}`}>
+                        <span className={`px-2 py-1 rounded-full text-xs ${s.status === 'Inactif' || s.status === 'Desabonne' ? 'bg-slate-200 text-slate-600' : 'bg-ige-teal/20 text-ige-tealDark'}`}>
                           {s.status || 'Actif'}
                         </span>
                       </td>

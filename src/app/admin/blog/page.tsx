@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Plus, Edit, Trash2, Eye, FileText, Star } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, FileText, Star } from '@/components/IconImage';
 import { api } from '@/lib/api';
 import FileUpload from '@/components/admin/FileUpload';
 import ConfirmModal from '@/components/admin/ConfirmModal';
@@ -24,8 +24,13 @@ type Article = {
   createdAt: string;
 };
 
-const CATEGORIES = ['Actualité', 'Événement', 'Projet', 'Réussite', 'Partenariat', 'Technique'];
-const STATUS = ['BROUILLON', 'PUBLIÉ', 'ARCHIVÉ'];
+const CATEGORIES = ['Actualite', 'Evenement', 'Projet', 'Reussite', 'Partenariat', 'Technique'];
+const CATEGORY_LABELS: Record<string, string> = {
+  Actualite: 'Actualité',
+  Evenement: 'Evénement',
+  Reussite: 'Réussite',
+};
+const STATUS = ['BROUILLON', 'PUBLIE', 'ARCHIVE'];
 
 export default function BlogAdmin() {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -37,7 +42,7 @@ export default function BlogAdmin() {
     excerpt: '',
     content: '',
     coverImage: '',
-    category: 'Actualité',
+    category: 'Actualite',
     tags: '',
     author: 'IGE',
     status: 'BROUILLON',
@@ -71,7 +76,7 @@ export default function BlogAdmin() {
       const payload = { ...formData };
       
       // Si on publie l'article et qu'il n'a pas de date de publication, utiliser maintenant
-      if (payload.status === 'PUBLIÉ' && !payload.publishedAt) {
+      if (payload.status === 'PUBLIE' && !payload.publishedAt) {
         payload.publishedAt = new Date().toISOString();
       }
       
@@ -122,7 +127,7 @@ export default function BlogAdmin() {
       excerpt: '',
       content: '',
       coverImage: '',
-      category: 'Actualité',
+      category: 'Actualite',
       tags: '',
       author: 'IGE',
       status: 'BROUILLON',
@@ -133,9 +138,9 @@ export default function BlogAdmin() {
 
   const getStatusBadge = (status: string) => {
     const colors: Record<string, string> = {
-      PUBLIÉ: 'bg-ige-greenSoft text-ige-greenDark',
+      PUBLIE: 'bg-ige-tealSoft text-ige-tealDark',
       BROUILLON: 'bg-yellow-100 text-yellow-800',
-      ARCHIVÉ: 'bg-gray-100 text-gray-800',
+      ARCHIVE: 'bg-gray-100 text-gray-800',
     };
     return colors[status] || colors['BROUILLON'];
   };
@@ -152,7 +157,7 @@ export default function BlogAdmin() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-12 h-12 border-4 border-ige-green border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-4 border-ige-teal border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -162,26 +167,26 @@ export default function BlogAdmin() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Blog / Actualités</h1>
-          <p className="text-gray-600 mt-1">Gérez les articles et actualités de l'IGE</p>
+          <p className="text-gray-600 mt-1">Gérez les articles et actualités de l’IGE.</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-ige-green text-white rounded-lg hover:bg-ige-greenDark transition"
+          className="flex items-center gap-2 px-4 py-2 bg-ige-teal text-white rounded-lg hover:bg-ige-tealDark transition"
         >
-          <Plus className="w-4 h-4" /> Nouvel Article
+          <Plus className="w-4 h-4" /> Nouvel article
         </button>
       </div>
 
       {/* Statistiques */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-ige-green">
+        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-ige-teal">
           <div className="text-sm text-gray-600">Total Articles</div>
           <div className="text-2xl font-bold text-gray-900">{articles.length}</div>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-ige-green">
+        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-ige-teal">
           <div className="text-sm text-gray-600">Publiés</div>
           <div className="text-2xl font-bold text-gray-900">
-            {articles.filter((a) => a.status === 'PUBLIÉ').length}
+            {articles.filter((a) => a.status === 'PUBLIE').length}
           </div>
         </div>
         <div className="bg-white p-4 rounded-lg shadow border-l-4 border-yellow-600">
@@ -191,7 +196,7 @@ export default function BlogAdmin() {
           </div>
         </div>
         <div className="bg-white p-4 rounded-lg shadow border-l-4 border-blue-600">
-          <div className="text-sm text-gray-600">Vues Totales</div>
+          <div className="text-sm text-gray-600">Vues totales</div>
           <div className="text-2xl font-bold text-gray-900">
             {articles.reduce((sum, a) => sum + a.views, 0)}
           </div>
@@ -239,8 +244,8 @@ export default function BlogAdmin() {
                   </div>
                 </td>
                 <td className="px-6 py-4">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-ige-greenSoft text-ige-greenDark">
-                    {article.category}
+                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-ige-tealSoft text-ige-tealDark">
+                    {CATEGORY_LABELS[article.category] || article.category}
                   </span>
                 </td>
                 <td className="px-6 py-4">
@@ -276,7 +281,7 @@ export default function BlogAdmin() {
         )}
       </div>
 
-      {/* Modal d'édition/création */}
+      {/* Modal d'edition/creation */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl my-8">
@@ -296,7 +301,7 @@ export default function BlogAdmin() {
                   required
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                   placeholder="Ex: L'IGE lance sa nouvelle plateforme..."
                 />
               </div>
@@ -308,8 +313,8 @@ export default function BlogAdmin() {
                   value={formData.excerpt}
                   onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
                   rows={2}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
-                  placeholder="Courte description affichée dans la liste..."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
+                  placeholder="Courte description affichée dans la liste…"
                 />
               </div>
 
@@ -320,8 +325,8 @@ export default function BlogAdmin() {
                   value={formData.content}
                   onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                   rows={10}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent font-mono text-sm"
-                  placeholder="Contenu complet de l'article (Markdown supporté)..."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent font-mono text-sm"
+                  placeholder="Contenu complet de l’article (Markdown pris en charge)…"
                 />
                 <p className="text-xs text-gray-500 mt-1">Vous pouvez utiliser du Markdown pour la mise en forme</p>
               </div>
@@ -361,11 +366,11 @@ export default function BlogAdmin() {
                     required
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                   >
                     {CATEGORIES.map((cat) => (
                       <option key={cat} value={cat}>
-                        {cat}
+                        {CATEGORY_LABELS[cat] || cat}
                       </option>
                     ))}
                   </select>
@@ -377,10 +382,10 @@ export default function BlogAdmin() {
                     type="text"
                     value={formData.tags}
                     onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                     placeholder="innovation, hackathon, ..."
                   />
-                  <p className="text-xs text-gray-500 mt-1">Séparez par des virgules</p>
+                  <p className="text-xs text-gray-500 mt-1">Separez par des virgules</p>
                 </div>
               </div>
 
@@ -391,7 +396,7 @@ export default function BlogAdmin() {
                     type="text"
                     value={formData.author}
                     onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                   />
                 </div>
 
@@ -401,7 +406,7 @@ export default function BlogAdmin() {
                     required
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                   >
                     {STATUS.map((s) => (
                       <option key={s} value={s}>
@@ -418,7 +423,7 @@ export default function BlogAdmin() {
                     type="checkbox"
                     checked={formData.featured}
                     onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                    className="w-4 h-4 text-ige-green border-gray-300 rounded focus:ring-ige-greenSoft0"
+                    className="w-4 h-4 text-ige-teal border-gray-300 rounded focus:ring-ige-tealSoft0"
                   />
                   <span className="text-sm text-gray-700 flex items-center gap-1"><Star className="w-3 h-3" /> Mettre à la une (featured)</span>
                 </label>
@@ -434,7 +439,7 @@ export default function BlogAdmin() {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-ige-green text-white rounded-lg hover:bg-ige-greenDark transition"
+                  className="flex-1 px-4 py-2 bg-ige-teal text-white rounded-lg hover:bg-ige-tealDark transition"
                 >
                   {editingArticle ? 'Enregistrer' : 'Créer'}
                 </button>
@@ -448,7 +453,7 @@ export default function BlogAdmin() {
       <ConfirmModal
         isOpen={deleteConfirm.show}
         title="Supprimer cet article ?"
-        message="Cette action est irréversible. L'article sera définitivement supprimé."
+        message="Cette action est irréversible. L’article sera définitivement supprimé."
         onConfirm={() => deleteConfirm.articleId && handleDelete(deleteConfirm.articleId)}
         onCancel={() => setDeleteConfirm({ show: false, articleId: null })}
       />

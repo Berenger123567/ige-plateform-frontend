@@ -6,20 +6,20 @@ import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard, Users, FolderKanban, CalendarDays,
   BookOpen, Award, MessageSquare, Mail, QrCode,
-  ChevronLeft, ChevronRight, LogOut, Shield, Menu, X, Loader2, Handshake, Newspaper, Calendar, GraduationCap,
-} from 'lucide-react';
+  LogOut, Shield, Menu, X, Loader2, Handshake, Newspaper, Calendar, GraduationCap,
+} from '@/components/IconImage';
 
 const MENU = [
   { label: 'Tableau de bord', href: '/admin', icon: LayoutDashboard },
   { label: 'Clubs', href: '/admin/clubs', icon: Award },
   { label: 'Projets', href: '/admin/projets', icon: FolderKanban },
   { label: 'Blog', href: '/admin/blog', icon: Newspaper },
-  { label: 'Événements', href: '/admin/evenements', icon: CalendarDays },
+  { label: 'Evénements', href: '/admin/evenements', icon: CalendarDays },
   { label: 'Partenaires', href: '/admin/partenaires', icon: Handshake },
   { label: 'Bureau IGE', href: '/admin/bureau', icon: Users },
   { label: 'Mandats', href: '/admin/mandats', icon: Calendar },
-  { label: 'Éditions JE-GE', href: '/admin/editions-jege', icon: GraduationCap },
-  { label: 'Épreuves', href: '/admin/epreuves', icon: BookOpen },
+  { label: 'Editions JE-GE', href: '/admin/editions-jege', icon: GraduationCap },
+  { label: 'Epreuves', href: '/admin/epreuves', icon: BookOpen },
   { label: 'Participants JE-GE', href: '/admin/participants', icon: Users },
   { label: 'Scan QR Code', href: '/admin/checkin', icon: QrCode },
   { label: 'Messages', href: '/admin/messages', icon: MessageSquare },
@@ -35,7 +35,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [authenticated, setAuthenticated] = useState(false);
   const [checkingAuth, setCheckingAuth] = useState(true);
 
-  // Si on est sur la page de login admin, pas besoin de charger la barre latérale ni de guarder
+  // Si on est sur la page de login admin, pas besoin de charger la barre laterale ni de guarder
   const isLoginPage = pathname === '/admin/login';
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       return;
     }
 
-    // Vérification de la session admin
+    // Verification de la session admin
     const token = localStorage.getItem('ige_admin_token');
     if (!token) {
       router.push('/admin/login');
@@ -70,17 +70,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return <>{children}</>;
   }
 
-  // Écran d'attente pendant la vérification d'authentification
+  // Ecran d'attente pendant la verification d'authentification
   if (checkingAuth) {
     return (
       <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center gap-3 text-white">
-        <Loader2 className="w-8 h-8 text-ige-violet animate-spin" />
-        <p className="text-xs text-slate-400">Vérification de l'accès administrateur...</p>
+        <Loader2 className="w-8 h-8 text-ige-navy animate-spin" />
+        <p className="text-xs text-slate-400">Vérification de l’accès administrateur…</p>
       </div>
     );
   }
 
-  // Si non authentifié (avant redirection)
+  // Si non authentifie (avant redirection)
   if (!authenticated) {
     return null;
   }
@@ -104,12 +104,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       >
         <div className="flex items-center justify-between h-16 px-4 border-b border-slate-800">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-ige-violet/20 border border-ige-violet/40 flex items-center justify-center">
-              <Shield className="w-4 h-4 text-ige-violet" />
+            <div className="w-8 h-8 rounded-lg bg-ige-navy/20 border border-ige-navy/40 flex items-center justify-center">
+              <Shield className="w-4 h-4 text-ige-navy" />
             </div>
             <div>
               <span className="text-sm font-bold text-white block leading-tight">Admin IGE</span>
-              <span className="text-[10px] text-slate-400">Génie Électrique EPAC</span>
+              <span className="text-[10px] text-slate-400">Génie Electrique EPAC</span>
             </div>
           </div>
           <button
@@ -129,7 +129,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 href={item.href}
                 className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
                   active
-                    ? 'bg-ige-violet text-white shadow-md shadow-ige-violetDark/30 font-semibold'
+                    ? 'bg-ige-navy text-white shadow-md shadow-ige-navyDark/30 font-semibold'
                     : 'text-slate-400 hover:bg-slate-800 hover:text-white'
                 }`}
               >
@@ -146,7 +146,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all font-semibold"
           >
             <LogOut className="w-4 h-4 shrink-0" />
-            <span>Déconnexion Admin</span>
+            <span>Déconnexion administrateur</span>
           </button>
         </div>
       </div>
@@ -160,21 +160,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className={`flex items-center h-16 border-b border-slate-800 px-4 ${collapsed ? 'justify-center' : 'justify-between'}`}>
           {!collapsed && (
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-ige-violet/20 border border-ige-violet/40 flex items-center justify-center">
-                <Shield className="w-4 h-4 text-ige-violet" />
+              <div className="w-8 h-8 rounded-lg bg-ige-navy/20 border border-ige-navy/40 flex items-center justify-center">
+                <Shield className="w-4 h-4 text-ige-navy" />
               </div>
               <span className="text-sm font-bold text-white">Admin IGE</span>
             </div>
           )}
-          {collapsed && <Shield className="w-5 h-5 text-ige-violet" />}
+          {collapsed && <Shield className="w-5 h-5 text-ige-navy" />}
           <button
             onClick={() => setCollapsed(!collapsed)}
             className={`w-7 h-7 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-all ${
               collapsed ? 'absolute -right-3.5 top-4.5 z-10 bg-slate-700 border border-slate-600 shadow-md' : ''
             }`}
-            title={collapsed ? 'Agrandir' : 'Réduire'}
+            title={collapsed ? 'Agrandir' : 'Reduire'}
+            aria-label={collapsed ? 'Agrandir le menu' : 'Reduire le menu'}
           >
-            {collapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
+            <Menu className="w-3.5 h-3.5" />
           </button>
         </div>
 
@@ -188,7 +189,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 title={collapsed ? item.label : undefined}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
                   active
-                    ? 'bg-ige-violet text-white shadow-sm font-semibold'
+                    ? 'bg-ige-navy text-white shadow-sm font-semibold'
                     : 'text-slate-400 hover:bg-slate-800 hover:text-white'
                 } ${collapsed ? 'justify-center' : ''}`}
               >
@@ -205,10 +206,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs text-red-400 hover:text-white hover:bg-red-500/20 transition-all font-semibold ${
               collapsed ? 'justify-center' : ''
             }`}
-            title={collapsed ? 'Déconnexion' : undefined}
+            title={collapsed ? 'Deconnexion' : undefined}
           >
             <LogOut className="w-4 h-4 shrink-0" />
-            {!collapsed && <span>Déconnexion Admin</span>}
+            {!collapsed && <span>Deconnexion Admin</span>}
           </button>
         </div>
       </aside>
@@ -230,7 +231,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <h1 className="text-sm sm:text-base font-bold text-slate-900 leading-tight">
                 {MENU.find((m) => m.href === pathname)?.label ?? 'Administration'}
               </h1>
-              <p className="text-[11px] text-slate-400 hidden sm:block">IGE / EPAC — Panneau de gestion</p>
+              <p className="text-[11px] text-slate-400 hidden sm:block">IGE / EPAC - Panneau de gestion</p>
             </div>
           </div>
 
@@ -238,7 +239,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Link
               href="/"
               target="_blank"
-              className="text-xs font-semibold text-slate-500 hover:text-ige-violet hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:border-ige-violet bg-slate-50"
+              className="text-xs font-semibold text-slate-500 hover:text-ige-navy hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:border-ige-navy bg-slate-50"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Voir le site public</span>
@@ -247,19 +248,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <button
               onClick={handleLogout}
               className="text-xs font-semibold text-red-600 hover:text-red-700 flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-red-50 border border-red-200"
-              title="Se déconnecter"
+              title="Se deconnecter"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Quitter</span>
             </button>
 
             <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
-              <div className="w-8 h-8 rounded-full bg-ige-violet flex items-center justify-center text-white font-bold text-xs shadow-xs">
+              <div className="w-8 h-8 rounded-full bg-ige-navy flex items-center justify-center text-white font-bold text-xs shadow-xs">
                 A
               </div>
               <div className="hidden lg:block text-left">
                 <span className="block text-xs font-semibold text-slate-800 leading-none">Administrateur</span>
-                <span className="text-[10px] text-slate-400">Équipe IGE</span>
+                <span className="text-[10px] text-slate-400">Equipe IGE</span>
               </div>
             </div>
           </div>

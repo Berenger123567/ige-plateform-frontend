@@ -112,12 +112,12 @@ import Image from 'next/image';
 
 ## Migration Checklist
 
-✅ Configure `next.config.js` with remote patterns
-✅ Update admin pages with Image component
-✅ Update components with Image component
-✅ Keep QR code as `<img>` (data URL)
-✅ Test all image displays work correctly
-✅ Verify responsive behavior on different screen sizes
+- [x] Configure `next.config.js` with remote patterns
+- [x] Update admin pages with Image component
+- [x] Update components with Image component
+- [x] Keep QR code as `<img>` (data URL)
+- [x] Test all image displays work correctly
+- [x] Verify responsive behavior on different screen sizes
 
 ## Production Recommendations
 

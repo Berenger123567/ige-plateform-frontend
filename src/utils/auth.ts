@@ -1,5 +1,5 @@
 /**
- * Utilitaires d'authentification JWT côté client
+ * Utilitaires d'authentification JWT côte client
  */
 
 const TOKEN_KEY = 'ige_admin_token';
@@ -14,7 +14,7 @@ export function saveToken(token: string): void {
 }
 
 /**
- * Récupère le token depuis localStorage
+ * Recupere le token depuis localStorage
  */
 export function getToken(): string | null {
   if (typeof window !== 'undefined') {
@@ -33,14 +33,14 @@ export function clearToken(): void {
 }
 
 /**
- * Vérifie si l'utilisateur est authentifié
+ * Verifie si l'utilisateur est authentifie
  */
 export function isAuthenticated(): boolean {
   return !!getToken();
 }
 
 /**
- * Récupère les headers d'authentification pour les requêtes API
+ * Recupere les headers d'authentification pour les requetes API
  */
 export function getAuthHeaders(): Record<string, string> {
   const token = getToken();

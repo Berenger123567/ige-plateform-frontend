@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Plus, Edit, Trash2, Building2 } from 'lucide-react';
+import { Plus, Edit, Trash2, Building2 } from '@/components/IconImage';
 import { api } from '@/lib/api';
 import FileUpload from '@/components/admin/FileUpload';
 import ConfirmModal from '@/components/admin/ConfirmModal';
@@ -19,7 +19,8 @@ type Partner = {
   createdAt: string;
 };
 
-const CATEGORIES = ['Partenaire', 'Sponsor Or', 'Sponsor Argent', 'Sponsor Bronze', 'Partenaire Média'];
+const CATEGORIES = ['Partenaire', 'Sponsor Or', 'Sponsor Argent', 'Sponsor Bronze', 'Partenaire Media'];
+const CATEGORY_LABELS: Record<string, string> = { 'Partenaire Media': 'Partenaire média' };
 
 export default function PartenairesAdmin() {
   const [partners, setPartners] = useState<Partner[]>([]);
@@ -64,6 +65,7 @@ export default function PartenairesAdmin() {
       } else {
         await api.post('/partners', formData);
       }
+  const CATEGORY_LABELS: Record<string, string> = { 'Partenaire Media': 'Partenaire média' };
       await fetchPartners();
       closeModal();
     } catch (err: any) {
@@ -114,8 +116,8 @@ export default function PartenairesAdmin() {
       'Sponsor Or': 'bg-yellow-100 text-yellow-800',
       'Sponsor Argent': 'bg-gray-200 text-gray-800',
       'Sponsor Bronze': 'bg-orange-100 text-orange-800',
-      'Partenaire Média': 'bg-blue-100 text-blue-800',
-      'Partenaire': 'bg-ige-violetSoft text-ige-violetDark',
+      'Partenaire Media': 'bg-blue-100 text-blue-800',
+      'Partenaire': 'bg-ige-navySoft text-ige-navyDark',
     };
     return colors[cat] || colors['Partenaire'];
   };
@@ -123,7 +125,7 @@ export default function PartenairesAdmin() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-12 h-12 border-4 border-ige-green border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-4 border-ige-teal border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -133,13 +135,13 @@ export default function PartenairesAdmin() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Partenaires</h1>
-          <p className="text-gray-600 mt-1">Gérez les partenaires et sponsors de l'IGE</p>
+          <p className="text-gray-600 mt-1">Gérez les partenaires et les sponsors de l’IGE.</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-ige-green text-white rounded-lg hover:bg-ige-greenDark transition"
+          className="flex items-center gap-2 px-4 py-2 bg-ige-teal text-white rounded-lg hover:bg-ige-tealDark transition"
         >
-          <Plus className="w-4 h-4" /> Nouveau Partenaire
+          <Plus className="w-4 h-4" /> Nouveau partenaire
         </button>
       </div>
 
@@ -183,7 +185,7 @@ export default function PartenairesAdmin() {
                       href={p.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-ige-green hover:underline"
+                      className="text-sm text-ige-teal hover:underline"
                     >
                       {p.website}
                     </a>
@@ -191,14 +193,14 @@ export default function PartenairesAdmin() {
                 </td>
                 <td className="px-6 py-4">
                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getCategoryBadge(p.category)}`}>
-                    {p.category}
+                    {CATEGORY_LABELS[p.category] || p.category}
                   </span>
                 </td>
                 <td className="px-6 py-4 text-gray-600">{p.ordre}</td>
                 <td className="px-6 py-4">
                   <span
                     className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      p.isActive ? 'bg-ige-greenSoft text-ige-greenDark' : 'bg-red-100 text-red-800'
+                      p.isActive ? 'bg-ige-tealSoft text-ige-tealDark' : 'bg-red-100 text-red-800'
                     }`}
                   >
                     {p.isActive ? 'Actif' : 'Inactif'}
@@ -208,7 +210,7 @@ export default function PartenairesAdmin() {
                   <button
                     onClick={() => handleEdit(p)}
                     className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 font-medium"
-                  >
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Catégorie</th>
                     <Edit className="w-3 h-3" /> Modifier
                   </button>
                   <button
@@ -225,18 +227,18 @@ export default function PartenairesAdmin() {
 
         {partners.length === 0 && (
           <div className="text-center py-12 text-gray-500">
-            Aucun partenaire enregistré. Cliquez sur "Nouveau Partenaire" pour commencer.
+            Aucun partenaire enregistre. Cliquez sur "Nouveau Partenaire" pour commencer.
           </div>
         )}
       </div>
 
-      {/* Modal d'édition/création */}
+      {/* Modal d'edition/creation */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
               <h2 className="text-xl font-bold">
-                {editingPartner ? 'Modifier le Partenaire' : 'Nouveau Partenaire'}
+                {editingPartner ? 'Modifier le partenaire' : 'Nouveau partenaire'}
               </h2>
               <button onClick={closeModal} className="text-gray-500 hover:text-gray-700 text-2xl">
                 ×
@@ -245,15 +247,15 @@ export default function PartenairesAdmin() {
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Nom du Partenaire *
+                  Nom du partenaire *
                 </label>
                 <input
                   type="text"
-                  required
+                      {CATEGORY_LABELS[p.category] || p.category}
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
-                  placeholder="Ex: Orange Bénin"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
+                  placeholder="Ex. : Orange Bénin"
                 />
               </div>
 
@@ -293,7 +295,7 @@ export default function PartenairesAdmin() {
                   type="url"
                   value={formData.website}
                   onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                   placeholder="https://example.com"
                 />
               </div>
@@ -304,12 +306,10 @@ export default function PartenairesAdmin() {
                   required
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                 >
                   {CATEGORIES.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
+                    <option key={cat} value={cat}>{CATEGORY_LABELS[cat] || cat}</option>
                   ))}
                 </select>
               </div>
@@ -320,7 +320,7 @@ export default function PartenairesAdmin() {
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                   placeholder="Courte description du partenariat..."
                 />
               </div>
@@ -334,9 +334,9 @@ export default function PartenairesAdmin() {
                     type="number"
                     value={formData.ordre}
                     onChange={(e) => setFormData({ ...formData, ordre: parseInt(e.target.value) || 99 })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Plus petit = affiché en premier</p>
+                  <p className="text-xs text-gray-500 mt-1">Plus petit = affiche en premier</p>
                 </div>
 
                 <div>
@@ -346,7 +346,7 @@ export default function PartenairesAdmin() {
                       type="checkbox"
                       checked={formData.isActive}
                       onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                      className="w-4 h-4 text-ige-green border-gray-300 rounded focus:ring-ige-greenSoft0"
+                      className="w-4 h-4 text-ige-teal border-gray-300 rounded focus:ring-ige-tealSoft0"
                     />
                     <span className="text-sm text-gray-700">Partenaire actif</span>
                   </label>
@@ -363,10 +363,9 @@ export default function PartenairesAdmin() {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-ige-green text-white rounded-lg hover:bg-ige-greenDark transition"
+                  className="flex-1 px-4 py-2 bg-ige-teal text-white rounded-lg hover:bg-ige-tealDark transition"
                 >
-                  {editingPartner ? 'Enregistrer' : 'Créer'}
-                </button>
+                      <option key={cat} value={cat}>{CATEGORY_LABELS[cat] || cat}</option>
               </div>
             </form>
           </div>

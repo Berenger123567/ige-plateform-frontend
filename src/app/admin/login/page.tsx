@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Lock, Mail, Shield, AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
+import { Lock, Mail, Shield, AlertCircle, Loader2 } from '@/components/IconImage';
 import { API_BASE_URL } from '@/config/api';
 
 export default function AdminLoginPage() {
@@ -28,7 +28,7 @@ export default function AdminLoginPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || 'Connexion échouée.');
+        throw new Error(data.error || 'Echec de la connexion.');
       }
 
       // Stocker la session admin
@@ -45,10 +45,10 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center items-center p-4 relative overflow-hidden selection:bg-ige-violet selection:text-white">
+    <div className="min-h-screen bg-slate-950 flex flex-col justify-center items-center p-4 relative overflow-hidden selection:bg-ige-navy selection:text-white">
       {/* Glow ambient backgrounds */}
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-ige-violet/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-ige-green/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -top-40 -left-40 w-96 h-96 bg-ige-navy/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-ige-teal/20 rounded-full blur-3xl pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10 space-y-8">
         
@@ -71,7 +71,7 @@ export default function AdminLoginPage() {
               Espace Administration
             </h1>
             <p className="text-xs sm:text-sm text-slate-400 mt-1">
-              Plateforme Innovation en Génie Électrique (IGE/EPAC)
+              Plateforme Innovation en Génie Electrique (IGE/EPAC)
             </p>
           </div>
         </div>
@@ -79,9 +79,9 @@ export default function AdminLoginPage() {
         {/* Login Form Card */}
         <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
           
-          <div className="flex items-center gap-2 text-xs font-semibold text-ige-green bg-ige-green/10 border border-ige-green/20 px-3 py-2 rounded-xl">
+          <div className="flex items-center gap-2 text-xs font-semibold text-ige-teal bg-ige-teal/10 border border-ige-teal/20 px-3 py-2 rounded-xl">
             <Shield className="w-4 h-4 shrink-0" />
-            <span>Zone réservée à l'équipe dirigeante IGE</span>
+            <span>Zone réservée à l’équipe dirigeante de l’IGE</span>
           </div>
 
           {error && (
@@ -94,7 +94,7 @@ export default function AdminLoginPage() {
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                Adresse E-mail Administrateur
+                Adresse e-mail administrateur
               </label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -104,14 +104,14 @@ export default function AdminLoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@ige.bj ou admin"
-                  className="w-full pl-10 pr-4 py-3 bg-slate-950/70 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-ige-violet focus:ring-1 focus:ring-ige-violet transition-all"
+                  className="w-full pl-10 pr-4 py-3 bg-slate-950/70 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-ige-navy focus:ring-1 focus:ring-ige-navy transition-all"
                 />
               </div>
             </div>
 
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                Mot de Passe
+                Mot de passe
               </label>
               <div className="relative">
                 <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -121,7 +121,7 @@ export default function AdminLoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full pl-10 pr-4 py-3 bg-slate-950/70 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-ige-violet focus:ring-1 focus:ring-ige-violet transition-all"
+                  className="w-full pl-10 pr-4 py-3 bg-slate-950/70 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-ige-navy focus:ring-1 focus:ring-ige-navy transition-all"
                 />
               </div>
             </div>
@@ -129,17 +129,16 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading || !password}
-              className="w-full py-3.5 px-4 bg-gradient-to-r from-ige-violet to-ige-violetDark hover:from-ige-violetDark hover:to-ige-violetDark text-white font-bold text-sm rounded-xl shadow-lg shadow-ige-violetDark/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed group mt-2"
+              className="w-full py-3.5 px-4 bg-gradient-to-r from-ige-navy to-ige-navyDark hover:from-ige-navyDark hover:to-ige-navyDark text-white font-bold text-sm rounded-xl shadow-lg shadow-ige-navyDark/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed group mt-2"
             >
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Vérification...</span>
+                  <span>Vérification…</span>
                 </>
               ) : (
                 <>
-                  <span>Connexion au Dashboard</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <span>Connexion au tableau de bord</span>
                 </>
               )}
             </button>
@@ -148,7 +147,7 @@ export default function AdminLoginPage() {
 
         {/* Footer info */}
         <p className="text-center text-[11px] text-slate-600">
-          © 2026 Innovation en Génie Électrique (IGE). Accès restreint.
+          © 2026 Innovation en Génie Electrique (IGE). Accès restreint.
         </p>
 
       </div>

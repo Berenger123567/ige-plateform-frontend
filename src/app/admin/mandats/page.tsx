@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Calendar, Users, CheckCircle, ArrowRight } from 'lucide-react';
+import { Plus, Edit, Trash2, Calendar, Users, CheckCircle } from '@/components/IconImage';
 import { api } from '@/lib/api';
 import ConfirmModal from '@/components/admin/ConfirmModal';
 
@@ -124,7 +124,7 @@ export default function MandatsAdmin() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-12 h-12 border-4 border-ige-green border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-4 border-ige-teal border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -134,11 +134,11 @@ export default function MandatsAdmin() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Mandats du Bureau</h1>
-          <p className="text-gray-600 mt-1">Gérez les différents mandats et périodes du bureau IGE</p>
+          <p className="text-gray-600 mt-1">Gerez les differents mandats et periodes du bureau IGE</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-ige-green text-white rounded-lg hover:bg-ige-greenDark transition"
+          className="flex items-center gap-2 px-4 py-2 bg-ige-teal text-white rounded-lg hover:bg-ige-tealDark transition"
         >
           <Plus className="w-4 h-4" /> Nouveau Mandat
         </button>
@@ -150,7 +150,7 @@ export default function MandatsAdmin() {
           <div
             key={mandat.id}
             className={`bg-white rounded-lg shadow-lg overflow-hidden border-l-4 ${
-              mandat.isActive ? 'border-ige-green' : 'border-gray-300'
+              mandat.isActive ? 'border-ige-teal' : 'border-gray-300'
             }`}
           >
             <div className="p-6">
@@ -159,13 +159,13 @@ export default function MandatsAdmin() {
                   <div className="flex items-center gap-3 mb-2">
                     <h3 className="text-2xl font-bold text-gray-900">{mandat.annee}</h3>
                     {mandat.isActive && (
-                      <span className="flex items-center gap-1 px-3 py-1 bg-ige-greenSoft text-ige-greenDark text-xs font-semibold rounded-full">
+                      <span className="flex items-center gap-1 px-3 py-1 bg-ige-tealSoft text-ige-tealDark text-xs font-semibold rounded-full">
                         <CheckCircle className="w-3 h-3" /> Mandat Actif
                       </span>
                     )}
                   </div>
                   <p className="text-gray-600 flex items-center gap-2">
-                    <Calendar className="w-4 h-4" /> {formatDate(mandat.dateDebut)} <ArrowRight className="w-3.5 h-3.5" /> {formatDate(mandat.dateFin)}
+                    <Calendar className="w-4 h-4" /> {formatDate(mandat.dateDebut)} au {formatDate(mandat.dateFin)}
                   </p>
                   {mandat.description && (
                     <p className="text-gray-500 mt-2 text-sm">{mandat.description}</p>
@@ -178,10 +178,10 @@ export default function MandatsAdmin() {
                     className={`px-3 py-1 text-sm font-medium rounded-lg transition ${
                       mandat.isActive
                         ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        : 'bg-ige-greenSoft text-ige-greenDark hover:bg-ige-greenSoft'
+                        : 'bg-ige-tealSoft text-ige-tealDark hover:bg-ige-tealSoft'
                     }`}
                   >
-                    {mandat.isActive ? 'Désactiver' : 'Activer'}
+                    {mandat.isActive ? 'Desactiver' : 'Activer'}
                   </button>
                   <button
                     onClick={() => handleEdit(mandat)}
@@ -208,7 +208,7 @@ export default function MandatsAdmin() {
                     {mandat.bureauMembers.map((membre: any) => (
                       <span
                         key={membre.id}
-                        className="inline-flex items-center gap-1 px-3 py-1 bg-ige-violetSoft text-ige-violetDark text-sm rounded-full"
+                        className="inline-flex items-center gap-1 px-3 py-1 bg-ige-navySoft text-ige-navyDark text-sm rounded-full"
                       >
                         {membre.firstName} {membre.lastName} - {membre.poste}
                       </span>
@@ -225,23 +225,23 @@ export default function MandatsAdmin() {
         <div className="text-center py-12 bg-white rounded-lg shadow">
           <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
           <p className="text-xl text-gray-600 mb-2">Aucun mandat enregistré</p>
-          <p className="text-gray-500 mb-4">Créez le premier mandat pour organiser votre bureau</p>
+          <p className="text-gray-500 mb-4">Créez le premier mandat pour organiser votre bureau.</p>
           <button
             onClick={() => setShowModal(true)}
-            className="px-6 py-2 bg-ige-green text-white rounded-lg hover:bg-ige-greenDark transition"
+            className="px-6 py-2 bg-ige-teal text-white rounded-lg hover:bg-ige-tealDark transition"
           >
             Créer un mandat
           </button>
         </div>
       )}
 
-      {/* Modal d'édition/création */}
+      {/* Modal d’édition et de création */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
               <h2 className="text-xl font-bold">
-                {editingMandat ? 'Modifier le Mandat' : 'Nouveau Mandat'}
+                {editingMandat ? 'Modifier le mandat' : 'Nouveau mandat'}
               </h2>
               <button onClick={closeModal} className="text-gray-500 hover:text-gray-700 text-2xl">
                 ×
@@ -255,8 +255,8 @@ export default function MandatsAdmin() {
                   required
                   value={formData.annee}
                   onChange={(e) => setFormData({ ...formData, annee: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
-                  placeholder="Ex: 2025-2026"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
+                  placeholder="Ex. : 2025-2026"
                 />
               </div>
 
@@ -268,7 +268,7 @@ export default function MandatsAdmin() {
                     required
                     value={formData.dateDebut}
                     onChange={(e) => setFormData({ ...formData, dateDebut: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                   />
                 </div>
 
@@ -279,7 +279,7 @@ export default function MandatsAdmin() {
                     required
                     value={formData.dateFin}
                     onChange={(e) => setFormData({ ...formData, dateFin: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
                   />
                 </div>
               </div>
@@ -290,8 +290,8 @@ export default function MandatsAdmin() {
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-greenSoft0 focus:border-transparent"
-                  placeholder="Description optionnelle du mandat..."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
+                  placeholder="Description facultative du mandat…"
                 />
               </div>
 
@@ -301,9 +301,9 @@ export default function MandatsAdmin() {
                     type="checkbox"
                     checked={formData.isActive}
                     onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                    className="w-4 h-4 text-ige-green border-gray-300 rounded focus:ring-ige-greenSoft0"
+                    className="w-4 h-4 text-ige-teal border-gray-300 rounded focus:ring-ige-tealSoft0"
                   />
-                  <span className="text-sm text-gray-700">Mandat actif (décocher les autres si coché)</span>
+                  <span className="text-sm text-gray-700">Mandat actif (désactivez les autres si cette case est cochée)</span>
                 </label>
               </div>
 
@@ -317,7 +317,7 @@ export default function MandatsAdmin() {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-ige-green text-white rounded-lg hover:bg-ige-greenDark transition"
+                  className="flex-1 px-4 py-2 bg-ige-teal text-white rounded-lg hover:bg-ige-tealDark transition"
                 >
                   {editingMandat ? 'Enregistrer' : 'Créer'}
                 </button>
@@ -331,7 +331,7 @@ export default function MandatsAdmin() {
       <ConfirmModal
         isOpen={deleteConfirm.show}
         title="Supprimer ce mandat ?"
-        message="Cette action est irréversible. Le mandat sera définitivement supprimé. Les membres du bureau associés ne seront pas supprimés mais ne seront plus liés à ce mandat."
+        message="Cette action est irreversible. Le mandat sera definitivement supprime. Les membres du bureau associes ne seront pas supprimes mais ne seront plus lies à ce mandat."
         onConfirm={() => deleteConfirm.mandatId && handleDelete(deleteConfirm.mandatId)}
         onCancel={() => setDeleteConfirm({ show: false, mandatId: null })}
       />

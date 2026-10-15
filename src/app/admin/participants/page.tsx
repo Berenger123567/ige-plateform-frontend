@@ -42,7 +42,7 @@ export default function ParticipantsAdmin() {
     setDeleting(true);
     try {
       await api.delete(`/admin/participants/${deleteId}`);
-      showToast('Participant supprimé', 'success');
+      showToast('Participant supprime', 'success');
       fetchData();
     } catch (err) {
       showToast('Erreur de suppression', 'error');
@@ -55,7 +55,7 @@ export default function ParticipantsAdmin() {
   const filteredParticipants = participants.filter(p => {
     const matchFilter = filterCheckin === 'Tous' 
       ? true 
-      : filterCheckin === 'Présent' ? p.checkedIn : !p.checkedIn;
+      : filterCheckin === 'Present' ? p.checkedIn : !p.checkedIn;
     
     const searchLower = search.toLowerCase();
     const matchSearch = (p.name && p.name.toLowerCase().includes(searchLower)) || 
@@ -71,26 +71,26 @@ export default function ParticipantsAdmin() {
   return (
     <div className="p-6 bg-slate-50 min-h-screen text-slate-900">
       {toast && (
-        <div className={`fixed top-4 right-4 p-4 rounded-md shadow-lg text-white z-50 ${toast.type === 'success' ? 'bg-ige-green' : 'bg-red-500'}`}>
+        <div className={`fixed top-4 right-4 p-4 rounded-md shadow-lg text-white z-50 ${toast.type === 'success' ? 'bg-ige-teal' : 'bg-red-500'}`}>
           {toast.message}
         </div>
       )}
       
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-ige-violetDark mb-4">Participants JE-GE</h1>
+        <h1 className="text-2xl font-bold text-ige-navyDark mb-4">Participants JE-GE</h1>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-200">
-            <span className="block text-sm text-slate-500">Total Inscrits</span>
+            <span className="block text-sm text-slate-500">Total des inscrits</span>
             <span className="text-2xl font-bold text-slate-800">{totalInscrits}</span>
           </div>
           <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-200">
             <span className="block text-sm text-slate-500">Présents</span>
-            <span className="text-2xl font-bold text-ige-green">{totalPresents}</span>
+            <span className="text-2xl font-bold text-ige-teal">{totalPresents}</span>
           </div>
           <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-200">
             <span className="block text-sm text-slate-500">Taux de présence</span>
-            <span className="text-2xl font-bold text-ige-violet">{tauxPresence}%</span>
+            <span className="text-2xl font-bold text-ige-navy">{tauxPresence}%</span>
           </div>
         </div>
 
@@ -101,7 +101,7 @@ export default function ParticipantsAdmin() {
               placeholder="Rechercher par nom ou email..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full p-2 border border-slate-300 rounded focus:border-ige-violet outline-none"
+              className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none"
             />
           </div>
           <div className="flex items-center gap-2">
@@ -109,10 +109,10 @@ export default function ParticipantsAdmin() {
             <select 
               value={filterCheckin} 
               onChange={(e) => setFilterCheckin(e.target.value)}
-              className="p-2 border border-slate-300 rounded focus:border-ige-violet outline-none"
+              className="p-2 border border-slate-300 rounded focus:border-ige-navy outline-none"
             >
               <option value="Tous">Tous</option>
-              <option value="Présent">Présents uniquement</option>
+              <option value="Present">Présents uniquement</option>
               <option value="Inscrit">Inscrits (Absents)</option>
             </select>
           </div>
@@ -120,7 +120,7 @@ export default function ParticipantsAdmin() {
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-10"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-ige-violet"></div></div>
+        <div className="flex justify-center py-10"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-ige-navy"></div></div>
       ) : (
         <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
           {filteredParticipants.length === 0 ? (
@@ -135,7 +135,7 @@ export default function ParticipantsAdmin() {
                     <th className="p-4">Profil</th>
                     <th className="p-4">Institution</th>
                     <th className="p-4">Statut</th>
-                    <th className="p-4">Date Inscription</th>
+                    <th className="p-4">Date d’inscription</th>
                     <th className="p-4 text-right">Actions</th>
                   </tr>
                 </thead>
@@ -147,7 +147,7 @@ export default function ParticipantsAdmin() {
                       <td className="p-4">{p.profil || 'N/A'}</td>
                       <td className="p-4">{p.institution || 'N/A'}</td>
                       <td className="p-4">
-                        <span className={`px-2 py-1 rounded-full text-xs ${p.checkedIn ? 'bg-ige-green/20 text-ige-greenDark' : 'bg-slate-200 text-slate-600'}`}>
+                        <span className={`px-2 py-1 rounded-full text-xs ${p.checkedIn ? 'bg-ige-teal/20 text-ige-tealDark' : 'bg-slate-200 text-slate-600'}`}>
                           {p.checkedIn ? 'Présent' : 'Inscrit'}
                         </span>
                       </td>
@@ -172,7 +172,7 @@ export default function ParticipantsAdmin() {
       <ConfirmModal
         isOpen={Boolean(deleteId)}
         title="Supprimer ce participant ?"
-        message="Êtes-vous sûr de vouloir supprimer définitivement ce participant de la liste de la JE-GE ? Cette action est irréversible."
+        message="Etes-vous sûr de vouloir supprimer définitivement ce participant de la liste JE-GE ? Cette action est irréversible."
         confirmText="Oui, supprimer"
         cancelText="Annuler"
         loading={deleting}

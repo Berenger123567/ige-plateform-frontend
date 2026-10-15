@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Trophy, Medal, Award, Tv, Handshake, Search, Building2 } from 'lucide-react';
+import { Trophy, Medal, Award, Tv, Handshake, Search, Building2 } from '@/components/IconImage';
 import { api } from '@/lib/api';
 
 type Partner = {
@@ -13,6 +13,8 @@ type Partner = {
   description?: string;
   ordre: number;
 };
+
+const CATEGORY_LABELS: Record<string, string> = { 'Partenaire Media': 'Partenaire média' };
 
 export default function PartenairesPage() {
   const [partners, setPartners] = useState<Partner[]>([]);
@@ -45,7 +47,7 @@ export default function PartenairesPage() {
       'Sponsor Or': { icon: Trophy, className: 'text-amber-400' },
       'Sponsor Argent': { icon: Medal, className: 'text-slate-300' },
       'Sponsor Bronze': { icon: Award, className: 'text-orange-500' },
-      'Partenaire Média': { icon: Tv, className: 'text-blue-300' },
+      'Partenaire Media': { icon: Tv, className: 'text-blue-300' },
       'Partenaire': { icon: Handshake, className: 'text-slate-200' },
     };
     return icons[cat] || icons['Partenaire'];
@@ -56,8 +58,8 @@ export default function PartenairesPage() {
       'Sponsor Or': 'from-yellow-400 to-yellow-600',
       'Sponsor Argent': 'from-gray-300 to-gray-500',
       'Sponsor Bronze': 'from-orange-400 to-orange-600',
-      'Partenaire Média': 'from-blue-400 to-blue-600',
-      'Partenaire': 'from-ige-greenSoft0 to-ige-green',
+      'Partenaire Media': 'from-blue-400 to-blue-600',
+      'Partenaire': 'from-ige-tealSoft0 to-ige-teal',
     };
     return colors[cat] || colors['Partenaire'];
   };
@@ -65,7 +67,7 @@ export default function PartenairesPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-ige-green border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-16 h-16 border-4 border-ige-teal border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -76,11 +78,11 @@ export default function PartenairesPage() {
       <div className="bg-white border-b border-slate-200 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center space-y-4">
-            <h1 className="text-4xl sm:text-5xl font-display font-extrabold text-slate-900 tracking-tight animate-fade-in">
-              Nos Partenaires
+            <h1 className="text-4xl sm:text-5xl font-display font-extrabold text-ige-teal tracking-tight animate-fade-in">
+              Nos partenaires
             </h1>
             <p className="text-lg text-slate-600">
-              Ils nous accompagnent dans notre mission de promouvoir l'innovation en génie électrique
+              Ils nous accompagnent dans notre mission de promouvoir l’innovation en génie électrique.
             </p>
           </div>
         </div>
@@ -95,11 +97,11 @@ export default function PartenairesPage() {
               onClick={() => setFilter(cat)}
               className={`px-6 py-2 rounded-full font-medium transition-all duration-200 ${
                 filter === cat
-                  ? 'bg-ige-green text-white shadow-lg scale-105'
-                  : 'bg-white text-gray-700 hover:bg-ige-greenSoft shadow'
+                  ? 'bg-ige-teal text-white shadow-lg scale-105'
+                  : 'bg-white text-gray-700 hover:bg-ige-tealSoft shadow'
               }`}
             >
-              {cat}
+              {CATEGORY_LABELS[cat] || cat}
             </button>
           ))}
         </div>
@@ -124,7 +126,7 @@ export default function PartenairesPage() {
                         return <CategoryIcon className="w-6 h-6 text-white" />;
                       })()}
                     </div>
-                    <h2 className="text-3xl font-display font-bold text-slate-900">{category}</h2>
+                    <h2 className="text-3xl font-display font-bold text-slate-900">{CATEGORY_LABELS[category] || category}</h2>
                     <div className="flex-1 h-px bg-gradient-to-r from-slate-200 to-transparent ml-4"></div>
                   </div>
 
@@ -152,22 +154,22 @@ export default function PartenairesPage() {
                 <Search className="w-8 h-8 text-slate-400" />
               </div>
             </div>
-            <p className="text-xl text-slate-600">Aucun partenaire dans cette catégorie</p>
+            <p className="text-xl text-slate-600">Aucun partenaire dans cette catégorie.</p>
           </div>
         )}
 
         {/* Call to Action */}
-        <div className="mt-20 bg-ige-green rounded-2xl shadow-2xl overflow-hidden">
+        <div className="mt-20 bg-ige-teal rounded-2xl shadow-2xl overflow-hidden">
           <div className="p-8 md:p-12 text-center text-white">
-            <h2 className="text-3xl font-bold mb-4">Devenez Partenaire</h2>
-            <p className="text-lg text-ige-greenSoft mb-6 max-w-2xl mx-auto">
-              Rejoignez-nous dans notre mission de former la prochaine génération d'ingénieurs en génie électrique au Bénin
+            <h2 className="text-3xl font-bold mb-4">Devenez partenaire</h2>
+            <p className="text-lg text-ige-tealSoft mb-6 max-w-2xl mx-auto">
+              Rejoignez-nous dans notre mission de former la prochaine génération d’ingénieurs en génie électrique au Bénin.
             </p>
             <a
               href="/contact"
-              className="inline-block px-8 py-3 bg-white text-ige-green font-semibold rounded-lg hover:bg-ige-greenSoft transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              className="inline-block px-8 py-3 bg-white text-ige-teal font-semibold rounded-lg hover:bg-ige-tealSoft transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
-              Nous Contacter
+              Nous contacter
             </a>
           </div>
         </div>
@@ -195,7 +197,7 @@ function PartnerCard({ partner, index }: { partner: Partner; index: number }) {
       </div>
 
       <div className="p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-ige-green transition-colors">
+        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-ige-teal transition-colors">
           {partner.name}
         </h3>
 
@@ -208,17 +210,9 @@ function PartnerCard({ partner, index }: { partner: Partner; index: number }) {
             href={partner.website}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-ige-green hover:text-ige-greenDark font-medium text-sm group/link"
+            className="inline-flex items-center gap-2 text-ige-teal hover:text-ige-tealDark font-medium text-sm group/link"
           >
             <span>Visiter le site</span>
-            <svg
-              className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
           </a>
         )}
       </div>
