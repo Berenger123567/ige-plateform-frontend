@@ -65,7 +65,6 @@ export default function PartenairesAdmin() {
       } else {
         await api.post('/partners', formData);
       }
-  const CATEGORY_LABELS: Record<string, string> = { 'Partenaire Media': 'Partenaire média' };
       await fetchPartners();
       closeModal();
     } catch (err: any) {
@@ -210,7 +209,7 @@ export default function PartenairesAdmin() {
                   <button
                     onClick={() => handleEdit(p)}
                     className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 font-medium"
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Catégorie</th>
+                  >
                     <Edit className="w-3 h-3" /> Modifier
                   </button>
                   <button
@@ -251,7 +250,6 @@ export default function PartenairesAdmin() {
                 </label>
                 <input
                   type="text"
-                      {CATEGORY_LABELS[p.category] || p.category}
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ige-tealSoft0 focus:border-transparent"
@@ -365,7 +363,8 @@ export default function PartenairesAdmin() {
                   type="submit"
                   className="flex-1 px-4 py-2 bg-ige-teal text-white rounded-lg hover:bg-ige-tealDark transition"
                 >
-                      <option key={cat} value={cat}>{CATEGORY_LABELS[cat] || cat}</option>
+                  {editingPartner ? 'Enregistrer' : 'Créer'}
+                </button>
               </div>
             </form>
           </div>
