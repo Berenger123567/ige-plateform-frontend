@@ -23,6 +23,57 @@ const HERO_IMAGES = [
   },
 ];
 
+// Animated number component
+function AnimatedNumber({ value, duration = 2 }: { value: string | number; duration?: number }) {
+  const [displayValue, setDisplayValue] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      // For users who prefer reduced motion, show final value immediately
+      const numValue = typeof value === 'number' ? value : parseInt(value) || 0;
+      setDisplayValue(numValue);
+      return;
+    }
+
+    const numValue = typeof value === 'number' ? value : parseInt(value) || 0;
+    const startTime = performance.now();
+    const startValue = 0;
+
+    const animate = (currentTime: number) => {
+      const elapsed = (currentTime - startTime) / 1000;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Easing function for smooth animation
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      setDisplayValue(Math.floor(startValue + (numValue - startValue) * easeOut));
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }, [value, duration, prefersReducedMotion]);
+
+  // Format the display value
+  const isPercentage = typeof value === 'string' && value.includes('%');
+  const hasPlus = typeof value === 'string' && value.includes('+');
+  const isEdition = typeof value === 'string' && value.toLowerCase().includes('e');
+
+  if (isEdition) {
+    return <>{value}</>;
+  }
+
+  return (
+    <>
+      {displayValue}
+      {isPercentage && '%'}
+      {hasPlus && '+'}
+    </>
+  );
+}
+
 export default function HeroSection() {
   const [activeImage, setActiveImage] = useState(0);
   const prefersReducedMotion = useReducedMotion();
@@ -80,15 +131,21 @@ export default function HeroSection() {
             {/* Highlighted Trust Markers */}
             <div className="pt-6 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center sm:text-left">
               <div>
-                <span className="block text-2xl font-extrabold text-slate-900 font-display">100+</span>
+                <span className="block text-2xl font-extrabold text-slate-900 font-display">
+                  <AnimatedNumber value="100+" duration={3.5} />
+                </span>
                 <span className="text-xs text-slate-600">Etudiants GE et talents</span>
               </div>
               <div>
-                <span className="block text-2xl font-extrabold text-slate-900 font-display">3 Clubs</span>
+                <span className="block text-2xl font-extrabold text-slate-900 font-display">
+                  <AnimatedNumber value={3} duration={1.5} /> Clubs
+                </span>
                 <span className="text-xs text-slate-600">IoT, Robotique, Info Indu</span>
               </div>
               <div>
-                <span className="block text-2xl font-extrabold text-ige-teal font-display">6e édition</span>
+                <span className="block text-2xl font-extrabold text-ige-teal font-display">
+                  6e édition
+                </span>
                 <span className="text-xs text-slate-600">Campagne JE-GE 25-26</span>
               </div>
             </div>
