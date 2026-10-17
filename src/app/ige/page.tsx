@@ -6,12 +6,12 @@ import { ShieldCheck, Target } from '@/components/IconImage';
 
 // Animated number component
 function AnimatedNumber({ value, duration = 2 }: { value: string | number; duration?: number }) {
-  const [displayValue, setDisplayValue] = useState(0);
+  const [displayValue, setDisplayValue] = useState(1);
 
   useEffect(() => {
     const numValue = typeof value === 'number' ? value : parseInt(value) || 0;
     const startTime = performance.now();
-    const startValue = 0;
+    const startValue = 1;
 
     const animate = (currentTime: number) => {
       const elapsed = (currentTime - startTime) / 1000;

@@ -24,8 +24,8 @@ const HERO_IMAGES = [
 ];
 
 // Animated number component
-function AnimatedNumber({ value, duration = 2 }: { value: string | number; duration?: number }) {
-  const [displayValue, setDisplayValue] = useState(0);
+function AnimatedNumber({ value, duration = 2, suffix = '' }: { value: string | number; duration?: number; suffix?: string }) {
+  const [displayValue, setDisplayValue] = useState(1);
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -38,7 +38,7 @@ function AnimatedNumber({ value, duration = 2 }: { value: string | number; durat
 
     const numValue = typeof value === 'number' ? value : parseInt(value) || 0;
     const startTime = performance.now();
-    const startValue = 0;
+    const startValue = 1;
 
     const animate = (currentTime: number) => {
       const elapsed = (currentTime - startTime) / 1000;
@@ -59,17 +59,13 @@ function AnimatedNumber({ value, duration = 2 }: { value: string | number; durat
   // Format the display value
   const isPercentage = typeof value === 'string' && value.includes('%');
   const hasPlus = typeof value === 'string' && value.includes('+');
-  const isEdition = typeof value === 'string' && value.toLowerCase().includes('e');
-
-  if (isEdition) {
-    return <>{value}</>;
-  }
 
   return (
     <>
       {displayValue}
       {isPercentage && '%'}
       {hasPlus && '+'}
+      {suffix && <>{suffix}</>}
     </>
   );
 }
@@ -144,7 +140,7 @@ export default function HeroSection() {
               </div>
               <div>
                 <span className="block text-2xl font-extrabold text-ige-teal font-display">
-                  6e édition
+                  <AnimatedNumber value={6} duration={2} suffix="e édition" />
                 </span>
                 <span className="text-xs text-slate-600">Campagne JE-GE 25-26</span>
               </div>
