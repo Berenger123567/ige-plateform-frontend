@@ -20,7 +20,7 @@ const DEFAULT_SEO = {
   siteName: 'IGE - Innovation en Génie Electrique',
   title: 'IGE - Innovation en Génie Electrique | EPAC, Bénin',
   description: 'Association des étudiants en génie électrique de l’EPAC. Innovation, projets techniques, événements et formation au Bénin.',
-  image: '/logo-ige-white.png',
+  image: '/IGE_carre_noir_sur_blanc_new.png',
   url: 'https://ige-epac.bj',
   twitterHandle: '@IGE_EPAC',
 };

@@ -37,7 +37,7 @@ export default function Navbar() {
         <Link href="/" className="flex items-center">
           <div className="w-14 h-14 rounded-full bg-white border-2 border-slate-200 shadow-sm flex items-center justify-center overflow-hidden p-1.5">
             <Image
-              src="/logo-ige-white.png"
+              src="/IGE_carre_noir_sur_blanc_new.png"
               alt="IGE - Innovation en Génie Electrique"
               width={48}
               height={48}
@@ -101,7 +101,7 @@ export default function Navbar() {
           <div className="pb-3 mb-2 border-b border-slate-100">
             <div className="w-12 h-12 rounded-full bg-white border-2 border-slate-200 shadow-sm flex items-center justify-center overflow-hidden p-1">
               <Image
-                src="/logo-ige-white.png"
+                src="/IGE_carre_noir_sur_blanc_new.png"
                 alt="IGE"
                 width={40}
                 height={40}

@@ -31,12 +31,12 @@ export default function ArticleSchema({
       name: 'IGE - Innovation en Génie Electrique',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://ige-epac.bj/logo-ige-white.png',
+        url: 'https://ige-epac.bj/IGE_carre_noir_sur_blanc_new.png',
       },
     },
     datePublished: publishedAt,
     dateModified: modifiedAt || publishedAt,
-    image: image || 'https://ige-epac.bj/logo-ige-white.png',
+    image: image || 'https://ige-epac.bj/IGE_carre_noir_sur_blanc_new.png',
     url: url,
     mainEntityOfPage: {
       '@type': 'WebPage',

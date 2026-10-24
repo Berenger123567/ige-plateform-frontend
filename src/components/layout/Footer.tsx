@@ -33,11 +33,11 @@ export default function Footer() {
           <div className="space-y-5 sm:col-span-2 lg:col-span-4">
             <Link href="/" className="inline-flex">
               <Image
-                src="/logo-ige-dark.png"
+                src="/IGE_carre_blanc_sans_fond_new.png"
                 alt="IGE - Innovation en Génie Electrique"
                 width={140}
                 height={56}
-                className="h-14 sm:h-16 w-auto object-contain brightness-0 invert"
+                className="h-14 sm:h-16 w-auto object-contain"
               />
             </Link>
             <p className="max-w-sm text-sm leading-6 text-slate-400">

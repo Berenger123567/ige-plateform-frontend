@@ -57,7 +57,7 @@ export default function AdminLoginPage() {
           <div className="inline-flex p-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10 shadow-xl mb-2">
             <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center p-1.5 shadow-md">
               <Image
-                src="/logo-ige-white.png"
+                src="/IGE_carre_noir_sur_blanc_new.png"
                 alt="IGE Logo"
                 width={56}
                 height={56}
