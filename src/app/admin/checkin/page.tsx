@@ -46,11 +46,21 @@ export default function AdminCheckinPage() {
   const processToken = async (raw: string) => {
     setLoading(true);
     try {
-      let token = raw;
+      let token = raw.trim();
+
       try {
-        const parsed = JSON.parse(raw);
-        token = parsed.token || raw;
-      } catch (_) { /* raw token */ }
+        const url = new URL(token);
+        token = url.searchParams.get('token') || token;
+      } catch (_) {
+        /* not a URL */
+      }
+
+      try {
+        const parsed = JSON.parse(token);
+        token = parsed.token || token;
+      } catch (_) {
+        /* raw token */
+      }
 
       const headers = {
         'Content-Type': 'application/json',
@@ -174,7 +184,7 @@ export default function AdminCheckinPage() {
           if (token) await processToken(token);
           (e.target as HTMLFormElement).reset();
         }} className="flex gap-2">
-          <input name="token" type="text" placeholder="Token UUID du participant..." className="flex-1 px-3 py-2.5 text-sm border border-slate-200 rounded-lg focus:outline-none focus:border-ige-navy" />
+          <input name="token" type="text" placeholder="Token, URL du QR ou numéro d'inscription..." className="flex-1 px-3 py-2.5 text-sm border border-slate-200 rounded-lg focus:outline-none focus:border-ige-navy" />
           <button type="submit" className="px-4 py-2.5 bg-ige-teal text-white text-sm font-bold rounded-lg hover:bg-ige-tealDark transition-all">
             Vérifier
           </button>

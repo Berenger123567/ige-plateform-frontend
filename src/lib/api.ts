@@ -78,6 +78,44 @@ export const registerJEGE = async (data: any) => {
   return res.data;
 };
 
+export type JEGEPass = {
+  valid: boolean;
+  status: 'VALID' | 'ALREADY_CHECKED_IN';
+  participant: {
+    firstName: string;
+    lastName: string;
+    registrationNumber: string;
+    profile: string;
+    institution?: string | null;
+    checkedIn: boolean;
+    checkedInAt?: string | null;
+  };
+  edition: {
+    id: string;
+    name: string;
+    theme?: string | null;
+    dateText: string;
+    location: string;
+    startDate?: string | null;
+    endDate?: string | null;
+  };
+  qrCodeDataUrl: string;
+  ticketUrl: string;
+};
+
+export const getJEGEPass = async (token: string): Promise<JEGEPass> => {
+  const res = await api.get(`/je-ge/pass/${encodeURIComponent(token)}`);
+  return res.data;
+};
+
+export const lookupJEGEPass = async (
+  email: string,
+  registrationNumber: string
+): Promise<{ token: string; registrationNumber: string }> => {
+  const res = await api.post('/je-ge/pass/lookup', { email, registrationNumber });
+  return res.data;
+};
+
 export const checkinJEGE = async (code: string, checkedIn = true) => {
   const res = await api.post(`/admin/je-ge/checkin/${encodeURIComponent(code)}`, { checkedIn });
   return res.data;

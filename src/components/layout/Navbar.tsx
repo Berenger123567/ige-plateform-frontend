@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from '@/components/IconImage';
 import { useMenus } from '@/hooks/useMenus';
+import { useJEGETicket } from '@/hooks/useJEGETicket';
 
 type NavChild = { id: string; name: string; href: string; openInNewTab?: boolean };
 type NavLink = { id: string; name: string; href: string; openInNewTab: boolean; children: NavChild[] };
@@ -26,6 +27,9 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const menu = useMenus('header');
+  const { hasTicket } = useJEGETicket();
+  const jegeHref = hasTicket ? '/je-ge/ticket' : '/je-ge';
+  const jegeLabel = hasTicket ? 'Consulter mon ticket' : 'Inscrivez-vous à la JE-GE';
 
   const navLinks = menu && menu.length > 0
     ? menu.map((item) => ({
@@ -116,10 +120,10 @@ export default function Navbar() {
         {/* CTA JE-GE - Vert officiel IGE */}
         <div className="hidden lg:flex items-center space-x-4">
           <Link
-            href="/je-ge"
+            href={jegeHref}
             className="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-ige-teal hover:bg-ige-tealDark rounded-lg shadow-md transition-all"
           >
-            <span>Inscrivez-vous à la JE-GE</span>
+            <span>{jegeLabel}</span>
           </Link>
         </div>
 
@@ -187,11 +191,11 @@ export default function Navbar() {
           })}
           <div className="pt-3">
             <Link
-              href="/je-ge"
+              href={jegeHref}
               onClick={() => setMobileMenuOpen(false)}
               className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-lg bg-ige-teal text-white font-bold text-sm"
             >
-              <span>Inscrivez-vous à la JE-GE</span>
+              <span>{jegeLabel}</span>
             </Link>
           </div>
         </div>

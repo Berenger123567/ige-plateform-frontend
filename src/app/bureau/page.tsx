@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import { Users, Mail, Linkedin, Shield, Star, Award, Briefcase, HeartHandshake, Megaphone, Wrench, Calendar } from '@/components/IconImage';
+import { useJEGETicket } from '@/hooks/useJEGETicket';
 
 type BureauMember = {
   id: string;
@@ -58,6 +59,7 @@ const getIconForPoste = (poste: string) => {
 };
 
 export default function BureauPage() {
+  const { hasTicket } = useJEGETicket();
   const [hovered, setHovered] = useState<number | null>(null);
   const [mandats, setMandats] = useState<Mandat[]>([]);
   const [selectedMandat, setSelectedMandat] = useState<string | null>(null);
@@ -259,10 +261,10 @@ export default function BureauPage() {
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <a
-                href="/je-ge"
+                href={hasTicket ? '/je-ge/ticket' : '/je-ge'}
                 className="px-8 py-3 bg-white text-ige-teal font-semibold rounded-lg hover:bg-ige-tealSoft transition-all shadow-lg hover:shadow-xl"
               >
-                S'inscrire à la JE-GE
+                {hasTicket ? 'Consulter mon ticket' : "S'inscrire à la JE-GE"}
               </a>
               <a
                 href="/contact"

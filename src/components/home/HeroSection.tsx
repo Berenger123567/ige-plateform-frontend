@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useJEGETicket } from '@/hooks/useJEGETicket';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 
 const HERO_IMAGES = [
@@ -73,6 +74,7 @@ function AnimatedNumber({ value, duration = 2, suffix = '' }: { value: string | 
 export default function HeroSection() {
   const [activeImage, setActiveImage] = useState(0);
   const prefersReducedMotion = useReducedMotion();
+  const { hasTicket } = useJEGETicket();
 
   useEffect(() => {
     if (prefersReducedMotion) return;
@@ -111,10 +113,10 @@ export default function HeroSection() {
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 pt-2">
               <Link
-                href="/je-ge"
+                href={hasTicket ? '/je-ge/ticket' : '/je-ge'}
                 className="px-7 py-4 rounded-xl bg-ige-teal hover:bg-ige-tealDark text-white font-display font-bold text-sm flex items-center justify-center space-x-3 shadow-lg hover:shadow-ige-teal/30 transition-all transform hover:-translate-y-0.5"
               >
-                <span>Rejoindre la JE-GE 2026</span>
+                <span>{hasTicket ? 'Consulter mon ticket' : 'Rejoindre la JE-GE 2026'}</span>
               </Link>
               <Link
                 href="/projets"

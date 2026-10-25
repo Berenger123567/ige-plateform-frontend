@@ -3,8 +3,11 @@
 import React from 'react';
 import Link from 'next/link';
 import { Rocket, Calendar, MapPin, QrCode } from '@/components/IconImage';
+import { useJEGETicket } from '@/hooks/useJEGETicket';
 
 export default function JEGEBanner() {
+  const { hasTicket } = useJEGETicket();
+
   return (
     <section className="py-20 bg-slate-100 border-b border-slate-200 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -51,10 +54,10 @@ export default function JEGEBanner() {
                 <span className="text-xs text-slate-500 block">Inscriptions ouvertes</span>
                 <div className="text-2xl font-extrabold text-slate-900 font-display">Pass participant gratuit</div>
                 <Link
-                  href="/je-ge"
+                  href={hasTicket ? '/je-ge/ticket' : '/je-ge'}
                   className="w-full py-3.5 px-6 rounded-xl bg-ige-teal hover:bg-ige-tealDark text-white font-display font-bold text-xs flex items-center justify-center space-x-2 shadow-md transition-all"
                 >
-                  <span>S’inscrire à la JE-GE</span>
+                  <span>{hasTicket ? 'Consulter mon ticket' : "S'inscrire à la JE-GE"}</span>
                 </Link>
                 <p className="text-[10px] text-slate-500">
                   Confirmation immediate avec generation de votre badge QR Code.
