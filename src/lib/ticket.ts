@@ -271,15 +271,39 @@ export async function buildTicketCanvas(data: TicketInput): Promise<HTMLCanvasEl
   ctx.stroke();
   ctx.setLineDash([]);
 
-  const qrSize = 330;
-  const qrX = x + 60;
-  const qrY = perforationY + 55;
+  const qrSize = 220;
+  const qrPadding = 12;
+  const qrColumnLeft = x + 40;
+  const qrColumnWidth = 420;
+  const qrX =
+    qrColumnLeft + (qrColumnWidth - qrSize - qrPadding * 2) / 2 + qrPadding;
+  const qrAreaTop = perforationY + 18;
+  const qrAreaBottom = y + height - 58;
+  const qrY =
+    qrAreaTop +
+    (qrAreaBottom - qrAreaTop - (qrSize + qrPadding * 2)) / 2 +
+    qrPadding;
+
   ctx.fillStyle = '#ffffff';
-  roundedRect(ctx, qrX - 14, qrY - 14, qrSize + 28, qrSize + 28, 18);
+  roundedRect(
+    ctx,
+    qrX - qrPadding,
+    qrY - qrPadding,
+    qrSize + qrPadding * 2,
+    qrSize + qrPadding * 2,
+    18
+  );
   ctx.fill();
   ctx.strokeStyle = BORDER;
   ctx.lineWidth = 2;
-  roundedRect(ctx, qrX - 14, qrY - 14, qrSize + 28, qrSize + 28, 18);
+  roundedRect(
+    ctx,
+    qrX - qrPadding,
+    qrY - qrPadding,
+    qrSize + qrPadding * 2,
+    qrSize + qrPadding * 2,
+    18
+  );
   ctx.stroke();
   ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize);
 
