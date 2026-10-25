@@ -14,16 +14,17 @@ type Edition = {
   isOpen: boolean;
   active: boolean;
   participants?: any[];
+  _count?: { participants: number };
   createdAt: string;
 };
 
 type Stats = {
-  totalParticipants: number;
+  total: number;
   checkedIn: number;
-  notCheckedIn: number;
-  byProfile: Record<string, number>;
-  byInstitution: Record<string, number>;
   marketingConsent: number;
+  attendanceRate: number;
+  byProfile: { profile: string | null; count: number }[];
+  byInstitution: { institution: string; count: number }[];
 };
 
 export default function EditionsJEGEAdmin() {
@@ -52,7 +53,7 @@ export default function EditionsJEGEAdmin() {
   const fetchEditions = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/je-ge/editions');
+      const res = await api.get('/admin/je-ge/editions');
       setEditions(res.data);
     } catch (err) {
       console.error('Erreur chargement editions:', err);
@@ -63,7 +64,7 @@ export default function EditionsJEGEAdmin() {
 
   const fetchStats = async (editionId: string) => {
     try {
-      const res = await api.get(`/je-ge/editions/${editionId}/stats`);
+      const res = await api.get('/admin/je-ge/stats', { params: { editionId } });
       setSelectedEditionStats({ editionId, stats: res.data });
     } catch (err) {
       console.error('Erreur chargement stats:', err);
@@ -74,9 +75,9 @@ export default function EditionsJEGEAdmin() {
     e.preventDefault();
     try {
       if (editingEdition) {
-        await api.put(`/je-ge/editions/${editingEdition.id}`, formData);
+        await api.put(`/admin/je-ge/editions/${editingEdition.id}`, formData);
       } else {
-        await api.post('/je-ge/editions', formData);
+        await api.post('/admin/je-ge/editions', formData);
       }
       await fetchEditions();
       closeModal();
@@ -100,7 +101,7 @@ export default function EditionsJEGEAdmin() {
 
   const handleDelete = async (id: string) => {
     try {
-      await api.delete(`/je-ge/editions/${id}`);
+      await api.delete(`/admin/je-ge/editions/${id}`);
       await fetchEditions();
       setDeleteConfirm({ show: false, editionId: null });
     } catch (err: any) {
@@ -110,7 +111,7 @@ export default function EditionsJEGEAdmin() {
 
   const handleToggle = async (edition: Edition, field: 'isOpen' | 'active') => {
     try {
-      await api.put(`/je-ge/editions/${edition.id}`, {
+      await api.put(`/admin/je-ge/editions/${edition.id}`, {
         ...edition,
         [field]: !edition[field],
       });
@@ -178,7 +179,7 @@ export default function EditionsJEGEAdmin() {
         <div className="bg-white p-4 rounded-lg shadow border-l-4 border-yellow-600">
           <div className="text-sm text-gray-600">Total des participants</div>
           <div className="text-2xl font-bold text-gray-900">
-            {editions.reduce((sum, e) => sum + (e.participants?.length || 0), 0)}
+            {editions.reduce((sum, e) => sum + (e._count?.participants || 0), 0)}
           </div>
         </div>
       </div>
@@ -272,7 +273,7 @@ export default function EditionsJEGEAdmin() {
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                     <div className="bg-ige-navySoft p-3 rounded-lg">
                       <div className="text-xs text-gray-600">Total des inscrits</div>
-                      <div className="text-xl font-bold text-ige-navyDark">{selectedEditionStats.stats.totalParticipants}</div>
+                      <div className="text-xl font-bold text-ige-navyDark">{selectedEditionStats.stats.total}</div>
                     </div>
                     <div className="bg-ige-tealSoft p-3 rounded-lg">
                       <div className="text-xs text-gray-600">Check-in effectués</div>
@@ -280,7 +281,7 @@ export default function EditionsJEGEAdmin() {
                     </div>
                     <div className="bg-orange-50 p-3 rounded-lg">
                       <div className="text-xs text-gray-600">En attente</div>
-                      <div className="text-xl font-bold text-orange-600">{selectedEditionStats.stats.notCheckedIn}</div>
+                      <div className="text-xl font-bold text-orange-600">{selectedEditionStats.stats.total - selectedEditionStats.stats.checkedIn}</div>
                     </div>
                     <div className="bg-blue-50 p-3 rounded-lg">
                       <div className="text-xs text-gray-600">Consentement marketing</div>
@@ -292,10 +293,10 @@ export default function EditionsJEGEAdmin() {
                     <div>
                       <p className="text-sm font-medium text-gray-700 mb-2">Par profil</p>
                       <div className="space-y-1">
-                        {Object.entries(selectedEditionStats.stats.byProfile).map(([profile, count]) => (
-                          <div key={profile} className="flex justify-between items-center text-sm">
-                            <span className="text-gray-600">{profile}</span>
-                            <span className="font-semibold text-gray-900">{count}</span>
+                        {selectedEditionStats.stats.byProfile.map((item) => (
+                          <div key={item.profile || 'non-renseigne'} className="flex justify-between items-center text-sm">
+                            <span className="text-gray-600">{item.profile || 'Non renseigné'}</span>
+                            <span className="font-semibold text-gray-900">{item.count}</span>
                           </div>
                         ))}
                       </div>
@@ -303,15 +304,12 @@ export default function EditionsJEGEAdmin() {
                     <div>
                       <p className="text-sm font-medium text-gray-700 mb-2">Par institution (5 premières)</p>
                       <div className="space-y-1">
-                        {Object.entries(selectedEditionStats.stats.byInstitution)
-                          .sort(([, a], [, b]) => b - a)
-                          .slice(0, 5)
-                          .map(([institution, count]) => (
-                            <div key={institution} className="flex justify-between items-center text-sm">
-                              <span className="text-gray-600 truncate">{institution}</span>
-                              <span className="font-semibold text-gray-900">{count}</span>
-                            </div>
-                          ))}
+                        {selectedEditionStats.stats.byInstitution.slice(0, 5).map((item) => (
+                          <div key={item.institution} className="flex justify-between items-center text-sm">
+                            <span className="text-gray-600 truncate">{item.institution}</span>
+                            <span className="font-semibold text-gray-900">{item.count}</span>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>

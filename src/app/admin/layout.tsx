@@ -7,6 +7,7 @@ import {
   LayoutDashboard, Users, FolderKanban, CalendarDays,
   BookOpen, Award, MessageSquare, Mail, QrCode,
   LogOut, Shield, Menu, X, Loader2, Handshake, Newspaper, Calendar, GraduationCap,
+  BarChart3, FileText, Inbox,
 } from '@/components/IconImage';
 
 const MENU = [
@@ -16,7 +17,9 @@ const MENU = [
   { label: 'Blog', href: '/admin/blog', icon: Newspaper },
   { label: 'Evénements', href: '/admin/evenements', icon: CalendarDays },
   { label: 'Partenaires', href: '/admin/partenaires', icon: Handshake },
+  { label: 'Candidatures partenaires', href: '/admin/candidatures', icon: Inbox },
   { label: 'Bureau IGE', href: '/admin/bureau', icon: Users },
+  { label: 'Membres', href: '/admin/membres', icon: Users },
   { label: 'Mandats', href: '/admin/mandats', icon: Calendar },
   { label: 'Editions JE-GE', href: '/admin/editions-jege', icon: GraduationCap },
   { label: 'Epreuves', href: '/admin/epreuves', icon: BookOpen },
@@ -24,6 +27,10 @@ const MENU = [
   { label: 'Scan QR Code', href: '/admin/checkin', icon: QrCode },
   { label: 'Messages', href: '/admin/messages', icon: MessageSquare },
   { label: 'Newsletter', href: '/admin/newsletter', icon: Mail },
+  { label: 'Menus', href: '/admin/menus', icon: Menu },
+  { label: 'Pages & SEO', href: '/admin/pages', icon: FileText },
+  { label: 'Analyse', href: '/admin/analytics', icon: BarChart3 },
+  { label: 'Utilisateurs', href: '/admin/utilisateurs', icon: Shield },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

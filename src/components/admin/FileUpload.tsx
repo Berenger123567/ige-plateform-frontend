@@ -4,6 +4,7 @@ import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import { Upload, X, FileText, ImageIcon, Loader2 } from '@/components/IconImage';
 import { API_BASE_URL } from '@/config/api';
+import { getToken } from '@/utils/auth';
 
 interface FileUploadProps {
   value?: string;
@@ -26,8 +27,13 @@ export default function FileUpload({ value, onChange, accept = 'image/*', label 
     try {
       const formData = new FormData();
       formData.append('file', file);
-      const res = await fetch(`${API_BASE_URL}/upload`, { method: 'POST', body: formData });
-      if (!res.ok) throw new Error('Upload echoue');
+      const token = getToken();
+      const res = await fetch(`${API_BASE_URL}/upload`, {
+        method: 'POST',
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        body: formData,
+      });
+      if (!res.ok) throw new Error('Upload échoué');
       const data = await res.json();
       onChange(data.url);
     } catch (e: any) {

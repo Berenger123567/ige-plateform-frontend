@@ -52,20 +52,32 @@ export default function AdminCheckinPage() {
         token = parsed.token || raw;
       } catch (_) { /* raw token */ }
 
-      const res = await fetch(`${API_BASE_URL}/je-ge/checkin`, {
+      const headers = {
+        'Content-Type': 'application/json',
+        ...(getToken() ? { Authorization: `Bearer ${getToken()}` } : {}),
+      };
+      const code = encodeURIComponent(token);
+      const lookup = await fetch(`${API_BASE_URL}/admin/je-ge/checkin/${code}`, { headers });
+      if (!lookup.ok) {
+        const data = await lookup.json().catch(() => ({}));
+        setResult({ success: false, message: data.error || 'Participant introuvable.' });
+        return;
+      }
+      const existing = await lookup.json();
+      if (existing.checkedIn) {
+        setResult({ success: false, message: 'Déjà enregistré !', participant: existing });
+        return;
+      }
+
+      const res = await fetch(`${API_BASE_URL}/admin/je-ge/checkin/${code}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getToken() ? { Authorization: `Bearer ${getToken()}` } : {},
-        },
-        body: JSON.stringify({ token }),
+        headers,
+        body: JSON.stringify({ checkedIn: true }),
       });
       const data = await res.json();
 
       if (res.ok) {
         setResult({ success: true, message: 'Participant enregistré avec succès !', participant: data.participant });
-      } else if (res.status === 409) {
-        setResult({ success: false, message: 'Déjà enregistré !', participant: data.participant });
       } else {
         setResult({ success: false, message: data.error || 'Participant introuvable.' });
       }

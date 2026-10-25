@@ -22,6 +22,10 @@ type Article = {
   views: number;
   publishedAt?: string;
   createdAt: string;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  canonical?: string | null;
+  ogImage?: string | null;
 };
 
 const CATEGORIES = ['Actualite', 'Evenement', 'Projet', 'Reussite', 'Partenariat', 'Technique'];
@@ -48,6 +52,10 @@ export default function BlogAdmin() {
     status: 'BROUILLON',
     featured: false,
     publishedAt: '',
+    seoTitle: '',
+    seoDescription: '',
+    canonical: '',
+    ogImage: '',
   });
   const [deleteConfirm, setDeleteConfirm] = useState<{ show: boolean; articleId: string | null }>({
     show: false,
@@ -73,7 +81,13 @@ export default function BlogAdmin() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const payload = { ...formData };
+      const payload = {
+        ...formData,
+        seoTitle: formData.seoTitle || null,
+        seoDescription: formData.seoDescription || null,
+        canonical: formData.canonical || null,
+        ogImage: formData.ogImage || null,
+      };
       
       // Si on publie l'article et qu'il n'a pas de date de publication, utiliser maintenant
       if (payload.status === 'PUBLIE' && !payload.publishedAt) {
@@ -105,6 +119,10 @@ export default function BlogAdmin() {
       status: article.status,
       featured: article.featured,
       publishedAt: article.publishedAt || '',
+      seoTitle: article.seoTitle || '',
+      seoDescription: article.seoDescription || '',
+      canonical: article.canonical || '',
+      ogImage: article.ogImage || '',
     });
     setShowModal(true);
   };
@@ -133,6 +151,10 @@ export default function BlogAdmin() {
       status: 'BROUILLON',
       featured: false,
       publishedAt: '',
+      seoTitle: '',
+      seoDescription: '',
+      canonical: '',
+      ogImage: '',
     });
   };
 
@@ -357,6 +379,40 @@ export default function BlogAdmin() {
                     </button>
                   </div>
                 )}
+              </div>
+
+              <div className="border-t pt-4 space-y-4">
+                <p className="text-sm font-semibold text-gray-700">Référencement (SEO)</p>
+                <input
+                  type="text"
+                  value={formData.seoTitle}
+                  onChange={(e) => setFormData({ ...formData, seoTitle: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  placeholder="Titre SEO (optionnel)"
+                />
+                <textarea
+                  value={formData.seoDescription}
+                  onChange={(e) => setFormData({ ...formData, seoDescription: e.target.value })}
+                  rows={2}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  placeholder="Description SEO (optionnel)"
+                />
+                <div className="grid grid-cols-2 gap-4">
+                  <input
+                    type="url"
+                    value={formData.canonical}
+                    onChange={(e) => setFormData({ ...formData, canonical: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                    placeholder="URL canonique (https://...)"
+                  />
+                  <input
+                    type="url"
+                    value={formData.ogImage}
+                    onChange={(e) => setFormData({ ...formData, ogImage: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                    placeholder="Image Open Graph (https://...)"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">

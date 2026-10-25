@@ -137,9 +137,14 @@ export default function JEGEPage() {
 
             {/* QR Code Graphic Badge */}
             <div className="max-w-xs mx-auto p-6 bg-slate-50 border border-slate-200 rounded-2xl shadow-md space-y-4 text-slate-900">
-              <img src={registeredData.qrCodeDataUrl} alt="QR Code Badge" className="w-48 h-48 mx-auto" />
+              {registeredData.qrCodeDataUrl ? (
+                <img src={registeredData.qrCodeDataUrl} alt="QR Code Badge" className="w-48 h-48 mx-auto" />
+              ) : (
+                <p className="text-xs text-slate-500">Le QR code vous a été envoyé par e-mail.</p>
+              )}
               <div className="text-[11px] font-mono font-bold tracking-widest uppercase border-t border-slate-200 pt-2 text-slate-600">
-                TOKEN: {registeredData.qrCodeToken.slice(0, 18)}...
+                N° {registeredData.registrationNumber}
+                {registeredData.qrCodeToken ? ` · TOKEN ${registeredData.qrCodeToken.slice(0, 18)}...` : ''}
               </div>
             </div>
 

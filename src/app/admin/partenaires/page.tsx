@@ -48,7 +48,7 @@ export default function PartenairesAdmin() {
   const fetchPartners = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/partners');
+      const res = await api.get('/admin/partenaires');
       setPartners(res.data);
     } catch (err) {
       console.error('Erreur chargement partenaires:', err);
@@ -61,9 +61,9 @@ export default function PartenairesAdmin() {
     e.preventDefault();
     try {
       if (editingPartner) {
-        await api.put(`/partners/${editingPartner.id}`, formData);
+        await api.put(`/admin/partenaires/${editingPartner.id}`, formData);
       } else {
-        await api.post('/partners', formData);
+        await api.post('/admin/partenaires', formData);
       }
       await fetchPartners();
       closeModal();
@@ -88,7 +88,7 @@ export default function PartenairesAdmin() {
 
   const handleDelete = async (id: string) => {
     try {
-      await api.delete(`/partners/${id}`);
+      await api.delete(`/admin/partenaires/${id}`);
       await fetchPartners();
       setDeleteConfirm({ show: false, partnerId: null });
     } catch (err: any) {

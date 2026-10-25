@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Trophy, Medal, Award, Tv, Handshake, Search, Building2 } from '@/components/IconImage';
+import { useEffect, useState } from 'react';
+import { Trophy, Medal, Award, Tv, Handshake, Search, Building2, X, Loader2, CheckCircle2 } from '@/components/IconImage';
 import { api } from '@/lib/api';
 
 type Partner = {
@@ -16,10 +16,25 @@ type Partner = {
 
 const CATEGORY_LABELS: Record<string, string> = { 'Partenaire Media': 'Partenaire média' };
 
+const emptyApplication = {
+  organization: '',
+  contactName: '',
+  email: '',
+  phone: '',
+  website: '',
+  partnerType: '',
+  contributionType: '',
+  message: '',
+};
+
 export default function PartenairesPage() {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>('Tous');
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState(emptyApplication);
+  const [submitting, setSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   useEffect(() => {
     fetchPartners();
@@ -27,8 +42,8 @@ export default function PartenairesPage() {
 
   const fetchPartners = async () => {
     try {
-      const res = await api.get('/partners');
-      setPartners(res.data);
+      const res = await api.get('/partenaires');
+      setPartners(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error('Erreur chargement partenaires:', err);
     } finally {
@@ -64,6 +79,21 @@ export default function PartenairesPage() {
     return colors[cat] || colors['Partenaire'];
   };
 
+  const submitApplication = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setFeedback(null);
+    try {
+      const res = await api.post('/partenaires/candidature', form);
+      setFeedback({ type: 'success', message: res.data?.message || 'Votre demande a bien été envoyée.' });
+      setForm(emptyApplication);
+    } catch (err: any) {
+      setFeedback({ type: 'error', message: err.response?.data?.error || "Erreur lors de l'envoi de la demande." });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -74,7 +104,6 @@ export default function PartenairesPage() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* Hero Section */}
       <div className="bg-white border-b border-slate-200 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center space-y-4">
@@ -82,14 +111,13 @@ export default function PartenairesPage() {
               Nos partenaires
             </h1>
             <p className="text-lg text-slate-600">
-              Ils nous accompagnent dans notre mission de promouvoir l’innovation en génie électrique.
+              Ils nous accompagnent dans notre mission de promouvoir l&apos;innovation en génie électrique.
             </p>
           </div>
         </div>
       </div>
 
       <div className="container mx-auto px-4 py-12">
-        {/* Filtres */}
         <div className="flex flex-wrap gap-3 justify-center mb-12">
           {categories.map((cat) => (
             <button
@@ -106,7 +134,6 @@ export default function PartenairesPage() {
           ))}
         </div>
 
-        {/* Liste des partenaires par catégorie */}
         {filter === 'Tous' ? (
           <div className="space-y-16">
             {categories.slice(1).map((category) => {
@@ -116,11 +143,7 @@ export default function PartenairesPage() {
               return (
                 <div key={category}>
                   <div className="flex items-center gap-3 mb-8">
-                    <div
-                      className={`w-12 h-12 rounded-full bg-gradient-to-br ${getCategoryColor(
-                        category
-                      )} flex items-center justify-center`}
-                    >
+                    <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${getCategoryColor(category)} flex items-center justify-center`}>
                       {(() => {
                         const { icon: CategoryIcon } = getCategoryIcon(category);
                         return <CategoryIcon className="w-6 h-6 text-white" />;
@@ -158,22 +181,80 @@ export default function PartenairesPage() {
           </div>
         )}
 
-        {/* Call to Action */}
         <div className="mt-20 bg-ige-teal rounded-2xl shadow-2xl overflow-hidden">
           <div className="p-8 md:p-12 text-center text-white">
             <h2 className="text-3xl font-bold mb-4">Devenez partenaire</h2>
             <p className="text-lg text-ige-tealSoft mb-6 max-w-2xl mx-auto">
-              Rejoignez-nous dans notre mission de former la prochaine génération d’ingénieurs en génie électrique au Bénin.
+              Rejoignez-nous dans notre mission de former la prochaine génération d&apos;ingénieurs en génie électrique au Bénin.
             </p>
-            <a
-              href="/contact"
+            <button
+              onClick={() => {
+                setFeedback(null);
+                setShowForm(true);
+              }}
               className="inline-block px-8 py-3 bg-white text-ige-teal font-semibold rounded-lg hover:bg-ige-tealSoft transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
-              Nous contacter
-            </a>
+              Déposer une candidature
+            </button>
           </div>
         </div>
       </div>
+
+      {showForm && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto p-6 sm:p-8">
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <div>
+                <h2 className="text-2xl font-bold text-ige-navyDark">Candidature partenaire</h2>
+                <p className="text-sm text-slate-500">Présentez votre organisation et votre projet de collaboration.</p>
+              </div>
+              <button onClick={() => setShowForm(false)} className="p-2 rounded-full hover:bg-slate-100" aria-label="Fermer">
+                <X className="w-5 h-5 text-slate-500" />
+              </button>
+            </div>
+
+            {feedback?.type === 'success' ? (
+              <div className="py-10 text-center space-y-4">
+                <CheckCircle2 className="w-14 h-14 text-ige-teal mx-auto" />
+                <p className="text-slate-700">{feedback.message}</p>
+                <button onClick={() => setShowForm(false)} className="px-6 py-2 bg-ige-teal text-white rounded-lg hover:bg-ige-tealDark">
+                  Fermer
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={submitApplication} className="space-y-4">
+                {feedback?.type === 'error' && (
+                  <div className="p-3 rounded bg-red-50 border border-red-200 text-red-700 text-sm">{feedback.message}</div>
+                )}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <input required placeholder="Organisation *" value={form.organization} onChange={(e) => setForm({ ...form, organization: e.target.value })} className="p-2.5 border border-slate-300 rounded-lg" />
+                  <input required placeholder="Personne de contact *" value={form.contactName} onChange={(e) => setForm({ ...form, contactName: e.target.value })} className="p-2.5 border border-slate-300 rounded-lg" />
+                  <input required type="email" placeholder="Email *" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="p-2.5 border border-slate-300 rounded-lg" />
+                  <input placeholder="Téléphone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="p-2.5 border border-slate-300 rounded-lg" />
+                  <input type="url" placeholder="Site web (https://...)" value={form.website} onChange={(e) => setForm({ ...form, website: e.target.value })} className="p-2.5 border border-slate-300 rounded-lg" />
+                  <input placeholder="Type de partenaire (entreprise, école...)" value={form.partnerType} onChange={(e) => setForm({ ...form, partnerType: e.target.value })} className="p-2.5 border border-slate-300 rounded-lg" />
+                </div>
+                <select value={form.contributionType} onChange={(e) => setForm({ ...form, contributionType: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg">
+                  <option value="">Type de contribution</option>
+                  <option value="Financement">Financement</option>
+                  <option value="Matériel">Matériel</option>
+                  <option value="Expertise">Expertise</option>
+                  <option value="Prix">Prix</option>
+                  <option value="Stand">Stand</option>
+                  <option value="Autre">Autre</option>
+                </select>
+                <textarea required minLength={20} rows={5} placeholder="Décrivez votre proposition de partenariat (20 caractères minimum) *" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg" />
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-200">
+                  <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg">Annuler</button>
+                  <button type="submit" disabled={submitting} className="px-4 py-2 bg-ige-teal text-white rounded-lg hover:bg-ige-tealDark disabled:opacity-60 inline-flex items-center gap-2">
+                    {submitting && <Loader2 className="w-4 h-4 animate-spin" />} Envoyer la candidature
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

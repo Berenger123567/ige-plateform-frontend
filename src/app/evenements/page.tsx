@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { getEvents } from '@/lib/api';
+import { api, getEvents } from '@/lib/api';
 import { Calendar, MapPin, Clock, Search, Filter, Star } from '@/components/IconImage';
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -15,19 +15,26 @@ export default function EvenementsPage() {
   const [events, setEvents] = useState<any[]>([]);
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getEvents()
-      .then((data) => setEvents(data))
+    Promise.all([
+      getEvents(),
+      api.get('/events/categories').then((res) => res.data).catch(() => []),
+    ])
+      .then(([data, cats]) => {
+        setEvents(Array.isArray(data) ? data : []);
+        setCategories(Array.isArray(cats) ? cats : []);
+      })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, []);
 
   const filteredEvents = events.filter((evt) => {
-    const matchSearch = evt.title.toLowerCase().includes(search.toLowerCase()) ||
-                        evt.description.toLowerCase().includes(search.toLowerCase()) ||
-                        evt.category.toLowerCase().includes(search.toLowerCase());
+    const matchSearch = (evt.title || '').toLowerCase().includes(search.toLowerCase()) ||
+                        (evt.description || '').toLowerCase().includes(search.toLowerCase()) ||
+                        (evt.category || '').toLowerCase().includes(search.toLowerCase());
     const matchCategory = selectedCategory === 'all' || evt.category === selectedCategory;
     return matchSearch && matchCategory;
   });
@@ -67,9 +74,12 @@ export default function EvenementsPage() {
               className="bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-3.5 py-3 focus:outline-none focus:border-ige-teal"
             >
               <option value="all">Toutes les catégories</option>
-              <option value="Genie Electrique">{CATEGORY_LABELS['Genie Electrique']}</option>
-              <option value="IA & Robotique">IA & Robotique</option>
-              <option value="IoT & Embarque">{CATEGORY_LABELS['IoT & Embarque']}</option>
+              {(categories.length > 0
+                ? categories.map((cat) => ({ value: cat.name, label: CATEGORY_LABELS[cat.name] || cat.name }))
+                : Object.keys(CATEGORY_LABELS).map((name) => ({ value: name, label: CATEGORY_LABELS[name] }))
+              ).map((cat) => (
+                <option key={cat.value} value={cat.value}>{cat.label}</option>
+              ))}
             </select>
           </div>
         </div>

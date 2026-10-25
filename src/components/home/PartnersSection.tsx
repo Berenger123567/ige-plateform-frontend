@@ -11,7 +11,7 @@ export default function PartnersSection() {
 
   useEffect(() => {
     api
-      .get('/partners')
+      .get('/partenaires')
       .then((res) => setPartners(Array.isArray(res.data) ? res.data : []))
       .catch(() => setPartners([]));
   }, []);

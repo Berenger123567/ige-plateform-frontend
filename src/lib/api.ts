@@ -59,7 +59,17 @@ export const getProjectById = async (id: string) => {
 };
 
 export const getActiveJEGEEdition = async () => {
-  const res = await api.get('/je-ge/active');
+  const res = await api.get('/je-ge');
+  return res.data;
+};
+
+export const getJEGEEditions = async () => {
+  const res = await api.get('/je-ge/editions');
+  return res.data;
+};
+
+export const getJEGEEdition = async (id: string) => {
+  const res = await api.get(`/je-ge/editions/${id}`);
   return res.data;
 };
 
@@ -68,18 +78,37 @@ export const registerJEGE = async (data: any) => {
   return res.data;
 };
 
-export const checkinJEGE = async (token: string) => {
-  const res = await api.post('/je-ge/checkin', { token });
+export const checkinJEGE = async (code: string, checkedIn = true) => {
+  const res = await api.post(`/admin/je-ge/checkin/${encodeURIComponent(code)}`, { checkedIn });
   return res.data;
 };
 
-export const getEvents = async () => {
-  const res = await api.get('/evenements');
+export const getEvents = async (params?: Record<string, unknown>) => {
+  const res = await api.get('/events', { params });
   return res.data;
 };
 
-export const subscribeNewsletter = async (email: string) => {
-  const res = await api.post('/newsletter', { email });
+export const getEventById = async (id: string) => {
+  const res = await api.get(`/events/${id}`);
+  return res.data;
+};
+
+export type NewsletterSignupPayload = {
+  email: string;
+  firstName?: string;
+  source?: string;
+  profile?: string;
+  institution?: string;
+  phone?: string;
+  domainOfInterest?: string;
+};
+
+export const subscribeNewsletter = async (
+  payload: string | NewsletterSignupPayload,
+  source = 'SITE_WEB'
+) => {
+  const data = typeof payload === 'string' ? { email: payload, source } : { source, ...payload };
+  const res = await api.post('/newsletter/subscribe', data);
   return res.data;
 };
 

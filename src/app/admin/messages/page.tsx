@@ -30,7 +30,7 @@ export default function MessagesAdmin() {
 
   const markAsRead = async (id: string) => {
     try {
-      await api.put(`/admin/messages/${id}/read`);
+      await api.put(`/admin/messages/${id}`, { isRead: true });
       showToast('Message marqué comme lu', 'success');
       fetchData();
     } catch (err) {

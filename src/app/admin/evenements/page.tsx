@@ -19,6 +19,7 @@ export default function EvenementsAdmin() {
   const defaultForm = {
     title: '', description: '', category: 'IA', date: '', time: '', 
     location: '', city: 'Cotonou', organizer: '', registrationUrl: '', 
+    imageUrl: '', practicalInfo: '', format: 'Présentiel',
     price: 'Gratuit', status: 'BROUILLON', featured: false
   };
   const [formData, setFormData] = useState<any>(defaultForm);
@@ -26,7 +27,7 @@ export default function EvenementsAdmin() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/admin/evenements');
+      const res = await api.get('/admin/events');
       setEvenements(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       showToast('Erreur lors du chargement', 'error');
@@ -47,11 +48,16 @@ export default function EvenementsAdmin() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const payload = { ...formData, registrationUrl: formData.registrationUrl || null };
+      const payload = {
+        ...formData,
+        eventDate: formData.date || undefined,
+        registrationUrl: formData.registrationUrl || null,
+        imageUrl: formData.imageUrl || null,
+      };
       if (editingId) {
-        await api.put(`/evenements/${editingId}`, payload);
+        await api.put(`/admin/events/${editingId}`, payload);
       } else {
-        await api.post('/evenements', payload);
+        await api.post('/admin/events', payload);
       }
       showToast(`Evénement ${editingId ? 'modifié' : 'créé'} avec succès`, 'success');
       setIsModalOpen(false);
@@ -69,7 +75,7 @@ export default function EvenementsAdmin() {
     if (!deleteId) return;
     setDeleting(true);
     try {
-      await api.delete(`/evenements/${deleteId}`);
+      await api.delete(`/admin/events/${deleteId}`);
       showToast('Evénement supprimé', 'success');
       fetchData();
     } catch (err) {
@@ -82,13 +88,20 @@ export default function EvenementsAdmin() {
 
   const openModal = (ev?: any) => {
     if (ev) {
-      setEditingId(ev._id || ev.id);
+      setEditingId(ev.id);
       // Normaliser la date au format input[type=date] (yyyy-mm-dd)
       const rawDate = ev.eventDate || ev.date;
       const dateIso = rawDate && !isNaN(new Date(rawDate).getTime())
         ? new Date(rawDate).toISOString().split('T')[0]
         : '';
-      setFormData({ ...ev, date: dateIso });
+      setFormData({
+        ...defaultForm,
+        ...ev,
+        date: dateIso,
+        imageUrl: ev.imageUrl || '',
+        practicalInfo: ev.practicalInfo || '',
+        format: ev.format || 'Présentiel',
+      });
     } else {
       setEditingId(null);
       setFormData(defaultForm);
@@ -135,7 +148,7 @@ export default function EvenementsAdmin() {
                   <td className="p-4">{ev.eventDate || ev.date ? new Date(ev.eventDate || ev.date).toLocaleDateString() : ''}</td>
                   <td className="p-4">{ev.city}</td>
                   <td className="p-4">
-                    <span className={`px-2 py-1 rounded-full text-xs ${ev.status === 'PUBLIE' ? 'bg-ige-teal/20 text-ige-tealDark' : 'bg-slate-200 text-slate-700'}`}>
+                    <span className={`px-2 py-1 rounded-full text-xs ${ev.status === 'PUBLIE' ? 'bg-ige-teal/20 text-ige-tealDark' : ev.status === 'VALIDE' ? 'bg-blue-100 text-blue-700' : 'bg-slate-200 text-slate-700'}`}>
                       {ev.status}
                     </span>
                   </td>
@@ -213,9 +226,29 @@ export default function EvenementsAdmin() {
                 </div>
               </div>
 
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">Format</label>
+                  <select value={formData.format} onChange={e => setFormData({...formData, format: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none">
+                    <option value="Présentiel">Présentiel</option>
+                    <option value="En ligne">En ligne</option>
+                    <option value="Hybride">Hybride</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Image (URL)</label>
+                  <input type="url" value={formData.imageUrl} onChange={e => setFormData({...formData, imageUrl: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" />
+                </div>
+              </div>
+
               <div>
                 <label className="block text-sm font-medium mb-1">Lien d'inscription</label>
                 <input type="url" value={formData.registrationUrl} onChange={e => setFormData({...formData, registrationUrl: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Informations pratiques</label>
+                <textarea value={formData.practicalInfo} onChange={e => setFormData({...formData, practicalInfo: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" rows={2}></textarea>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -223,7 +256,10 @@ export default function EvenementsAdmin() {
                   <label className="block text-sm font-medium mb-1">Statut</label>
                   <select value={formData.status} onChange={e => setFormData({...formData, status: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none">
                     <option value="BROUILLON">Brouillon</option>
-                    <option value="PUBLIE">Publie</option>
+                    <option value="A_VERIFIER">À vérifier</option>
+                    <option value="VALIDE">Validé</option>
+                    <option value="PUBLIE">Publié</option>
+                    <option value="ARCHIVE">Archivé</option>
                   </select>
                 </div>
                 <div className="flex items-center mt-6">

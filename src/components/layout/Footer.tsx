@@ -5,11 +5,24 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Mail, MapPin, CheckCircle2, ShieldCheck, Linkedin, Facebook } from '@/components/IconImage';
 import { subscribeNewsletter } from '@/lib/api';
+import { useMenus } from '@/hooks/useMenus';
+
+const FALLBACK_NAV = [
+  { id: 'ige', label: 'L’organisation IGE', url: '/ige' },
+  { id: 'clubs', label: 'Les clubs techniques', url: '/#clubs' },
+  { id: 'projets', label: 'Projets et réalisations', url: '/projets' },
+  { id: 'jege', label: 'Edition JE-GE 2026', url: '/je-ge' },
+  { id: 'evenements', label: 'Agenda technologique', url: '/evenements' },
+];
 
 export default function Footer() {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
+  const footerMenu = useMenus('footer');
+  const navItems = footerMenu && footerMenu.length > 0
+    ? footerMenu.map((item) => ({ id: item.id, label: item.label, url: item.url }))
+    : FALLBACK_NAV;
 
   const handleNewsletter = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,11 +83,11 @@ export default function Footer() {
           <div className="space-y-4 lg:col-span-2">
             <h2 className="text-xs font-bold text-white">Navigation</h2>
             <ul className="space-y-3 text-sm text-slate-400">
-              <li><Link href="/ige" className="hover:text-white transition-colors">L’organisation IGE</Link></li>
-              <li><Link href="/#clubs" className="hover:text-white transition-colors">Les clubs techniques</Link></li>
-              <li><Link href="/projets" className="hover:text-white transition-colors">Projets et réalisations</Link></li>
-              <li><Link href="/je-ge" className="hover:text-white transition-colors">Edition JE-GE 2026</Link></li>
-              <li><Link href="/evenements" className="hover:text-white transition-colors">Agenda technologique</Link></li>
+              {navItems.map((item) => (
+                <li key={item.id}>
+                  <Link href={item.url} className="hover:text-white transition-colors">{item.label}</Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -94,7 +107,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="space-y-4 sm:col-span-2 lg:col-span-3">
+          <div id="newsletter" className="space-y-4 sm:col-span-2 lg:col-span-3">
             <h2 className="text-xs font-bold text-white">Newsletter</h2>
             <p className="text-sm leading-6 text-slate-400">
               Recevez notre bulletin mensuel sur les événements et les innovations au Bénin.

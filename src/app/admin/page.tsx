@@ -6,55 +6,52 @@ import {
   Users, FolderKanban, CalendarDays, MessageSquare,
   Mail, Award, BookOpen, QrCode, TrendingUp, CheckCircle2,
 } from '@/components/IconImage';
-import { API_BASE_URL } from '@/config/api';
+import { api } from '@/lib/api';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
-    clubs: 0, projets: 0, evenements: 0,
+    articles: 0, projets: 0, evenements: 0,
     participants: 0, messages: 0, newsletter: 0,
-    bureau: 0, epreuves: 0,
+    checkedIn: 0, editions: 0, views: 0,
   });
   const [recentParticipants, setRecentParticipants] = useState<any[]>([]);
   const [recentMessages, setRecentMessages] = useState<any[]>([]);
+  const [attendanceRate, setAttendanceRate] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const safeJson = (url: string) => fetch(url).then(r => r.ok ? r.json() : []).catch(() => []);
-    const fetches = [
-      safeJson(`${API_BASE_URL}/clubs`),
-      safeJson(`${API_BASE_URL}/projets`),
-      safeJson(`${API_BASE_URL}/evenements`),
-      safeJson(`${API_BASE_URL}/admin/participants`),
-      safeJson(`${API_BASE_URL}/admin/messages`),
-      safeJson(`${API_BASE_URL}/newsletter`),
-      safeJson(`${API_BASE_URL}/bureau`),
-      safeJson(`${API_BASE_URL}/epreuves`),
-    ];
-    Promise.all(fetches).then(([clubs, projets, evenements, participants, messages, newsletter, bureau, epreuves]) => {
-      setStats({
-        clubs: Array.isArray(clubs) ? clubs.length : 0,
-        projets: Array.isArray(projets) ? projets.length : 0,
-        evenements: Array.isArray(evenements) ? evenements.length : 0,
-        participants: Array.isArray(participants) ? participants.length : 0,
-        messages: Array.isArray(messages) ? messages.length : 0,
-        newsletter: Array.isArray(newsletter) ? newsletter.length : 0,
-        bureau: Array.isArray(bureau) ? bureau.length : 0,
-        epreuves: Array.isArray(epreuves) ? epreuves.length : 0,
-      });
-      setRecentParticipants(Array.isArray(participants) ? participants.slice(0, 5) : []);
-      setRecentMessages(Array.isArray(messages) ? messages.slice(0, 5) : []);
-    }).catch(console.error).finally(() => setLoading(false));
+    api.get('/admin/dashboard')
+      .then((res) => {
+        const data = res.data || {};
+        const counts = data.counts || {};
+        setStats({
+          articles: counts.articles || 0,
+          projets: counts.projects || 0,
+          evenements: counts.events || 0,
+          participants: counts.participants || 0,
+          messages: counts.unreadMessages || 0,
+          newsletter: counts.activeSubscribers || 0,
+          checkedIn: counts.checkedInParticipants || 0,
+          editions: counts.activeEditions || 0,
+          views: counts.pageViewsLast30Days || 0,
+        });
+        setAttendanceRate(data.attendance?.rate || 0);
+        setRecentParticipants(data.recent?.participants || []);
+        setRecentMessages(data.recent?.messages || []);
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
 
   const STAT_CARDS = [
-    { label: 'Clubs', value: stats.clubs, icon: Award, color: 'violet', href: '/admin/clubs' },
+    { label: 'Articles', value: stats.articles, icon: BookOpen, color: 'bronze', href: '/admin/blog' },
     { label: 'Projets', value: stats.projets, icon: FolderKanban, color: 'green', href: '/admin/projets' },
     { label: 'Evénements', value: stats.evenements, icon: CalendarDays, color: 'bronze', href: '/admin/evenements' },
     { label: 'Participants JE-GE', value: stats.participants, icon: Users, color: 'violet', href: '/admin/participants' },
-    { label: 'Membres Bureau', value: stats.bureau, icon: Users, color: 'green', href: '/admin/bureau' },
-    { label: 'Epreuves', value: stats.epreuves, icon: BookOpen, color: 'bronze', href: '/admin/epreuves' },
-    { label: 'Messages reçus', value: stats.messages, icon: MessageSquare, color: 'violet', href: '/admin/messages' },
-    { label: 'Abonnés à la newsletter', value: stats.newsletter, icon: Mail, color: 'green', href: '/admin/newsletter' },
+    { label: 'Présents JE-GE', value: stats.checkedIn, icon: CheckCircle2, color: 'green', href: '/admin/participants' },
+    { label: 'Éditions actives', value: stats.editions, icon: Award, color: 'violet', href: '/admin/editions-jege' },
+    { label: 'Messages non lus', value: stats.messages, icon: MessageSquare, color: 'violet', href: '/admin/messages' },
+    { label: 'Abonnés newsletter', value: stats.newsletter, icon: Mail, color: 'green', href: '/admin/newsletter' },
   ];
 
   const colorMap: Record<string, string> = {
@@ -86,6 +83,17 @@ export default function AdminDashboard() {
             <p className="text-xs text-slate-500 mt-0.5">{card.label}</p>
           </Link>
         ))}
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="bg-white rounded-xl border border-slate-200 p-5">
+          <p className="text-xs font-semibold uppercase text-slate-500">Taux de présence JE-GE</p>
+          <p className="text-2xl font-display font-bold text-ige-teal mt-1">{attendanceRate}%</p>
+        </div>
+        <div className="bg-white rounded-xl border border-slate-200 p-5">
+          <p className="text-xs font-semibold uppercase text-slate-500">Vues de pages (30 jours)</p>
+          <p className="text-2xl font-display font-bold text-ige-navy mt-1">{stats.views}</p>
+        </div>
       </div>
 
       {/* Quick actions */}

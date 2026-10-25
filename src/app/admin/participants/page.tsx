@@ -15,7 +15,7 @@ export default function ParticipantsAdmin() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/admin/participants');
+      const res = await api.get('/admin/je-ge/participants');
       setParticipants(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       showToast('Erreur lors du chargement', 'error');
@@ -41,7 +41,7 @@ export default function ParticipantsAdmin() {
     if (!deleteId) return;
     setDeleting(true);
     try {
-      await api.delete(`/admin/participants/${deleteId}`);
+      await api.delete(`/admin/je-ge/participants/${deleteId}`);
       showToast('Participant supprime', 'success');
       fetchData();
     } catch (err) {
@@ -58,8 +58,10 @@ export default function ParticipantsAdmin() {
       : filterCheckin === 'Present' ? p.checkedIn : !p.checkedIn;
     
     const searchLower = search.toLowerCase();
-    const matchSearch = (p.name && p.name.toLowerCase().includes(searchLower)) || 
-                        (p.email && p.email.toLowerCase().includes(searchLower));
+    const fullName = `${p.firstName || ''} ${p.lastName || ''}`.trim();
+    const matchSearch = fullName.toLowerCase().includes(searchLower) ||
+                        (p.email && p.email.toLowerCase().includes(searchLower)) ||
+                        (p.registrationNumber && p.registrationNumber.toLowerCase().includes(searchLower));
                         
     return matchFilter && matchSearch;
   });
@@ -142,9 +144,9 @@ export default function ParticipantsAdmin() {
                 <tbody>
                   {filteredParticipants.map((p) => (
                     <tr key={p._id || p.id} className="border-b border-slate-200 hover:bg-slate-50">
-                      <td className="p-4 font-medium">{p.name}</td>
+                      <td className="p-4 font-medium">{p.firstName} {p.lastName}</td>
                       <td className="p-4 text-slate-600">{p.email}</td>
-                      <td className="p-4">{p.profil || 'N/A'}</td>
+                      <td className="p-4">{p.profile || 'N/A'}</td>
                       <td className="p-4">{p.institution || 'N/A'}</td>
                       <td className="p-4">
                         <span className={`px-2 py-1 rounded-full text-xs ${p.checkedIn ? 'bg-ige-teal/20 text-ige-tealDark' : 'bg-slate-200 text-slate-600'}`}>
@@ -155,7 +157,7 @@ export default function ParticipantsAdmin() {
                         {p.createdAt ? new Date(p.createdAt).toLocaleDateString() : 'N/A'}
                       </td>
                       <td className="p-4 text-right">
-                        <button onClick={() => confirmDelete(p._id || p.id)} className="text-red-500 hover:text-red-700 text-sm font-medium">
+                        <button onClick={() => confirmDelete(p.id)} className="text-red-500 hover:text-red-700 text-sm font-medium">
                           Supprimer
                         </button>
                       </td>

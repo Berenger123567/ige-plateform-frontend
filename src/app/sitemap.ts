@@ -20,9 +20,9 @@ async function fetchData() {
     const [articles, projets, evenements, clubs, partners] = await Promise.all([
       fetchJson(`${apiUrl}/articles`),
       fetchJson(`${apiUrl}/projets`),
-      fetchJson(`${apiUrl}/evenements`),
+      fetchJson(`${apiUrl}/events`),
       fetchJson(`${apiUrl}/clubs`),
-      fetchJson(`${apiUrl}/partners`),
+      fetchJson(`${apiUrl}/partenaires`),
     ]);
 
     return { articles, projets, evenements, clubs, partners };
@@ -54,6 +54,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/membres`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
     },
     {
       url: `${BASE_URL}/projets`,

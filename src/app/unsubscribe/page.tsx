@@ -15,14 +15,15 @@ function UnsubscribeContent() {
       return;
     }
 
-    // Cas 2 : lien avec l'email en parametre, on desinscrit depuis le navigateur
+    // Cas 2 : lien signé (token) ou e-mail en paramètre
+    const token = searchParams.get('token');
     const email = searchParams.get('email');
-    if (email) {
+    if (token || email) {
       setStatus('loading');
       fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/newsletter/unsubscribe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: decodeURIComponent(email) }),
+        body: JSON.stringify(token ? { token: decodeURIComponent(token) } : { email: decodeURIComponent(email as string) }),
       })
         .then((res) => (res.ok ? setStatus('done') : setStatus('error')))
         .catch(() => setStatus('error'));
