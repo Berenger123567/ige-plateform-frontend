@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { getProjects } from '@/lib/api';
 import { Cpu, Search, Filter, Star } from '@/components/IconImage';
 
-const STATUS_LABELS: Record<string, string> = { Termine: 'Terminé', Expose: 'Exposé' };
+const STATUS_LABELS: Record<string, string> = { Terminé: 'Terminé', Exposé: 'Exposé', Termine: 'Terminé', Expose: 'Exposé' };
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<any[]>([]);
@@ -74,8 +74,8 @@ export default function ProjectsPage() {
               className="bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-3.5 py-3 focus:outline-none focus:border-ige-teal"
             >
               <option value="all">Tous les statuts</option>
-              <option value="Expose">Exposé / En démo</option>
-              <option value="Termine">Terminé</option>
+              <option value="Expos�">Exposé / En démo</option>
+              <option value="Termin�">Terminé</option>
               <option value="En cours">En cours</option>
             </select>
           </div>
