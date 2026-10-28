@@ -9,24 +9,24 @@ export default function ClubsSection() {
     {
       slug: 'electronique-iot',
       name: 'Electronique & IoT',
-      image: '/12.png',
+      image: '/ige-electronique.jpeg',
       imagePosition: 'center',
       description: 'Systèmes embarqués, microcontrôleurs, capteurs connectés, domotique et infrastructures de microréseaux électriques.',
     },
     {
       slug: 'robotique',
       name: 'Robotique',
-      image: '/14.png',
-      imagePosition: 'top',
+      image: '/ige-robotique.jpeg',
+      imagePosition: 'center',
       description: 'Conception de robots autonomes, vision par ordinateur, véhicules téléguidés, perception et commande algorithmique.',
     },
     {
       slug: 'informatique-industrielle',
       name: 'Informatique industrielle',
-      image: '/13.png',
-      imagePosition: 'top',
+      image: '/ige-informatique-industrielle.jpeg',
+      imagePosition: 'center',
       description: 'Automatisation des procédés, automates programmables (API), supervision SCADA et contrôle industriel connecté.',
-    }
+    },
   ];
 
   return (

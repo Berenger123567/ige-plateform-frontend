@@ -271,7 +271,7 @@ function TicketContent() {
               </div>
             )}
 
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
+            <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-center gap-3">
               <button
                 onClick={handleDownload}
                 disabled={downloading}
@@ -284,6 +284,26 @@ function TicketContent() {
                 )}
                 Télécharger le ticket
               </button>
+              {pass.edition.planningPublished && pass.edition.planningUrl ? (
+                <a
+                  href={pass.edition.planningUrl}
+                  download="Planning-JE-GE.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white border border-slate-300 text-slate-800 font-bold text-sm hover:border-ige-teal transition-all"
+                >
+                  <Download className="w-4 h-4 text-ige-teal" />
+                  Télécharger le planning
+                </a>
+              ) : (
+                <button
+                  disabled
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-400 font-bold text-sm cursor-not-allowed"
+                >
+                  <Download className="w-4 h-4" />
+                  Planning non disponible
+                </button>
+              )}
               {pass.edition.startDate && (
                 <button
                   onClick={() =>

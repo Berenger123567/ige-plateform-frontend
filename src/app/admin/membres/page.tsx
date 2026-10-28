@@ -209,6 +209,7 @@ export default function MembresAdmin() {
               <div className="grid grid-cols-2 gap-4">
                 <select value={form.clubId} onChange={(e) => setForm({ ...form, clubId: e.target.value })} className="p-2 border border-slate-300 rounded">
                   <option value="">Aucun club</option>
+                  <option value="BUREAU_IGE">Bureau IGE</option>
                   {clubs.map((club) => <option key={club.id} value={club.id}>{club.name}</option>)}
                 </select>
                 <select value={form.mandatId} onChange={(e) => setForm({ ...form, mandatId: e.target.value })} className="p-2 border border-slate-300 rounded">

@@ -46,7 +46,7 @@ export default function PartnersSection() {
             {partners.slice(0, 12).map((p) => (
               <div
                 key={p.id}
-                className="rounded-xl bg-slate-50 border border-slate-200 p-5 flex items-center justify-center h-20 grayscale hover:grayscale-0 hover:border-ige-tealSoft0/40 transition-all"
+                className="rounded-xl bg-slate-50 border border-slate-200 p-5 flex items-center justify-center h-20 hover:border-ige-tealSoft/40 transition-all"
                 title={p.name}
               >
                 {p.logoUrl ? (

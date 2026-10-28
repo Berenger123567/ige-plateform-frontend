@@ -12,11 +12,19 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'ige-backend-uxg9.onrender.com',
+      },
+      {
+        protocol: 'https',
         hostname: '**.cloudinary.com',
       },
       {
         protocol: 'https',
         hostname: '**.amazonaws.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.netlify.app',
       },
     ],
     formats: ['image/avif', 'image/webp'],

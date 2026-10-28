@@ -270,7 +270,7 @@ function PartnerCard({ partner, index }: { partner: Partner; index: number }) {
           <img
             src={partner.logoUrl}
             alt={partner.name}
-            className="max-w-full max-h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+            className="max-w-full max-h-full object-contain transition-all duration-300"
           />
         ) : (
           <Building2 className="w-16 h-16 text-slate-300 group-hover:text-slate-400 transition-colors" />

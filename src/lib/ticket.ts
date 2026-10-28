@@ -108,8 +108,30 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
+async function ensureFontsLoaded() {
+  if (typeof document === 'undefined' || !document.fonts) return;
+  try {
+    await Promise.all([
+      document.fonts.load('400 16px Montserrat'),
+      document.fonts.load('500 16px Montserrat'),
+      document.fonts.load('600 16px Montserrat'),
+      document.fonts.load('700 16px Montserrat'),
+      document.fonts.load('800 16px Montserrat'),
+    ]);
+    await document.fonts.ready;
+  } catch {
+    // Ignore font loading errors and fallback to system fonts
+  }
+}
+
+const FONT_BODY = 'Montserrat, Arial, sans-serif';
+const FONT_LABEL = 'Arial, sans-serif';
+const FONT_MONO = 'Courier New, monospace';
+
 export async function buildTicketCanvas(data: TicketInput): Promise<HTMLCanvasElement> {
   if (!data.qrCodeDataUrl) throw new Error('QR code indisponible.');
+
+  await ensureFontsLoaded();
 
   const canvas = document.createElement('canvas');
   canvas.width = WIDTH;
@@ -155,11 +177,11 @@ export async function buildTicketCanvas(data: TicketInput): Promise<HTMLCanvasEl
   ctx.fillRect(x, y + 300, width, 10);
 
   ctx.fillStyle = 'rgba(255, 255, 255, 0.78)';
-  ctx.font = '600 22px Arial, sans-serif';
+  ctx.font = `600 22px ${FONT_BODY}`;
   ctx.fillText('IGE · INNOVATION EN GÉNIE ÉLECTRIQUE', x + 55, y + 78);
 
   ctx.fillStyle = '#ffffff';
-  ctx.font = '800 46px Arial, sans-serif';
+  ctx.font = `800 46px ${FONT_BODY}`;
   const titleLines = wrapText(ctx, data.edition.name, 600).slice(0, 2);
   drawLines(ctx, titleLines, x + 55, y + 150, 54);
 
@@ -168,25 +190,27 @@ export async function buildTicketCanvas(data: TicketInput): Promise<HTMLCanvasEl
   roundedRect(ctx, x + 55, pillY, 230, 48, 24);
   ctx.fill();
   ctx.fillStyle = '#ffffff';
-  ctx.font = '700 20px Arial, sans-serif';
-  ctx.fillText('PASS PARTICIPANT', x + 78, pillY + 31);
+  ctx.font = `700 20px ${FONT_BODY}`;
+  ctx.textAlign = 'center';
+  ctx.fillText('PASS PARTICIPANT', x + 55 + 115, pillY + 31);
+  ctx.textAlign = 'left';
 
   ctx.fillStyle = '#ffffff';
-  ctx.font = '800 26px Arial, sans-serif';
+  ctx.font = `800 26px ${FONT_BODY}`;
   ctx.textAlign = 'right';
   ctx.fillText('JE-GE', x + width - 55, y + 80);
-  ctx.font = '500 17px Arial, sans-serif';
+  ctx.font = `500 17px ${FONT_BODY}`;
   ctx.fillText(data.edition.dateText, x + width - 55, y + 111);
   ctx.textAlign = 'left';
 
   let cursorY = y + 400;
   ctx.fillStyle = MUTED;
-  ctx.font = '700 18px Arial, sans-serif';
+  ctx.font = `700 18px ${FONT_LABEL}`;
   ctx.fillText('NOM DU PARTICIPANT', x + 60, cursorY);
 
   cursorY += 58;
   ctx.fillStyle = INK;
-  ctx.font = '800 48px Arial, sans-serif';
+  ctx.font = `800 48px ${FONT_BODY}`;
   const nameLines = wrapText(
     ctx,
     `${data.participant.firstName} ${data.participant.lastName}`.trim(),
@@ -203,21 +227,22 @@ export async function buildTicketCanvas(data: TicketInput): Promise<HTMLCanvasEl
   roundedRect(ctx, x + 60, cursorY, width - 120, 76, 16);
   ctx.stroke();
   ctx.fillStyle = MUTED;
-  ctx.font = '600 17px Arial, sans-serif';
+  ctx.font = `600 17px ${FONT_LABEL}`;
   ctx.fillText("NUMÉRO D'INSCRIPTION", x + 86, cursorY + 30);
   ctx.fillStyle = INK;
-  ctx.font = '700 28px Courier New, monospace';
+  ctx.font = `700 28px ${FONT_MONO}`;
   ctx.fillText(data.participant.registrationNumber, x + 86, cursorY + 61);
 
   cursorY += 130;
   ctx.fillStyle = MUTED;
-  ctx.font = '700 18px Arial, sans-serif';
+  ctx.font = `700 18px ${FONT_BODY}`;
   ctx.fillText('PROFIL', x + 60, cursorY);
+  ctx.font = `700 18px ${FONT_LABEL}`;
   ctx.fillText('INSTITUTION', x + 420, cursorY);
 
   cursorY += 38;
   ctx.fillStyle = INK;
-  ctx.font = '600 26px Arial, sans-serif';
+  ctx.font = `600 26px ${FONT_BODY}`;
   drawLines(ctx, wrapText(ctx, data.participant.profile || '—', 320).slice(0, 2), x + 60, cursorY, 32);
   drawLines(
     ctx,
@@ -229,13 +254,13 @@ export async function buildTicketCanvas(data: TicketInput): Promise<HTMLCanvasEl
 
   cursorY += 100;
   ctx.fillStyle = MUTED;
-  ctx.font = '700 18px Arial, sans-serif';
+  ctx.font = `700 18px ${FONT_LABEL}`;
   ctx.fillText('DATE', x + 60, cursorY);
   ctx.fillText('LIEU', x + 420, cursorY);
 
   cursorY += 38;
   ctx.fillStyle = INK;
-  ctx.font = '600 26px Arial, sans-serif';
+  ctx.font = `600 26px ${FONT_BODY}`;
   drawLines(
     ctx,
     wrapText(ctx, data.edition.dateText || '—', 320).slice(0, 2),
@@ -273,10 +298,9 @@ export async function buildTicketCanvas(data: TicketInput): Promise<HTMLCanvasEl
 
   const qrSize = 220;
   const qrPadding = 12;
-  const qrColumnLeft = x + 40;
-  const qrColumnWidth = 420;
-  const qrX =
-    qrColumnLeft + (qrColumnWidth - qrSize - qrPadding * 2) / 2 + qrPadding;
+  const qrColumnLeft = x + 20;
+  const qrColumnWidth = 400;
+  const qrX = qrColumnLeft + qrPadding;
   const qrAreaTop = perforationY + 18;
   const qrAreaBottom = y + height - 58;
   const qrY =
@@ -311,11 +335,11 @@ export async function buildTicketCanvas(data: TicketInput): Promise<HTMLCanvasEl
   const detailWidth = x + width - detailX - 55;
 
   ctx.fillStyle = TEAL;
-  ctx.font = '800 24px Arial, sans-serif';
+  ctx.font = `800 24px ${FONT_BODY}`;
   ctx.fillText("SCANNEZ À L'ENTRÉE", detailX, qrY + 40);
 
   ctx.fillStyle = INK;
-  ctx.font = '600 21px Arial, sans-serif';
+  ctx.font = `600 21px ${FONT_BODY}`;
   drawLines(
     ctx,
     wrapText(
@@ -329,10 +353,10 @@ export async function buildTicketCanvas(data: TicketInput): Promise<HTMLCanvasEl
   );
 
   ctx.fillStyle = MUTED;
-  ctx.font = '600 16px Arial, sans-serif';
+  ctx.font = `600 16px ${FONT_BODY}`;
   ctx.fillText('Numéro de pass', detailX, qrY + 205);
   ctx.fillStyle = INK;
-  ctx.font = '700 20px Courier New, monospace';
+  ctx.font = `700 20px ${FONT_MONO}`;
   drawLines(
     ctx,
     wrapText(ctx, data.participant.registrationNumber, detailWidth),
@@ -342,12 +366,14 @@ export async function buildTicketCanvas(data: TicketInput): Promise<HTMLCanvasEl
   );
 
   ctx.fillStyle = MUTED;
-  ctx.font = '500 16px Arial, sans-serif';
-  ctx.fillText('Pass personnel, non transférable.', x + 60, y + height - 32);
+  ctx.font = `500 16px ${FONT_BODY}`;
+  ctx.textAlign = 'left';
+  ctx.fillText('Pass personnel, non transférable.', qrX - qrPadding, qrY + qrSize + qrPadding * 2 + 28);
+  ctx.textAlign = 'left';
 
   ctx.textAlign = 'right';
   ctx.fillStyle = TEAL;
-  ctx.font = '800 20px Arial, sans-serif';
+  ctx.font = `800 20px ${FONT_BODY}`;
   ctx.fillText('ige-benin.org', x + width - 60, y + height - 32);
   ctx.textAlign = 'left';
 

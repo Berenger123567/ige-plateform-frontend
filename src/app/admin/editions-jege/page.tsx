@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
 import ConfirmModal from '@/components/admin/ConfirmModal';
-import { Plus, Edit, Trash2, BarChart3, CheckCircle, XCircle, Calendar, MapPin, GraduationCap } from '@/components/IconImage';
+import FileUpload from '@/components/admin/FileUpload';
+import { Plus, Edit, Trash2, BarChart3, CheckCircle, XCircle, Calendar, MapPin, GraduationCap, FileText } from '@/components/IconImage';
 
 type Edition = {
   id: string;
@@ -13,6 +14,8 @@ type Edition = {
   location: string;
   isOpen: boolean;
   active: boolean;
+  planningUrl?: string | null;
+  planningPublished?: boolean;
   participants?: any[];
   _count?: { participants: number };
   createdAt: string;
@@ -40,6 +43,8 @@ export default function EditionsJEGEAdmin() {
     location: '',
     isOpen: true,
     active: false,
+    planningUrl: '',
+    planningPublished: false,
   });
   const [deleteConfirm, setDeleteConfirm] = useState<{ show: boolean; editionId: string | null }>({
     show: false,
@@ -74,10 +79,14 @@ export default function EditionsJEGEAdmin() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const payload = {
+        ...formData,
+        planningUrl: formData.planningUrl?.trim() || null,
+      };
       if (editingEdition) {
-        await api.put(`/admin/je-ge/editions/${editingEdition.id}`, formData);
+        await api.put(`/admin/je-ge/editions/${editingEdition.id}`, payload);
       } else {
-        await api.post('/admin/je-ge/editions', formData);
+        await api.post('/admin/je-ge/editions', payload);
       }
       await fetchEditions();
       closeModal();
@@ -95,6 +104,8 @@ export default function EditionsJEGEAdmin() {
       location: edition.location,
       isOpen: edition.isOpen,
       active: edition.active,
+      planningUrl: edition.planningUrl || '',
+      planningPublished: !!edition.planningPublished,
     });
     setShowModal(true);
   };
@@ -131,6 +142,8 @@ export default function EditionsJEGEAdmin() {
       location: '',
       isOpen: true,
       active: false,
+      planningUrl: '',
+      planningPublished: false,
     });
   };
 
@@ -419,6 +432,33 @@ export default function EditionsJEGEAdmin() {
                   <span className="text-sm text-gray-700 flex items-center gap-1">
                     <CheckCircle className="w-3 h-3" />
                     Edition active (désactivez les autres si cette case est cochée)
+                  </span>
+                </label>
+              </div>
+
+              <div className="pt-4 border-t space-y-4">
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                    <FileText className="w-4 h-4" />
+                    Planning JE-GE
+                  </h3>
+                  <FileUpload
+                    value={formData.planningUrl}
+                    onChange={(url) => setFormData({ ...formData, planningUrl: url })}
+                    accept="application/pdf"
+                    label="Fichier PDF du planning"
+                  />
+                </div>
+
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={formData.planningPublished}
+                    onChange={(e) => setFormData({ ...formData, planningPublished: e.target.checked })}
+                    className="w-4 h-4 text-ige-teal border-gray-300 rounded focus:ring-ige-tealSoft0"
+                  />
+                  <span className="text-sm text-gray-700">
+                    Publier le planning (le bouton sera actif sur le ticket une fois publié)
                   </span>
                 </label>
               </div>

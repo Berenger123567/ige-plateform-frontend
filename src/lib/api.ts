@@ -98,6 +98,8 @@ export type JEGEPass = {
     location: string;
     startDate?: string | null;
     endDate?: string | null;
+    planningUrl?: string | null;
+    planningPublished?: boolean;
   };
   qrCodeDataUrl: string;
   ticketUrl: string;
