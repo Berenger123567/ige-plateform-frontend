@@ -1,6 +1,8 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import ConfirmModal from '@/components/admin/ConfirmModal';
+import FileUpload from '@/components/admin/FileUpload';
+import { Calendar } from '@/components/IconImage';
 
 const CATEGORY_LABELS: Record<string, string> = {
   'Genie Electrique': 'Génie électrique',
@@ -29,7 +31,7 @@ export default function EvenementsAdmin() {
     try {
       const res = await api.get('/admin/events');
       setEvenements(Array.isArray(res.data) ? res.data : []);
-    } catch (err) {
+    } catch (err: any) {
       showToast('Erreur lors du chargement', 'error');
     } finally {
       setLoading(false);
@@ -62,8 +64,13 @@ export default function EvenementsAdmin() {
       showToast(`Evénement ${editingId ? 'modifié' : 'créé'} avec succès`, 'success');
       setIsModalOpen(false);
       fetchData();
-    } catch (err) {
-      showToast('Erreur lors de la sauvegarde', 'error');
+    } catch (err: any) {
+      const errorMsg =
+        err?.response?.data?.error ||
+        err?.response?.data?.message ||
+        err?.message ||
+        'Erreur lors de la sauvegarde';
+      showToast(errorMsg, 'error');
     }
   };
 
@@ -131,6 +138,7 @@ export default function EvenementsAdmin() {
           <table className="w-full text-left border-collapse min-w-[650px]">
             <thead>
               <tr className="bg-slate-100 border-b border-slate-200">
+                <th className="p-4">Image</th>
                 <th className="p-4">Titre</th>
                 <th className="p-4">Catégorie</th>
                 <th className="p-4">Date</th>
@@ -143,6 +151,21 @@ export default function EvenementsAdmin() {
             <tbody>
               {evenements.map((ev) => (
                 <tr key={ev._id || ev.id} className="border-b border-slate-200 hover:bg-slate-50">
+                  <td className="p-4">
+                    {ev.imageUrl ? (
+                      <div className="relative w-12 h-12 rounded-lg overflow-hidden border border-slate-200 bg-slate-100">
+                        <img 
+                          src={ev.imageUrl} 
+                          alt={ev.title} 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400">
+                        <Calendar className="w-5 h-5 text-slate-300" />
+                      </div>
+                    )}
+                  </td>
                   <td className="p-4 font-medium">{ev.title}</td>
                   <td className="p-4">{CATEGORY_LABELS[ev.category] || ev.category}</td>
                   <td className="p-4">{ev.eventDate || ev.date ? new Date(ev.eventDate || ev.date).toLocaleDateString() : ''}</td>
@@ -172,7 +195,7 @@ export default function EvenementsAdmin() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">Titre</label>
-                  <input type="text" required value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" />
+                  <input type="text" required value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" placeholder="Ex. : Hackathon IGE 2025" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">Catégorie</label>
@@ -190,7 +213,7 @@ export default function EvenementsAdmin() {
               
               <div>
                 <label className="block text-sm font-medium mb-1">Description</label>
-                <textarea required value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" rows={3}></textarea>
+                <textarea required value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" rows={3} placeholder="Présentation détaillée de l'événement..."></textarea>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -207,22 +230,22 @@ export default function EvenementsAdmin() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">Lieu</label>
-                  <input type="text" value={formData.location} onChange={e => setFormData({...formData, location: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" />
+                  <input type="text" required value={formData.location} onChange={e => setFormData({...formData, location: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" placeholder="Ex. : Amphi I, Campus EPAC" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">Ville</label>
-                  <input type="text" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" />
+                  <input type="text" required value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" placeholder="Ex. : Cotonou" />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">Organisateur</label>
-                  <input type="text" value={formData.organizer} onChange={e => setFormData({...formData, organizer: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" />
+                  <input type="text" required value={formData.organizer} onChange={e => setFormData({...formData, organizer: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" placeholder="Ex. : Club Robotique IGE" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">Prix</label>
-                  <input type="text" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" />
+                  <input type="text" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" placeholder="Gratuit ou tarif" />
                 </div>
               </div>
 
@@ -236,19 +259,24 @@ export default function EvenementsAdmin() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Image (URL)</label>
-                  <input type="url" value={formData.imageUrl} onChange={e => setFormData({...formData, imageUrl: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" />
+                  <label className="block text-sm font-medium mb-1">Lien d'inscription (optionnel)</label>
+                  <input type="url" value={formData.registrationUrl} onChange={e => setFormData({...formData, registrationUrl: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" placeholder="https://..." />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Lien d'inscription</label>
-                <input type="url" value={formData.registrationUrl} onChange={e => setFormData({...formData, registrationUrl: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" />
+                <label className="block text-sm font-medium mb-1">Image / Affiche de l’événement</label>
+                <FileUpload
+                  accept="image/*"
+                  label="Affiche ou photo de couverture (PNG, JPG, WebP)"
+                  value={formData.imageUrl}
+                  onChange={(url: string) => setFormData({...formData, imageUrl: url})}
+                />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Informations pratiques</label>
-                <textarea value={formData.practicalInfo} onChange={e => setFormData({...formData, practicalInfo: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" rows={2}></textarea>
+                <label className="block text-sm font-medium mb-1">Informations pratiques (optionnel)</label>
+                <textarea value={formData.practicalInfo} onChange={e => setFormData({...formData, practicalInfo: e.target.value})} className="w-full p-2 border border-slate-300 rounded focus:border-ige-navy outline-none" rows={2} placeholder="Matériel requis, consignes, contact..."></textarea>
               </div>
 
               <div className="grid grid-cols-2 gap-4">

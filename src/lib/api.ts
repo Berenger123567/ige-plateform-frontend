@@ -156,3 +156,15 @@ export const sendContactMessage = async (data: any) => {
   const res = await api.post('/contact', data);
   return res.data;
 };
+
+export const getBureauMembers = async (mandatId?: string) => {
+  const url = mandatId ? `/bureau/mandat/${mandatId}` : '/bureau';
+  const res = await api.get(url);
+  return res.data;
+};
+
+export const getBureauMemberById = async (id: string) => {
+  const res = await api.get(`/bureau/${id}`);
+  return res.data;
+};
+
